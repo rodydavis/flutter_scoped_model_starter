@@ -8,6 +8,7 @@ import 'screens/splash_screen.dart';
 import 'screens/settings.dart';
 import 'data/models/auth.dart';
 import 'screens/counter_page.dart';
+import 'screens/auth/login.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,20 +32,26 @@ class MyApp extends StatelessWidget {
 }
 
 class AppTheme extends StatelessWidget {
+  final _counterPage = new ScopedModel<CounterModel>(
+    model: counterModel,
+    child: CounterPage(),
+  );
   @override
   Widget build(BuildContext context) {
     final _model = ScopedModel.of<ThemeModel>(context, rebuildOnChange: true);
     return MaterialApp(
       title: 'Flutter Demo',
       theme: _model.theme,
-      home: HomePage(themeModel: _model),
+      home: SplashScreen(
+        duration: Duration(seconds: 3),
+        themeModel: themeModel,
+        authModel: authModel,
+      ),
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => HomePage(),
         '/settings': (BuildContext context) => SettingsPage(),
-        '/counter': (BuildContext context) => new ScopedModel<CounterModel>(
-              model: counterModel,
-              child: CounterPage(),
-            ),
+        '/counter': (BuildContext context) => _counterPage,
+        '/login': (BuildContext context) => LoginPage(),
       },
     );
   }

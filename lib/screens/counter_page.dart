@@ -4,14 +4,16 @@ import 'package:scoped_model/scoped_model.dart';
 import '../data/models/counter.dart';
 import '../widgets/containers/counter/add.dart';
 import '../widgets/containers/counter/subtract.dart';
+import '../data/models/auth.dart';
 
 class CounterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _model = ScopedModel.of<CounterModel>(context, rebuildOnChange: true);
+    final _user = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Counter Example"),
+        title: Text(_user.currentUser?.fullName ?? "Guest"),
         leading: IconButton(
           icon: Icon(Icons.settings),
           onPressed: () => Navigator.pushNamed(context, "/settings"),

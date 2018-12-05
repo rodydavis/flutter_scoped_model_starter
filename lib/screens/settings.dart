@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../data/models/theme.dart';
+
 import '../data/local_storage.dart';
+import '../data/models/auth.dart';
+import '../data/models/theme.dart';
 import '../widgets/components/settings/section.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -30,7 +32,8 @@ class _State extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ScopedModel.of<ThemeModel>(context, rebuildOnChange: true);
+    final _theme = ScopedModel.of<ThemeModel>(context, rebuildOnChange: true);
+    final _user = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     return Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
@@ -49,9 +52,9 @@ class _State extends State<SettingsPage> {
                     setState(() => _darkMode = value);
                     if (value != null) {
                       if (value) {
-                        theme.darkMode(trueBlack: _trueBlack);
+                        _theme.darkMode(trueBlack: _trueBlack);
                       } else {
-                        theme.lightMode();
+                        _theme.lightMode();
                       }
                     }
                   },
@@ -66,7 +69,7 @@ class _State extends State<SettingsPage> {
                         onChanged: (bool value) {
                           setState(() => _trueBlack = value);
                           if (value != null) {
-                            theme.darkMode(trueBlack: value);
+                            _theme.darkMode(trueBlack: value);
                           }
                         },
                       ),
@@ -75,6 +78,19 @@ class _State extends State<SettingsPage> {
             ],
           ),
           Divider(),
+          RaisedButton(
+            color: Colors.blue,
+            child: Text(
+              "Logout",
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              _user.logout().then((_) {
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, "/login");
+              });
+            },
+          ),
         ],
       ),
     );
