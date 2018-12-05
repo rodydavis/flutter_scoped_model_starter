@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../data/models/crud.dart';
 import '../../../widgets/components/app_bar/bottom.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'edit.dart';
 
-class CRUDItemDetails extends StatelessWidget {
+class CRUDItemDetails extends StatefulWidget {
   final CRUDObject item;
   final bool showNameInAppBar;
   final CRUDModel model;
@@ -15,11 +14,31 @@ class CRUDItemDetails extends StatelessWidget {
     @required this.model,
   });
   @override
+  _CRUDItemDetailsState createState() => _CRUDItemDetailsState();
+}
+
+class _CRUDItemDetailsState extends State<CRUDItemDetails> {
+  CRUDObject item;
+
+  @override
+  void initState() {
+    _loadInfo();
+    super.initState();
+  }
+
+  void _loadInfo() async {
+    setState(() {
+      item = widget.item;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            showNameInAppBar ? Text(item?.name ?? "Details") : Text("Details"),
+        title: widget.showNameInAppBar
+            ? Text(item?.name ?? "Details")
+            : Text("Details"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -39,7 +58,7 @@ class CRUDItemDetails extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-              model.removeItem(item);
+              widget.model.removeItem(item);
               Navigator.pop(context);
             },
           ),
@@ -58,7 +77,7 @@ class CRUDItemDetails extends StatelessWidget {
           ).then((value) {
             if (value != null) {
               CRUDObject _item = value;
-              model.editItem(_item);
+              widget.model.editItem(_item);
               Navigator.pop(context);
             }
           });
