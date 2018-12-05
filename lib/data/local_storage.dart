@@ -1,25 +1,48 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum Settings { darkMode, trueBlack }
+enum Settings { darkMode, trueBlack, autoSignin }
+
+enum Info { username, password }
 
 class AppPreferences {
-  void setBool(String key, bool value) async {
+  void setSetting(Settings key, bool value) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      prefs.setBool(key, value);
+      prefs.setBool(key.toString(), value);
     } catch (e) {
       print(e);
     }
   }
 
-  Future<bool> getBool(String key) async {
+  Future<bool> getSetting(Settings key) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      var _bool = prefs.getBool(key);
-      return _bool;
+      var _value = prefs.getBool(key.toString());
+      return _value;
     } catch (e) {
       print(e);
+      // if (key == Settings.autoSignin) return true;
       return false; // Default Value
+    }
+  }
+
+  void setInfo(Info key, String value) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString(key.toString(), value);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<String> getInfo(Info key) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var _value = prefs.getString(key.toString());
+      return _value;
+    } catch (e) {
+      print(e);
+      return ""; // Default Value
     }
   }
 }

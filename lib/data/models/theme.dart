@@ -48,8 +48,8 @@ class ThemeModel extends Model {
 
   Future loadSavedTheme() async {
     var prefs = AppPreferences();
-    _darkMode = await prefs.getBool(Settings.darkMode.toString());
-    _trueBlack = await prefs.getBool(Settings.trueBlack.toString());
+    _darkMode = await prefs.getSetting(Settings.darkMode);
+    _trueBlack = await prefs.getSetting(Settings.trueBlack);
     if (_darkMode) {
       darkMode(trueBlack: _trueBlack);
     } else {
@@ -62,7 +62,7 @@ class ThemeModel extends Model {
 
   void _saveThemeToDisk() {
     var prefs = AppPreferences();
-    prefs.setBool(Settings.darkMode.toString(), _darkMode);
-    prefs.setBool(Settings.trueBlack.toString(), _trueBlack);
+    prefs.setSetting(Settings.darkMode, _darkMode);
+    prefs.setSetting(Settings.trueBlack, _trueBlack);
   }
 }

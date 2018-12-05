@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data/models/theme.dart';
 import '../data/models/auth.dart';
+import '../data/local_storage.dart';
 
 class SplashScreen extends StatefulWidget {
   final Duration duration;
@@ -29,19 +30,17 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _initPlatformState() async {
     widget.themeModel.loadSavedTheme();
-    await widget.authModel.refresh();
-    if (widget.authModel.currentUser == null) {
-      Navigator.pushReplacementNamed(context, '/login');
+    var prefs = AppPreferences();
+    var _autoLogin = await prefs.getSetting(Settings.autoSignin);
+    if (_autoLogin ?? false) {
+      await widget.authModel.autoLogin();
+      if (widget.authModel?.currentUser == null) {
+        Navigator.pushReplacementNamed(context, '/login');
+      } else {
+        Navigator.pushReplacementNamed(context, '/counter');
+      }
     } else {
-      Navigator.pushReplacementNamed(context, '/counter');
-      // animationController =
-      //     new AnimationController(duration: widget.duration, vsync: this)
-      //       ..forward()
-      //       ..addStatusListener((status) {
-      //         if (status == AnimationStatus.completed) {
-      //           Navigator.pushReplacementNamed(context, '/counter');
-      //         }
-      //       });
+      Navigator.pushReplacementNamed(context, '/login');
     }
   }
 

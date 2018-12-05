@@ -14,6 +14,7 @@ class SettingsPage extends StatefulWidget {
 class _State extends State<SettingsPage> {
   bool _darkMode = false;
   bool _trueBlack = false;
+  bool _autoSignIn = true;
 
   @override
   void initState() {
@@ -23,8 +24,9 @@ class _State extends State<SettingsPage> {
 
   _initPlatformAsync() async {
     var _prefs = AppPreferences();
-    _darkMode = await _prefs.getBool(Settings.darkMode.toString());
-    _trueBlack = await _prefs.getBool(Settings.trueBlack.toString());
+    _darkMode = await _prefs.getSetting(Settings.darkMode);
+    _trueBlack = await _prefs.getSetting(Settings.trueBlack);
+    _autoSignIn = await _prefs.getSetting(Settings.autoSignin);
     setState(() {
       print("Settings Loaded");
     });
@@ -63,7 +65,7 @@ class _State extends State<SettingsPage> {
               _darkMode ?? false
                   ? ListTile(
                       title: Text("True Black"),
-                      subtitle: Text("Looks better on OLED Screen"),
+                      subtitle: Text("Looks better on OLED Screens"),
                       trailing: Switch(
                         value: _trueBlack ?? false,
                         onChanged: (bool value) {
@@ -77,7 +79,26 @@ class _State extends State<SettingsPage> {
                   : Container(),
             ],
           ),
-          Divider(),
+          SettingsSection(
+            initiallyExpanded: false,
+            name: "Authentication",
+            items: <Widget>[
+              ListTile(
+                title: Text("Auto Sign In"),
+                subtitle: Text("Sign In Every Time You Open The App"),
+                trailing: Switch(
+                  value: _autoSignIn ?? true,
+                  onChanged: (bool value) {
+                    setState(() => _autoSignIn = value);
+                    if (value != null) {
+                      var _prefs = AppPreferences();
+                      _prefs.setSetting(Settings.autoSignin, value);
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
           RaisedButton(
             color: Colors.blue,
             child: Text(

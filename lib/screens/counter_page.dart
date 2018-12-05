@@ -13,7 +13,7 @@ class CounterPage extends StatelessWidget {
     final _user = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     return Scaffold(
       appBar: AppBar(
-        title: Text(_user.currentUser?.fullName ?? "Guest"),
+        title: Text(_user.currentUser?.username ?? "Guest"),
         leading: IconButton(
           icon: Icon(Icons.settings),
           onPressed: () => Navigator.pushNamed(context, "/settings"),
