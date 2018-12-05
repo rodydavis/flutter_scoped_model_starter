@@ -15,6 +15,9 @@ class CRUDList extends StatelessWidget {
         return CRUDItem(
           item: _item,
           model: model,
+          // edit: false,
+          share: false,
+          delete: false,
         );
       },
     );

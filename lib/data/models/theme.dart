@@ -1,6 +1,6 @@
-import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/material.dart';
-import '../constants/theme.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 import '../../data/local_storage.dart';
 
 class ThemeModel extends Model {
@@ -66,3 +66,8 @@ class ThemeModel extends Model {
     prefs.setSetting(Settings.trueBlack, _trueBlack);
   }
 }
+
+final ThemeData defaultTheme = ThemeData(
+  primaryColor: Colors.red,
+  accentColor: Colors.yellow,
+);

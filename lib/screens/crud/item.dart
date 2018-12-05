@@ -45,6 +45,44 @@ class CRUDItem extends StatelessWidget {
     );
   }
 
+  dynamic _getIconButtons(BuildContext context, {bool right = true}) {
+    if (right == false) {
+      if (share == false) return null;
+      return <Widget>[
+        IconSlideAction(
+          caption: 'Share',
+          color: Colors.indigo,
+          icon: Icons.share,
+          onTap: () => _shareItem(context),
+        )
+      ];
+    }
+
+    if (edit == false && delete == false) return null;
+
+    var _widgets = <Widget>[];
+
+    if (edit) {
+      _widgets.add(IconSlideAction(
+        caption: 'Edit',
+        color: Colors.black45,
+        icon: Icons.edit,
+        onTap: () => _editItem(context),
+      ));
+    }
+
+    if (delete) {
+      _widgets.add(IconSlideAction(
+        caption: 'Delete',
+        color: Colors.red,
+        icon: Icons.delete,
+        onTap: () => _removeItem(context),
+      ));
+    }
+
+    return _widgets;
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Slidable(
@@ -55,34 +93,8 @@ class CRUDItem extends StatelessWidget {
         onTap: () => _viewItem(context),
         onLongPress: () => _editItem(context),
       ),
-      actions: <Widget>[
-        share
-            ? new IconSlideAction(
-                caption: 'Share',
-                color: Colors.indigo,
-                icon: Icons.share,
-                onTap: () => _shareItem(context),
-              )
-            : Container(),
-      ],
-      secondaryActions: <Widget>[
-        edit
-            ? new IconSlideAction(
-                caption: 'Edit',
-                color: Colors.black45,
-                icon: Icons.edit,
-                onTap: () => _editItem(context),
-              )
-            : Container(),
-        delete
-            ? new IconSlideAction(
-                caption: 'Delete',
-                color: Colors.red,
-                icon: Icons.delete,
-                onTap: () => _removeItem(context),
-              )
-            : Container(),
-      ],
+      actions: _getIconButtons(context, right: false),
+      secondaryActions: _getIconButtons(context, right: true),
     );
   }
 }
