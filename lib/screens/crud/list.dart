@@ -12,7 +12,10 @@ class CRUDList extends StatelessWidget {
       itemCount: model?.items?.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
         final _item = model?.items[index];
-        return CRUDItem(item: _item, model: model);
+        return CRUDItem(
+          item: _item,
+          model: model,
+        );
       },
     );
   }

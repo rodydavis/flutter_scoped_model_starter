@@ -5,6 +5,7 @@ import '../../data/models/crud.dart';
 import '../../widgets/components/app_bar/bottom.dart';
 import 'item/edit.dart';
 import 'list.dart';
+import '../../widgets/components/app_bar/search.dart';
 
 final CRUDModel crudModel = CRUDModel();
 
@@ -32,12 +33,26 @@ class __CRUDScreenState extends State<_CRUDScreen> {
     super.initState();
   }
 
+  bool _isSearching = false;
   @override
   Widget build(BuildContext context) {
     final _model = ScopedModel.of<CRUDModel>(context, rebuildOnChange: true);
     return Scaffold(
       appBar: AppBar(
-        title: Text("CRUD Example"),
+        title: AppSearchBar(
+          name: "CRUD",
+          isSearching: _isSearching,
+        ),
+        actions: <Widget>[
+          AppSearchButton(
+            isSearching: _isSearching,
+            onSearchPressed: () {
+              setState(() {
+                _isSearching = !_isSearching;
+              });
+            },
+          )
+        ],
       ),
       body: CRUDList(model: _model),
       bottomNavigationBar: AppBottomBar(

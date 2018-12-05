@@ -52,4 +52,10 @@ class CRUDObject {
   final String id, name;
 
   CRUDObject({this.id, this.name});
+
+  @override
+  String toString() {
+    var _result = name.toString();
+    return _result.toString();
+  }
 }
