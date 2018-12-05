@@ -22,8 +22,8 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.exit_to_app),
-        label: Text("Open Counter"),
-        onPressed: () => Navigator.pushNamed(context, "/counter"),
+        label: Text("Open CRUD"),
+        onPressed: () => Navigator.pushNamed(context, "/crud"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

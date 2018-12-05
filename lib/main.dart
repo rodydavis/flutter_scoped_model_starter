@@ -9,6 +9,7 @@ import 'screens/settings.dart';
 import 'data/models/auth.dart';
 import 'screens/counter_page.dart';
 import 'screens/auth/login.dart';
+import 'screens/crud/screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -52,6 +53,7 @@ class AppTheme extends StatelessWidget {
         '/settings': (BuildContext context) => SettingsPage(),
         '/counter': (BuildContext context) => _counterPage,
         '/login': (BuildContext context) => LoginPage(),
+        '/crud': (BuildContext context) => CRUDScreen(),
       },
     );
   }

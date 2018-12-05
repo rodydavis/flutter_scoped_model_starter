@@ -1,0 +1,83 @@
+import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import '../../data/models/crud.dart';
+import '../../widgets/components/app_bar/bottom.dart';
+import 'item/edit.dart';
+import 'list.dart';
+
+final CRUDModel crudModel = CRUDModel();
+
+class CRUDScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ScopedModel<CRUDModel>(
+      model: crudModel,
+      child: _CRUDScreen(crudModel),
+    );
+  }
+}
+
+class _CRUDScreen extends StatefulWidget {
+  final CRUDModel model;
+  _CRUDScreen(this.model);
+  @override
+  __CRUDScreenState createState() => __CRUDScreenState();
+}
+
+class __CRUDScreenState extends State<_CRUDScreen> {
+  @override
+  void initState() {
+    widget.model.loadItems();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final _model = ScopedModel.of<CRUDModel>(context, rebuildOnChange: true);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("CRUD Example"),
+      ),
+      body: CRUDList(model: _model),
+      bottomNavigationBar: AppBottomBar(
+        buttons: [
+          IconButton(
+            icon: Icon(Icons.sort_by_alpha),
+            onPressed: null,
+          ),
+          IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: null,
+          ),
+          IconButton(
+            icon: Icon(Icons.restore),
+            onPressed: null,
+          ),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: FloatingActionButton(
+        heroTag: "CRUD Add",
+        backgroundColor: Theme.of(context).primaryColorDark,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CRUDItemEdit(), fullscreenDialog: true),
+          ).then((value) {
+            if (value != null) {
+              CRUDObject _item = value;
+              _model.addItem(_item);
+            }
+          });
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        tooltip: 'New Item',
+      ),
+    );
+  }
+}

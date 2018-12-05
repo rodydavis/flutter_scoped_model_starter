@@ -1,0 +1,19 @@
+import 'package:flutter/material.dart';
+
+import '../../data/models/crud.dart';
+import 'item.dart';
+
+class CRUDList extends StatelessWidget {
+  final CRUDModel model;
+  CRUDList({@required this.model});
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: model?.items?.length ?? 0,
+      itemBuilder: (BuildContext context, int index) {
+        final _item = model?.items[index];
+        return CRUDItem(item: _item, model: model);
+      },
+    );
+  }
+}

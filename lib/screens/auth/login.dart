@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () => _login(context, user: _user),
                 ),
               ],
-            )
+            ),
           ],
         ),
       )),
