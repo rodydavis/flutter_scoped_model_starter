@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../data/models/theme.dart';
 import '../data/models/auth.dart';
 import '../data/local_storage.dart';
+import 'package:native_widgets/native_widgets.dart';
 
 class SplashScreen extends StatefulWidget {
   final Duration duration;
@@ -33,13 +34,18 @@ class _SplashScreenState extends State<SplashScreen>
     var prefs = AppPreferences();
     var _autoLogin = await prefs.getSetting(Settings.autoSignin);
     if (_autoLogin ?? false) {
+      // -- Auto Login --
       await widget.authModel.autoLogin();
+
       if (widget.authModel?.currentUser == null) {
+        // -- Login Failed --
         Navigator.pushReplacementNamed(context, '/login');
       } else {
-        Navigator.pushReplacementNamed(context, '/counter');
+        // -- Valid User --
+        Navigator.pushReplacementNamed(context, '/home');
       }
     } else {
+      // -- Manual Login --
       Navigator.pushReplacementNamed(context, '/login');
     }
   }
@@ -47,8 +53,8 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
+      body: NativeLoadingIndicator(
+        text: Text("Loading..."),
       ),
     );
   }
