@@ -6,17 +6,26 @@ import 'data/models/theme.dart';
 import 'screens/home.dart';
 import 'screens/splash_screen.dart';
 import 'screens/settings.dart';
+import 'data/models/auth.dart';
+import 'screens/counter_page.dart';
 
-void main() async {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
+
+// -- Models --
+
+final AuthModel authModel = AuthModel();
+final ThemeModel themeModel = ThemeModel();
+final CounterModel counterModel = CounterModel();
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new ScopedModel<ThemeModel>(
-      model: ThemeModel(),
-      child: AppTheme(),
+      model: themeModel,
+      child: new ScopedModel<AuthModel>(
+        model: authModel,
+        child: AppTheme(),
+      ),
     );
   }
 }
@@ -28,10 +37,14 @@ class AppTheme extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: _model.theme,
-      home: HomePage(model: _model),
+      home: HomePage(themeModel: _model),
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => HomePage(),
         '/settings': (BuildContext context) => SettingsPage(),
+        '/counter': (BuildContext context) => new ScopedModel<CounterModel>(
+              model: counterModel,
+              child: CounterPage(),
+            ),
       },
     );
   }
