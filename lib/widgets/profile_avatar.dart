@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AvatarWidget extends StatelessWidget {
   final String imageURL, noImageText;
   final bool hideImage;
-  
+
   AvatarWidget({
     this.imageURL,
     this.noImageText,
