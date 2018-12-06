@@ -6,15 +6,20 @@ import '../../ui/app/app_bottom_bar.dart';
 import '../../ui/app/app_search_bar.dart';
 import 'crud_list.dart';
 import 'edit/crud_edit.dart';
+import '../../data/models/sort_model.dart';
 
 class CRUDScreen extends StatelessWidget {
   final CRUDModel model;
+
   CRUDScreen({@required this.model});
   @override
   Widget build(BuildContext context) {
     return ScopedModel<CRUDModel>(
       model: model,
-      child: _CRUDScreen(),
+      child: new ScopedModel<SortModel>(
+        model: SortModel(),
+        child: _CRUDScreen(),
+      ),
     );
   }
 }
@@ -26,9 +31,13 @@ class _CRUDScreen extends StatefulWidget {
 
 class __CRUDScreenState extends State<_CRUDScreen> {
   bool _isSearching = false;
+  bool _sortASC = false;
+  String _sortField = "Title";
   @override
   Widget build(BuildContext context) {
     final _model = ScopedModel.of<CRUDModel>(context, rebuildOnChange: true);
+    final _sort = ScopedModel.of<SortModel>(context, rebuildOnChange: true);
+
     return Scaffold(
       appBar: AppBar(
         title: AppSearchBar(
@@ -56,11 +65,12 @@ class __CRUDScreenState extends State<_CRUDScreen> {
         },
       ),
       bottomNavigationBar: AppBottomBar(
+        defaultSortField: "Title",
+        sortFields: [
+          "Title",
+          "Description",
+        ],
         buttons: [
-          IconButton(
-            icon: Icon(Icons.sort_by_alpha),
-            onPressed: null,
-          ),
           IconButton(
             icon: Icon(Icons.filter_list),
             onPressed: null,
@@ -70,6 +80,20 @@ class __CRUDScreenState extends State<_CRUDScreen> {
             onPressed: null,
           ),
         ],
+        onChangeSortOrder: (bool value) {
+          _sort.sortAscending = value;
+          setState(() {
+            _sortASC = value;
+          });
+          _model.changeSortOrder(_sortField, value);
+        },
+        onSelectedSortField: (String value) {
+          _sort.sortField = value;
+          setState(() {
+            _sortField = value;
+          });
+          _model.changeSortOrder(_sortField, _sortASC);
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(

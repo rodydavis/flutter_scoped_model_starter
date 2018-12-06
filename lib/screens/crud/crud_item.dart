@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../data/models/crud.dart';
 import 'edit/crud_edit.dart';
 import 'view/crud_view.dart';
+import '../../utils/null_or_empty.dart';
 
 class CRUDItem extends StatelessWidget {
   final CRUDObject item;
@@ -90,6 +91,9 @@ class CRUDItem extends StatelessWidget {
       actionExtentRatio: 0.25,
       child: ListTile(
         title: Text(item?.name),
+        subtitle: isNullOrEmpty(item?.description)
+            ? null
+            : Text(item?.description, maxLines: 1),
         onTap: () => _viewItem(context),
         onLongPress: () => _editItem(context),
       ),

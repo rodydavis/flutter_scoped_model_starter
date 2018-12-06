@@ -11,6 +11,7 @@ import 'screens/crud/crud_screen.dart';
 import 'screens/home.dart';
 import 'screens/settings.dart';
 import 'screens/splash_screen.dart';
+import 'data/models/sort_model.dart';
 
 // STARTER: import - do not remove comment
 

@@ -44,8 +44,11 @@ class _CRUDItemDetailsState extends State<CRUDItemDetails> {
         child: Column(
           children: <Widget>[
             ListTile(
-              title: Text(item?.name),
-            )
+              title: Text(item?.name ?? ""),
+            ),
+            ListTile(
+              title: Text(item?.description ?? ""),
+            ),
           ],
         ),
       ),

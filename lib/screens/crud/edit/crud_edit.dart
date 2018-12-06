@@ -12,7 +12,7 @@ class CRUDItemEdit extends StatefulWidget {
 }
 
 class _CRUDItemEditState extends State<CRUDItemEdit> {
-  TextEditingController _nameController;
+  TextEditingController _nameController, _descriptionController;
   bool _isNew = false;
   @override
   void initState() {
@@ -28,6 +28,8 @@ class _CRUDItemEditState extends State<CRUDItemEdit> {
     }
     // -- Load Info --
     _nameController = TextEditingController(text: widget?.item?.name ?? "");
+    _descriptionController =
+        TextEditingController(text: widget?.item?.description ?? "");
   }
 
   void _saveInfo(BuildContext context) async {
@@ -36,10 +38,12 @@ class _CRUDItemEditState extends State<CRUDItemEdit> {
     if (_formKey.currentState.validate()) {
       // - Get info From Input --
       var _name = _nameController.text.toString();
+      var _description = _descriptionController.text.toString();
 
       final CRUDObject _item = CRUDObject(
         id: _isNew ? uuid.v4() : widget.item?.id,
         name: _name,
+        description: _description,
       );
 
       // if (_isNew) {
@@ -67,11 +71,22 @@ class _CRUDItemEditState extends State<CRUDItemEdit> {
             children: <Widget>[
               ListTile(
                 title: TextFormField(
+                  autofocus: true,
                   decoration: InputDecoration(labelText: "Name"),
                   controller: _nameController,
                   keyboardType: TextInputType.text,
                   validator: (val) =>
                       val.isEmpty ? 'Please enter a name' : null,
+                ),
+              ),
+              ListTile(
+                title: TextFormField(
+                  decoration: InputDecoration(labelText: "Description"),
+                  controller: _descriptionController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  // validator: (val) =>
+                  //     val.isEmpty ? 'Please enter a description' : null,
                 ),
               ),
               Row(

@@ -6,6 +6,7 @@ class CRUDModel extends Model {
   List<CRUDObject> get items => _items;
 
   Future<bool> loadItems() async {
+    // -- Load Items from API or Local --
     // _items = [
     //   CRUDObject(
     //     id: "43223444",
@@ -47,12 +48,27 @@ class CRUDModel extends Model {
       }
     notifyListeners();
   }
+
+  void changeSortOrder(
+    String field,
+    bool ascending,
+  ) {
+    var _fieldName = field.toLowerCase().trim();
+    if (_fieldName.contains("title")) {
+      _items.sort((a, b) => a.name.compareTo(b.name));
+    }
+    if (_fieldName.contains("description")) {
+      _items.sort((a, b) => a.description.compareTo(b.description));
+    }
+    if (ascending) _items = _items.reversed.toList();
+    notifyListeners();
+  }
 }
 
 class CRUDObject {
-  final String id, name;
+  final String id, name, description;
 
-  CRUDObject({this.id, this.name});
+  CRUDObject({this.id, this.name, this.description});
 
   @override
   String toString() {
