@@ -4,30 +4,35 @@ import '../local_storage.dart';
 
 class AuthModel extends Model {
   User _currentUser;
+  bool _loggedIn = false;
 
   User get currentUser => _currentUser;
+  bool get loggedIn => _loggedIn;
 
   Future login({@required String username, @required String password}) async {
     // -- Login --
+    try {
+      // -- Get User Info --
+      var _userInfo = User(
+        fullName: "Test User",
+        email: username,
+        profileImage:
+            "http://gpluseurope.com/wp-content/uploads/Website2016-Profile-Photos-Pierre-Lecetre.jpg",
+      );
 
-    // -- Get User Info --
-    var _userInfo = User(
-      username: username,
-      fullName: "Test User",
-      email: "test@email.com",
-      profileImage:
-          "http://gpluseurope.com/wp-content/uploads/Website2016-Profile-Photos-Pierre-Lecetre.jpg",
-    );
-
-    // -- Update User --
-    _currentUser = _userInfo;
-
-    notifyListeners();
-    _saveInfoToDisk(username: username, password: password);
+      // -- Update User --
+      _currentUser = _userInfo;
+      _loggedIn = true;
+      notifyListeners();
+      _saveInfoToDisk(username: username, password: password);
+    } catch (e) {
+      logout();
+    }
   }
 
   Future logout() async {
     // -- Logout --
+    _loggedIn = false;
     _currentUser = null;
     notifyListeners();
   }
@@ -35,7 +40,7 @@ class AuthModel extends Model {
   Future autoLogin() async {
     var prefs = AppPreferences();
     var _username = await prefs.getInfo(Info.username);
-    var _password = await prefs.getInfo(Info.password);
+    var _password = await prefs.getSecure(Info.password);
 
     login(username: _username, password: _password);
   }
@@ -43,17 +48,16 @@ class AuthModel extends Model {
   void _saveInfoToDisk({@required String username, @required String password}) {
     var prefs = AppPreferences();
     prefs.setInfo(Info.username, username);
-    prefs.setInfo(Info.password, password);
+    prefs.setSecure(Info.password, password);
   }
 }
 
 class User {
-  final String fullName, email, username, profileImage;
+  final String fullName, email, profileImage;
 
   User({
     this.fullName,
     this.email,
-    this.username,
     this.profileImage,
   });
 

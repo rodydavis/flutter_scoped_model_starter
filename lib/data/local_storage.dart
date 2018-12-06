@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 enum Settings { darkMode, trueBlack, autoSignin }
 
@@ -39,6 +40,26 @@ class AppPreferences {
     try {
       final prefs = await SharedPreferences.getInstance();
       var _value = prefs.getString(key.toString());
+      return _value;
+    } catch (e) {
+      print(e);
+      return ""; // Default Value
+    }
+  }
+
+  void setSecure(Info key, String value) async {
+    try {
+      final storage = new FlutterSecureStorage();
+      await storage.write(key: key.toString(), value: value);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<String> getSecure(Info key) async {
+    try {
+      final storage = new FlutterSecureStorage();
+      String _value = await storage.read(key: key.toString());
       return _value;
     } catch (e) {
       print(e);

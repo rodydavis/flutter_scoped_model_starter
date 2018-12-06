@@ -90,6 +90,7 @@ class CRUDItem extends StatelessWidget {
       delegate: new SlidableDrawerDelegate(),
       actionExtentRatio: 0.25,
       child: ListTile(
+        // dense: true,
         title: Text(item?.name),
         subtitle: isNullOrEmpty(item?.description)
             ? null
