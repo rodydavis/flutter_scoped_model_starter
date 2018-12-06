@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../data/models/counter.dart';
-import '../widgets/counter/add.dart';
-import '../widgets/counter/subtract.dart';
+import '../../data/models/counter.dart';
+import '../../widgets/counter/add.dart';
+import '../../widgets/counter/subtract.dart';
 
 class CounterPage extends StatelessWidget {
+  final CounterModel model;
+  CounterPage({@required this.model});
+  @override
+  Widget build(BuildContext context) {
+    return new ScopedModel<CounterModel>(
+      model: model,
+      child: _CounterPage(),
+    );
+  }
+}
+
+class _CounterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _model = ScopedModel.of<CounterModel>(context, rebuildOnChange: true);
     return Scaffold(
       appBar: AppBar(
         title: Text("Counter"),
-      
       ),
       body: ListView(
         children: <Widget>[

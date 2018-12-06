@@ -7,32 +7,24 @@ import '../../ui/app/app_search_bar.dart';
 import 'crud_list.dart';
 import 'edit/crud_edit.dart';
 
-final CRUDModel crudModel = CRUDModel();
-
 class CRUDScreen extends StatelessWidget {
+  final CRUDModel model;
+  CRUDScreen({@required this.model});
   @override
   Widget build(BuildContext context) {
     return ScopedModel<CRUDModel>(
-      model: crudModel,
-      child: _CRUDScreen(crudModel),
+      model: model,
+      child: _CRUDScreen(),
     );
   }
 }
 
 class _CRUDScreen extends StatefulWidget {
-  final CRUDModel model;
-  _CRUDScreen(this.model);
   @override
   __CRUDScreenState createState() => __CRUDScreenState();
 }
 
 class __CRUDScreenState extends State<_CRUDScreen> {
-  @override
-  void initState() {
-    widget.model.loadItems();
-    super.initState();
-  }
-
   bool _isSearching = false;
   @override
   Widget build(BuildContext context) {
@@ -54,7 +46,15 @@ class __CRUDScreenState extends State<_CRUDScreen> {
           )
         ],
       ),
-      body: CRUDList(model: _model),
+      body: FutureBuilder(
+        future: _model.loadItems(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return CRUDList(model: _model);
+        },
+      ),
       bottomNavigationBar: AppBottomBar(
         buttons: [
           IconButton(

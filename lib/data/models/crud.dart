@@ -5,22 +5,23 @@ class CRUDModel extends Model {
 
   List<CRUDObject> get items => _items;
 
-  Future loadItems() async {
-    _items = [
-      CRUDObject(
-        id: "43223444",
-        name: "Test",
-      ),
-      CRUDObject(
-        id: "4878746876",
-        name: "Hello",
-      ),
-      CRUDObject(
-        id: "928258625",
-        name: "World",
-      ),
-    ];
+  Future<bool> loadItems() async {
+    // _items = [
+    //   CRUDObject(
+    //     id: "43223444",
+    //     name: "Test",
+    //   ),
+    //   CRUDObject(
+    //     id: "4878746876",
+    //     name: "Hello",
+    //   ),
+    //   CRUDObject(
+    //     id: "928258625",
+    //     name: "World",
+    //   ),
+    // ];
     notifyListeners();
+    return true;
   }
 
   void addItem(CRUDObject item) {

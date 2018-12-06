@@ -3,6 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../data/models/auth.dart';
 import '../../data/models/theme.dart';
+import '../../widgets/profile_avatar.dart';
 
 class AppDrawer extends StatelessWidget {
   AppDrawer({
@@ -19,28 +20,22 @@ class AppDrawer extends StatelessWidget {
         children: <Widget>[
           Container(
             child: new UserAccountsDrawerHeader(
-              decoration: new BoxDecoration(
-                color: Colors.transparent,
-              ),
-              accountName: Text(
-                _user?.currentUser?.fullName ?? "Guest",
-                style:
-                    TextStyle(color: Theme.of(context).textTheme.title.color),
-              ),
-              accountEmail: Text(
-                _user?.currentUser?.email ?? "No Email Found",
-                style:
-                    TextStyle(color: Theme.of(context).textTheme.title.color),
-              ),
-              currentAccountPicture: new CircleAvatar(
-                  backgroundColor: Colors.brown,
-                  backgroundImage: _user?.currentUser?.profileImage == null
-                      ? null
-                      : NetworkImage(_user?.currentUser?.profileImage),
-                  child: _user?.currentUser?.profileImage != null
-                      ? null
-                      : new Text(_user?.currentUser?.profileImage ?? "No URL")),
-            ),
+                decoration: new BoxDecoration(color: Colors.transparent),
+                accountName: Text(
+                  _user?.currentUser?.fullName ?? "Guest",
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.title.color,
+                  ),
+                ),
+                accountEmail: Text(
+                  _user?.currentUser?.email ?? "No Email Found",
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.subtitle.color,
+                  ),
+                ),
+                currentAccountPicture: AvatarWidget(
+                  imageURL: _user?.currentUser?.profileImage,
+                )),
           ),
           ListTile(
             leading: Icon(Icons.home),
@@ -54,17 +49,11 @@ class AppDrawer extends StatelessWidget {
             onTap: () => navigator.popAndPushNamed("/crud"),
           ),
 
-          // ListTile(
-          //   leading: Icon(Icons.track_changes),
-          //   title: Text('Tasks'),
-          //   onTap: () => store.dispatch(ViewTaskList(context)),
-          // ),
-
-          // ListTile(
-          //   leading: Icon(Icons.contacts),
-          //   title: Text('Contacts'),
-          //   onTap: () => store.dispatch(ViewContactList(context)),
-          // ),
+          ListTile(
+            leading: Icon(Icons.timer),
+            title: Text('Counter'),
+            onTap: () => navigator.popAndPushNamed("/counter"),
+          ),
 
           Divider(),
 

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'data/models/counter.dart';
-import 'data/models/theme.dart';
-import 'screens/home.dart';
-import 'screens/splash_screen.dart';
-import 'screens/settings.dart';
 import 'data/models/auth.dart';
-import 'screens/counter_page.dart';
+import 'data/models/counter.dart';
+import 'data/models/crud.dart';
+import 'data/models/theme.dart';
 import 'screens/auth/login.dart';
+import 'screens/counter/counter_page.dart';
 import 'screens/crud/crud_screen.dart';
+import 'screens/home.dart';
+import 'screens/settings.dart';
+import 'screens/splash_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,6 +19,7 @@ void main() => runApp(MyApp());
 final AuthModel authModel = AuthModel();
 final ThemeModel themeModel = ThemeModel();
 final CounterModel counterModel = CounterModel();
+final CRUDModel crudModel = CRUDModel();
 
 class MyApp extends StatelessWidget {
   @override
@@ -33,10 +35,6 @@ class MyApp extends StatelessWidget {
 }
 
 class AppTheme extends StatelessWidget {
-  final _counterPage = new ScopedModel<CounterModel>(
-    model: counterModel,
-    child: CounterPage(),
-  );
   @override
   Widget build(BuildContext context) {
     final _model = ScopedModel.of<ThemeModel>(context, rebuildOnChange: true);
@@ -51,9 +49,9 @@ class AppTheme extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/home': (BuildContext context) => HomePage(),
         '/settings': (BuildContext context) => SettingsPage(),
-        '/counter': (BuildContext context) => _counterPage,
+        '/counter': (BuildContext context) => CounterPage(model: counterModel),
         '/login': (BuildContext context) => LoginPage(),
-        '/crud': (BuildContext context) => CRUDScreen(),
+        '/crud': (BuildContext context) => CRUDScreen(model: crudModel),
       },
     );
   }
