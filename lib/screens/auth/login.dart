@@ -3,6 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../data/local_storage.dart';
 import '../../data/models/auth.dart';
+import 'create_account.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -90,6 +91,23 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () => _login(context, user: _user),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                FlatButton(
+                  child: Text(
+                    "Create Account",
+                  ),
+                  onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CreateAccountPage(),
+                            fullscreenDialog: true),
+                      ),
                 ),
               ],
             ),

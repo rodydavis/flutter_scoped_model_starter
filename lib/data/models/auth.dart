@@ -16,8 +16,7 @@ class AuthModel extends Model {
       var _userInfo = User(
         fullName: "Test User",
         email: username,
-        profileImage:
-            "http://gpluseurope.com/wp-content/uploads/Website2016-Profile-Photos-Pierre-Lecetre.jpg",
+        profileImage: "https://picsum.photos/200/300/?random",
       );
 
       // -- Update User --
