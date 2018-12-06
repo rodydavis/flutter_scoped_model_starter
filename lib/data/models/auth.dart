@@ -34,6 +34,8 @@ class AuthModel extends Model {
     _loggedIn = false;
     _currentUser = null;
     notifyListeners();
+
+    // -- Logout on API --
   }
 
   Future autoLogin() async {
