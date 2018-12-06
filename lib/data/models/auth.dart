@@ -5,13 +5,16 @@ import '../local_storage.dart';
 class AuthModel extends Model {
   User _currentUser;
   bool _loggedIn = false;
+  String _token = "";
 
   User get currentUser => _currentUser;
   bool get loggedIn => _loggedIn;
+  String get token => _token;
 
   Future login({@required String username, @required String password}) async {
     // -- Login --
     try {
+      _token = "983769873n498h273x7iuhdjskhfkjsdhf78er";
       // -- Get User Info --
       var _userInfo = User(
         fullName: "Test User",

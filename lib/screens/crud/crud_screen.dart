@@ -43,6 +43,9 @@ class __CRUDScreenState extends State<_CRUDScreen> {
         title: AppSearchBar(
           name: "CRUD",
           isSearching: _isSearching,
+          onSearchChanged: (String value) {
+            _model.search(value);
+          },
         ),
         actions: <Widget>[
           AppSearchButton(
@@ -51,6 +54,11 @@ class __CRUDScreenState extends State<_CRUDScreen> {
               setState(() {
                 _isSearching = !_isSearching;
               });
+              if (_isSearching == false) {
+                _model.stopSearching();
+              } else {
+                _model.startSearching();
+              }
             },
           )
         ],
@@ -68,7 +76,7 @@ class __CRUDScreenState extends State<_CRUDScreen> {
 
             CRUDFields.description,
           ];
-          return CRUDList(model: _model);
+          return CRUDList(model: _model, isSearching: _isSearching);
         },
       ),
       bottomNavigationBar: AppBottomBar(
@@ -79,7 +87,9 @@ class __CRUDScreenState extends State<_CRUDScreen> {
           ),
           IconButton(
             icon: Icon(Icons.restore),
-            onPressed: null,
+            onPressed: () {
+              _model.loadDummyData();
+            },
           ),
         ],
         onChangeSortOrder: (bool value) {
@@ -87,14 +97,14 @@ class __CRUDScreenState extends State<_CRUDScreen> {
           setState(() {
             _sortASC = value;
           });
-          _model.changeSortOrder(_sortField, _sortASC);
+          _model.sort(_sortField, _sortASC);
         },
         onSelectedSortField: (String value) {
           _sort.sortField = value;
           setState(() {
             _sortField = value;
           });
-          _model.changeSortOrder(_sortField, _sortASC);
+          _model.sort(_sortField, _sortASC);
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -110,7 +120,7 @@ class __CRUDScreenState extends State<_CRUDScreen> {
             if (value != null) {
               CRUDObject _item = value;
               _model.addItem(_item);
-              _model.changeSortOrder(_sortField, _sortASC);
+              _model.sort(_sortField, _sortASC);
             }
           });
         },
