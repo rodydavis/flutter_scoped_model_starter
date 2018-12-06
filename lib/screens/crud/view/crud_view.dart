@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/models/crud.dart';
+import '../../../data/models/crud_model.dart';
 import '../../../ui/app/app_bottom_bar.dart';
 import '../edit/crud_edit.dart';
 
@@ -30,6 +30,7 @@ class _CRUDItemDetailsState extends State<CRUDItemDetails> {
     setState(() {
       item = widget.item;
     });
+    // -- Load Info From API --
   }
 
   @override

@@ -54,12 +54,14 @@ class CRUDModel extends Model {
     bool ascending,
   ) {
     var _fieldName = field.toLowerCase().trim();
+    // STARTER: sort - do not remove comment
     if (_fieldName.contains("title")) {
       _items.sort((a, b) => a.name.compareTo(b.name));
     }
     if (_fieldName.contains("description")) {
       _items.sort((a, b) => a.description.compareTo(b.description));
     }
+
     if (ascending) _items = _items.reversed.toList();
     notifyListeners();
   }

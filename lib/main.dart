@@ -3,7 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import 'data/models/auth.dart';
 import 'data/models/counter.dart';
-import 'data/models/crud.dart';
+import 'data/models/crud_model.dart';
 import 'data/models/theme.dart';
 import 'screens/auth/login.dart';
 import 'screens/counter/counter_page.dart';
@@ -11,7 +11,6 @@ import 'screens/crud/crud_screen.dart';
 import 'screens/home.dart';
 import 'screens/settings.dart';
 import 'screens/splash_screen.dart';
-import 'data/models/sort_model.dart';
 
 // STARTER: import - do not remove comment
 
