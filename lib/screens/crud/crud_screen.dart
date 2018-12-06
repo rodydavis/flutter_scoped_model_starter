@@ -67,6 +67,7 @@ class __CRUDScreenState extends State<_CRUDScreen> {
       bottomNavigationBar: AppBottomBar(
         defaultSortField: "Title",
         sortFields: [
+          // STARTER: sort - do not remove comment
           "Title",
           "Description",
         ],

@@ -53,7 +53,7 @@ class CRUDModel extends Model {
     String field,
     bool ascending,
   ) {
-    var _fieldName = field.toLowerCase().trim();
+    var _fieldName = field.toString().toLowerCase().trim();
     // STARTER: sort - do not remove comment
     if (_fieldName.contains("title")) {
       _items.sort((a, b) => a.name.compareTo(b.name));
