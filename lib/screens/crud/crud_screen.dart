@@ -114,10 +114,7 @@ class __CRUDScreenState extends State<_CRUDScreen> {
             }
           });
         },
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
+        child: Icon(Icons.add, color: Colors.white),
         tooltip: 'New Item',
       ),
     );
