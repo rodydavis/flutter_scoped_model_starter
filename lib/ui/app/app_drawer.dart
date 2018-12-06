@@ -44,6 +44,12 @@ class AppDrawer extends StatelessWidget {
           //   onTap: () => store.dispatch(ViewContactList(context)),
           // ),
 
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+            onTap: () => navigator.popAndPushNamed("/settings"),
+          ),
+
           AboutListTile(
             applicationName: 'My Unify Mobile',
             icon: Icon(Icons.info_outline),
