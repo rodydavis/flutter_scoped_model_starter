@@ -1,6 +1,6 @@
-# unify_mobile
+# flutter_scoped_model_starter
 
-A new Flutter project.
+A Scoped Model Starter Project for Flutter.
 
 ## Getting Started
 
