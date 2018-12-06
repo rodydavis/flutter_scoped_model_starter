@@ -12,10 +12,11 @@ import 'screens/home.dart';
 import 'screens/settings.dart';
 import 'screens/splash_screen.dart';
 
+// STARTER: import - do not remove comment
+
 void main() => runApp(MyApp());
 
 // -- Models --
-
 final AuthModel authModel = AuthModel();
 final ThemeModel themeModel = ThemeModel();
 final CounterModel counterModel = CounterModel();
@@ -47,10 +48,11 @@ class AppTheme extends StatelessWidget {
         authModel: authModel,
       ),
       routes: <String, WidgetBuilder>{
+        '/login': (BuildContext context) => LoginPage(),
         '/home': (BuildContext context) => HomePage(),
         '/settings': (BuildContext context) => SettingsPage(),
+        // STARTER: routes - do not remove comment
         '/counter': (BuildContext context) => CounterPage(model: counterModel),
-        '/login': (BuildContext context) => LoginPage(),
         '/crud': (BuildContext context) => CRUDScreen(model: crudModel),
       },
     );
