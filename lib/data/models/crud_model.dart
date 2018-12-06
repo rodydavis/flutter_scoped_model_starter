@@ -1,5 +1,12 @@
 import 'package:scoped_model/scoped_model.dart';
 
+class CRUDFields {
+  // STARTER: fields - do not remove comment
+  static const String title = 'Title';
+
+  static const String description = 'Description';
+}
+
 class CRUDModel extends Model {
   List<CRUDObject> _items = [];
 
@@ -53,12 +60,11 @@ class CRUDModel extends Model {
     String field,
     bool ascending,
   ) {
-    var _fieldName = field.toString().toLowerCase().trim();
     // STARTER: sort - do not remove comment
-    if (_fieldName.contains("title")) {
+    if (field == CRUDFields.title) {
       _items.sort((a, b) => a.name.compareTo(b.name));
     }
-    if (_fieldName.contains("description")) {
+    if (field == CRUDFields.description) {
       _items.sort((a, b) => a.description.compareTo(b.description));
     }
 

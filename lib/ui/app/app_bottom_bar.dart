@@ -3,8 +3,6 @@ import '../../data/models/sort_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class AppBottomBar extends StatefulWidget {
-  final List<String> sortFields;
-  final String defaultSortField;
   final bool defaultSortOrder;
   final bool showSort;
   final Function(String) onSelectedSortField;
@@ -16,9 +14,7 @@ class AppBottomBar extends StatefulWidget {
     this.onChangeSortOrder,
     this.buttons,
     this.showSort = true,
-    this.defaultSortField,
     this.defaultSortOrder = false,
-    this.sortFields,
   });
 
   @override
@@ -27,8 +23,6 @@ class AppBottomBar extends StatefulWidget {
 
 class _AppBottomBarState extends State<AppBottomBar> {
   PersistentBottomSheetController _sortController;
-
-  bool _loaded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +36,6 @@ class _AppBottomBarState extends State<AppBottomBar> {
       _sortController = Scaffold.of(context).showBottomSheet((context) {
         return new ScopedModelDescendant<SortModel>(
           builder: (context, child, model) {
-            if (!_loaded) {
-              model.sortField = widget.defaultSortField;
-              model.sortFields = widget.sortFields;
-              _loaded = true;
-            }
             if (model?.sortFields == null) {
               print("No Fields");
               return Container(
@@ -92,7 +81,6 @@ class _AppBottomBarState extends State<AppBottomBar> {
       _sortController.closed.whenComplete(() {
         print("Done");
         _sortController = null;
-        _loaded = false;
       });
     };
 

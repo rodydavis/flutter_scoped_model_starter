@@ -32,7 +32,7 @@ class _CRUDScreen extends StatefulWidget {
 class __CRUDScreenState extends State<_CRUDScreen> {
   bool _isSearching = false;
   bool _sortASC = false;
-  String _sortField = "Title";
+  String _sortField = CRUDFields.title;
   @override
   Widget build(BuildContext context) {
     final _model = ScopedModel.of<CRUDModel>(context, rebuildOnChange: true);
@@ -61,16 +61,17 @@ class __CRUDScreenState extends State<_CRUDScreen> {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
+          _sort.sortField = _sortField;
+          _sort.sortFields = [
+            // STARTER: sort - do not remove comment
+            CRUDFields.title,
+
+            CRUDFields.description,
+          ];
           return CRUDList(model: _model);
         },
       ),
       bottomNavigationBar: AppBottomBar(
-        defaultSortField: "Title",
-        sortFields: [
-          // STARTER: sort - do not remove comment
-          "Title",
-          "Description",
-        ],
         buttons: [
           IconButton(
             icon: Icon(Icons.filter_list),
@@ -86,7 +87,7 @@ class __CRUDScreenState extends State<_CRUDScreen> {
           setState(() {
             _sortASC = value;
           });
-          _model.changeSortOrder(_sortField, value);
+          _model.changeSortOrder(_sortField, _sortASC);
         },
         onSelectedSortField: (String value) {
           _sort.sortField = value;
@@ -109,6 +110,7 @@ class __CRUDScreenState extends State<_CRUDScreen> {
             if (value != null) {
               CRUDObject _item = value;
               _model.addItem(_item);
+              _model.changeSortOrder(_sortField, _sortASC);
             }
           });
         },
