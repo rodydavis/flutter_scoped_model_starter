@@ -15,11 +15,7 @@ class HomePage extends StatelessWidget {
           onPressed: () => Navigator.pushNamed(context, "/settings"),
         ),
       ),
-      body: Container(
-        child: Center(
-          child: Text(_user.currentUser?.username ?? "Guest"),
-        ),
-      ),
+      body: Container(),
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.exit_to_app),
         label: Text("Open CRUD"),

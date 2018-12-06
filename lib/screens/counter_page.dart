@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../data/models/counter.dart';
-import '../widgets/containers/counter/add.dart';
-import '../widgets/containers/counter/subtract.dart';
+import '../widgets/counter/add.dart';
+import '../widgets/counter/subtract.dart';
 
 class CounterPage extends StatelessWidget {
   @override

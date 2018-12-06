@@ -4,7 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../data/local_storage.dart';
 import '../data/models/auth.dart';
 import '../data/models/theme.dart';
-import '../widgets/components/settings/section.dart';
+import '../widgets/settings_section.dart';
 
 class SettingsPage extends StatefulWidget {
   @override

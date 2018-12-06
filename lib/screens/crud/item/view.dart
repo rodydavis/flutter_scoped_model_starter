@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/models/crud.dart';
-import '../../../widgets/components/app_bar/bottom.dart';
+import '../../../ui/app/app_bottom_bar.dart';
 import 'edit.dart';
 
 class CRUDItemDetails extends StatefulWidget {

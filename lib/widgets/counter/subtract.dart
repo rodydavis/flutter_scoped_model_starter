@@ -1,6 +1,7 @@
-import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/material.dart';
-import '../../../data/models/counter.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import '../../data/models/counter.dart';
 
 class CounterSubtractButton extends StatelessWidget {
   @override
