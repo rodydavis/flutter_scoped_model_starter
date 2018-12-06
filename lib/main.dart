@@ -9,7 +9,7 @@ import 'screens/settings.dart';
 import 'data/models/auth.dart';
 import 'screens/counter_page.dart';
 import 'screens/auth/login.dart';
-import 'screens/crud/screen.dart';
+import 'screens/crud/crud_screen.dart';
 
 void main() => runApp(MyApp());
 

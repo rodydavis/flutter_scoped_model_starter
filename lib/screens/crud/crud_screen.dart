@@ -4,9 +4,8 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../data/models/crud.dart';
 import '../../ui/app/app_bottom_bar.dart';
 import '../../ui/app/app_search_bar.dart';
-import 'item/edit.dart';
-import 'list.dart';
-import '../../ui/app/app_drawer.dart';
+import 'crud_list.dart';
+import 'edit/crud_edit.dart';
 
 final CRUDModel crudModel = CRUDModel();
 
@@ -55,7 +54,6 @@ class __CRUDScreenState extends State<_CRUDScreen> {
           )
         ],
       ),
-      drawer: AppDrawer(),
       body: CRUDList(model: _model),
       bottomNavigationBar: AppBottomBar(
         buttons: [

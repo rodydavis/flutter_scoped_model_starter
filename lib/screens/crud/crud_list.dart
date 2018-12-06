@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/models/crud.dart';
-import 'item.dart';
+import 'crud_item.dart';
 
 class CRUDList extends StatelessWidget {
   final CRUDModel model;

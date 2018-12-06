@@ -15,6 +15,8 @@ class AuthModel extends Model {
       username: username,
       fullName: "Test User",
       email: "test@email.com",
+      profileImage:
+          "http://gpluseurope.com/wp-content/uploads/Website2016-Profile-Photos-Pierre-Lecetre.jpg",
     );
 
     // -- Update User --
@@ -46,12 +48,13 @@ class AuthModel extends Model {
 }
 
 class User {
-  final String fullName, email, username;
+  final String fullName, email, username, profileImage;
 
   User({
     this.fullName,
     this.email,
     this.username,
+    this.profileImage,
   });
 
   @override

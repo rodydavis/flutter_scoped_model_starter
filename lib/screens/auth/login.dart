@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
 
       // -- Login --
       user.login(username: _username, password: _password).then((_) {
-        Navigator.pushReplacementNamed(context, "/counter");
+        Navigator.pushReplacementNamed(context, "/home");
       });
     }
   }

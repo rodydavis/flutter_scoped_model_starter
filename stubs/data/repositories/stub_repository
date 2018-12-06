@@ -1,0 +1,44 @@
+import 'dart:async';
+import 'dart:core';
+import 'dart:convert';
+import 'package:built_collection/built_collection.dart';
+import 'package:MyUnifyMobile/data/models/models.dart';
+import 'package:MyUnifyMobile/data/models/serializers.dart';
+import 'package:MyUnifyMobile/redux/auth/auth_state.dart';
+import 'package:MyUnifyMobile/data/models/stub_model.dart';
+import 'package:MyUnifyMobile/data/web_client.dart';
+import 'package:MyUnifyMobile/constants.dart';
+
+class StubRepository {
+  final WebClient webClient;
+
+  const StubRepository({
+    this.webClient = const WebClient(),
+  });
+
+  Future<BuiltList<StubEntity>> loadList(AuthState auth) async {
+    final response = await webClient.get(kApiUrl + '/stubs');
+
+    var list = new BuiltList<StubEntity>(response.map((stub) {
+      return serializers.deserializeWith(StubEntity.serializer, stub);
+    }));
+
+    return list;
+  }
+
+  Future saveData(AuthState auth, StubEntity stub, [EntityAction action]) async {
+
+    var data = serializers.serializeWith(StubEntity.serializer, stub);
+    var response;
+
+    if (stub.isNew) {
+      response = await webClient.post(
+          kApiUrl + '/stubs/new', json.encode(data));
+    } else {
+      var url = kApiUrl + '/stubs/info/' + stub.id.toString();
+      response = await webClient.put(url, json.encode(data));
+    }
+
+    return serializers.deserializeWith(StubEntity.serializer, response);
+  }
+}

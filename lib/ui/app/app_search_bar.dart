@@ -17,18 +17,16 @@ class AppSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var title = name ?? "search".toString();
+    var _theme = Theme.of(context);
     return isSearching
         ? Container(
             padding: const EdgeInsets.only(left: 8.0),
             height: 38.0,
             margin: EdgeInsets.only(bottom: 2.0),
             decoration: BoxDecoration(
-                color:
-                    isSearching != null && search != null && search.isNotEmpty
-                        ? Colors.yellow[200]
-                        : Colors.grey[100],
-                border: Border.all(color: Colors.grey[400], width: 1.0),
-                borderRadius: BorderRadius.circular(6.0)),
+              color: _theme?.scaffoldBackgroundColor,
+              borderRadius: BorderRadius.circular(6.0),
+            ),
             child: TextField(
               decoration: InputDecoration(
                   prefixIcon: Padding(

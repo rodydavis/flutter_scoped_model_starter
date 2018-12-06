@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/models/crud.dart';
 import '../../../ui/app/app_bottom_bar.dart';
-import 'edit.dart';
+import '../edit/crud_edit.dart';
 
 class CRUDItemDetails extends StatefulWidget {
   final CRUDObject item;
