@@ -38,14 +38,14 @@ class _CRUDItemDetailsState extends State<CRUDItemDetails> {
     return Scaffold(
       appBar: AppBar(
         title: widget.showNameInAppBar
-            ? Text(item?.name ?? "Details")
+            ? Text(item?.title ?? "Details")
             : Text("Details"),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             ListTile(
-              title: Text(item?.name ?? ""),
+              title: Text(item?.title ?? ""),
             ),
             ListTile(
               title: Text(item?.description ?? ""),

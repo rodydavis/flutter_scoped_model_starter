@@ -91,7 +91,7 @@ class CRUDItem extends StatelessWidget {
       actionExtentRatio: 0.25,
       child: ListTile(
         // dense: true,
-        title: Text(item?.name),
+        title: Text(item?.title),
         subtitle: isNullOrEmpty(item?.description)
             ? null
             : Text(item?.description, maxLines: 1),

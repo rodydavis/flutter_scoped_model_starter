@@ -27,7 +27,7 @@ class _CRUDItemEditState extends State<CRUDItemEdit> {
       });
     }
     // -- Load Info --
-    _nameController = TextEditingController(text: widget?.item?.name ?? "");
+    _nameController = TextEditingController(text: widget?.item?.title ?? "");
     _descriptionController =
         TextEditingController(text: widget?.item?.description ?? "");
   }
@@ -42,7 +42,7 @@ class _CRUDItemEditState extends State<CRUDItemEdit> {
 
       final CRUDObject _item = CRUDObject(
         id: _isNew ? uuid.v4() : widget.item?.id,
-        name: _name,
+        title: _name,
         description: _description,
       );
 
