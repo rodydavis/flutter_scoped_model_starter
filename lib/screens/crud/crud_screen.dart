@@ -54,10 +54,10 @@ class __CRUDScreenState extends State<_CRUDScreen> {
               setState(() {
                 _isSearching = !_isSearching;
               });
-              if (_isSearching == false) {
-                _model.stopSearching();
-              } else {
+              if (_isSearching) {
                 _model.startSearching();
+              } else {
+                _model.stopSearching();
               }
             },
           )
