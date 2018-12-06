@@ -93,18 +93,26 @@ class __CRUDScreenState extends State<_CRUDScreen> {
           ),
         ],
         onChangeSortOrder: (bool value) {
-          _sort.sortAscending = value;
           setState(() {
+            _sort.sortAscending = value;
             _sortASC = value;
+            _model.sort(_sortField, _sortASC);
           });
-          _model.sort(_sortField, _sortASC);
         },
         onSelectedSortField: (String value) {
-          _sort.sortField = value;
-          setState(() {
-            _sortField = value;
-          });
-          _model.sort(_sortField, _sortASC);
+          if (_sortField.contains(value)) {
+            setState(() {
+              _sortASC = !_sortASC;
+              _sort.sortAscending = _sortASC;
+              _model.sort(_sortField, _sortASC);
+            });
+          } else {
+            setState(() {
+              _sort.sortField = value;
+              _sortField = value;
+              _model.sort(_sortField, _sortASC);
+            });
+          }
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
