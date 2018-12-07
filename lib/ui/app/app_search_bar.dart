@@ -40,7 +40,7 @@ class AppSearchBar extends StatelessWidget {
               onChanged: (value) => onSearchChanged(value),
             ),
           )
-        : Text(title.toUpperCase());
+        : Text(title);
   }
 }
 

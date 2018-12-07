@@ -14,7 +14,8 @@ class AuthModel extends Model {
   Future login({@required String username, @required String password}) async {
     // -- Login --
     try {
-      _token = "983769873n498h273x7iuhdjskhfkjsdhf78er";
+      _token =
+          "frUL-jz9EqGlWyHbPeKOd_bzFRAqJ3U6rOYH0nJdim50x-P3hRXySLMCYRv2bL-hnCRbJbwmtmR_9ZvFVW-DgxJLNOAvu3Eoc8q-8raIvrfwU8B2KGMlD5khnBvJ12va4tepfq-jkwNz3U2LCfZ-Wg3wIxcU3pGFYgxOtoI1uXGZmvWH4nisak_141n8cSuaKH9ayrbcsPDAfpNClxAn0c74m7u_ei1qyUksnR3C7gWBDHCr5iKOXGwwr08FpKNDRBYpXap4sUDoIm2zIIVO1UwSvJ5lISwZV9V4xDdcWFg2KnrX2QQjXRZliC0nVW1yix92287lpO9pQQhOYzErFQyCXLFJ28Ig_vA5wNAo2zK226TySB5xIImI-qaEkpgV";
       // -- Get User Info --
       var _userInfo = User(
         fullName: "Test User",

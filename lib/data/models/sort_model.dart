@@ -1,21 +1,18 @@
 import 'package:scoped_model/scoped_model.dart';
 
 class SortModel extends Model {
+  final String defaultSortField;
+  List<String> sortFields;
+  SortModel({this.sortFields, this.defaultSortField});
+
   bool _sortAscending = false;
   String _sortField = "";
-  List<String> _sortFields = [];
 
   String get sortField => _sortField;
   bool get sortAscending => _sortAscending;
-  List<String> get sortFields => _sortFields;
 
   set sortField(String value) {
     _sortField = value;
-    notifyListeners();
-  }
-
-  set sortFields(List<String> values) {
-    _sortFields = values;
     notifyListeners();
   }
 

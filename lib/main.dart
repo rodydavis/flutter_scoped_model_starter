@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'data/models/auth.dart';
+import 'data/models/contact_model.dart';
 import 'data/models/counter.dart';
 import 'data/models/crud_model.dart';
 import 'data/models/theme.dart';
 import 'screens/auth/login.dart';
+import 'screens/contacts/screen.dart';
 import 'screens/counter/counter_page.dart';
 import 'screens/crud/crud_screen.dart';
 import 'screens/home.dart';
@@ -21,6 +23,7 @@ final AuthModel authModel = AuthModel();
 final ThemeModel themeModel = ThemeModel();
 final CounterModel counterModel = CounterModel();
 final CRUDModel crudModel = CRUDModel();
+final ContactModel contactModel = ContactModel();
 
 class MyApp extends StatelessWidget {
   @override
@@ -54,6 +57,8 @@ class AppTheme extends StatelessWidget {
         // STARTER: routes - do not remove comment
         '/counter': (BuildContext context) => CounterPage(model: counterModel),
         '/crud': (BuildContext context) => CRUDScreen(model: crudModel),
+        '/contacts': (BuildContext context) =>
+            ContactScreen(model: contactModel),
       },
     );
   }
