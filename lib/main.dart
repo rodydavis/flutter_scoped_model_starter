@@ -43,7 +43,7 @@ class AppTheme extends StatelessWidget {
   Widget build(BuildContext context) {
     final _model = ScopedModel.of<ThemeModel>(context, rebuildOnChange: true);
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Scoped Model Starter',
       theme: _model.theme,
       home: SplashScreen(
         duration: Duration(seconds: 3),

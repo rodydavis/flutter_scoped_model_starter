@@ -174,4 +174,3 @@ class ContactObject {
     return _result.toString();
   }
 }
-

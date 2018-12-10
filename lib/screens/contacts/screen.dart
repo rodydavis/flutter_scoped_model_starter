@@ -12,7 +12,6 @@ import 'edit.dart';
 import 'list.dart';
 // import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-
 class ContactScreen extends StatelessWidget {
   final ContactModel model;
 
@@ -79,7 +78,7 @@ class __ContactScreenState extends State<_ContactScreen> {
           )
         ],
       ),
-       drawer: AppDrawer(),
+      drawer: AppDrawer(),
       body: FutureBuilder(
         // future: _model.loadItems(context),
         builder: (BuildContext context, AsyncSnapshot snapshot) {

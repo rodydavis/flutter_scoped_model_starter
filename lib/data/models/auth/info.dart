@@ -10,9 +10,7 @@ class UserInfo {
   UserInfo.fromJson(Map<String, dynamic> json) {
     status = json['Status'];
     message = json['Message'];
-    result = json['Result'] != null
-        ? new User.fromJson(json['Result'])
-        : null;
+    result = json['Result'] != null ? new User.fromJson(json['Result']) : null;
   }
 
   Map<String, dynamic> toJson() {

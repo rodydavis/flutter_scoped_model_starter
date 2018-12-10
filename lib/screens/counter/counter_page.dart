@@ -26,7 +26,7 @@ class _CounterPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Counter"),
       ),
-       drawer: AppDrawer(),
+      drawer: AppDrawer(),
       body: ListView(
         children: <Widget>[
           ListTile(

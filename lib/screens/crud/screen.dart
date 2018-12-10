@@ -64,7 +64,7 @@ class __CRUDScreenState extends State<_CRUDScreen> {
           )
         ],
       ),
-       drawer: AppDrawer(),
+      drawer: AppDrawer(),
       body: FutureBuilder(
         future: _model.loadItems(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
