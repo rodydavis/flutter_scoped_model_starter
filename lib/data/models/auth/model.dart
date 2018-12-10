@@ -82,18 +82,21 @@ class AuthModel extends Model {
     notifyListeners();
   }
 
-  Future logout({bool force = true}) async {
+  Future logout({bool force = true, bool all = false}) async {
     // -- Logout --
     _loggedIn = false;
-    if (force) {
-      _users.remove(_currentUser);
-      _currentUser = null;
+    if (all) {
+      resetUsers();
     } else {
+      if (force) {
+        _users.remove(_currentUser);
+      }
       if (_users != null && _users.isNotEmpty && _users.length > 1) {
         // Login As Next Avaliable User
         switchToAccount(_users?.first);
       }
     }
+
     notifyListeners();
   }
 
@@ -118,13 +121,13 @@ class AuthModel extends Model {
     if (_users == null || _users.isEmpty) _loggedIn = false;
   }
 
-  void _saveInfoToDisk({@required String username, @required String password}) {
-    var prefs = AppPreferences();
-    prefs.setInfo(Info.username, username);
-    prefs.setSecure(Info.password, password);
+  // void _saveInfoToDisk({@required String username, @required String password}) {
+  //   var prefs = AppPreferences();
+  //   prefs.setInfo(Info.username, username);
+  //   prefs.setSecure(Info.password, password);
 
-    saveUsers();
-  }
+  //   saveUsers();
+  // }
 
   Future loadUsers() async {
     var prefs = AppPreferences();
@@ -158,5 +161,12 @@ class AuthModel extends Model {
       storage.write(key: _id, value: _item.password);
     }
     prefs.setList(Info.users, _list);
+  }
+
+  Future resetUsers() async {
+    _currentUser = null;
+    _users.clear();
+    var prefs = AppPreferences();
+    prefs.setList(Info.users, []);
   }
 }
