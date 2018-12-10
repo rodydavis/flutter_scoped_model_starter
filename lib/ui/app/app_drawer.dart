@@ -82,17 +82,6 @@ class AppDrawer extends StatelessWidget {
             onTap: () => navigator.pushReplacementNamed("/home"),
           ),
           // STARTER: menu - do not remove comment
-          ListTile(
-            leading: Icon(Icons.my_location),
-            title: Text('CRUD'),
-            onTap: () => navigator.pushReplacementNamed("/crud"),
-          ),
-
-          ListTile(
-            leading: Icon(Icons.timer),
-            title: Text('Counter'),
-            onTap: () => navigator.pushReplacementNamed("/counter"),
-          ),
 
           ListTile(
             leading: Icon(Icons.people),

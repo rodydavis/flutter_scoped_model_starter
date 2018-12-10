@@ -48,44 +48,6 @@ class ContactItem extends StatelessWidget {
     );
   }
 
-  dynamic _getIconButtons(BuildContext context, {bool right = true}) {
-    if (right == false) {
-      if (share == false) return null;
-      return <Widget>[
-        IconSlideAction(
-          caption: 'Share',
-          color: Colors.indigo,
-          icon: Icons.share,
-          onTap: () => _shareItem(context),
-        )
-      ];
-    }
-
-    if (edit == false && delete == false) return null;
-
-    var _widgets = <Widget>[];
-
-    if (edit) {
-      _widgets.add(IconSlideAction(
-        caption: 'Edit',
-        color: Colors.black45,
-        icon: Icons.edit,
-        onTap: () => _editItem(context),
-      ));
-    }
-
-    if (delete) {
-      _widgets.add(IconSlideAction(
-        caption: 'Delete',
-        color: Colors.red,
-        icon: Icons.delete,
-        onTap: () => _removeItem(context),
-      ));
-    }
-
-    return _widgets;
-  }
-
   @override
   Widget build(BuildContext context) {
     // var _name = item?.lastName.toString() + ", " + item?.firstName;
@@ -97,7 +59,7 @@ class ContactItem extends StatelessWidget {
     //   onLongPress: () => _editItem(context),
     // );
 
-    var _tile = ThreeRowTile(
+    return ThreeRowTile(
       icon: Icon(Icons.person),
       title: Text(item?.displayName),
       subtitle: Text(item?.lastActivity),
@@ -115,13 +77,9 @@ class ContactItem extends StatelessWidget {
         value: formatDate(item?.dateModified),
         hint: "Date Modified",
       ),
-    );
-    return new Slidable(
-      delegate: new SlidableDrawerDelegate(),
-      actionExtentRatio: 0.25,
-      child: _tile,
-      actions: _getIconButtons(context, right: false),
-      secondaryActions: _getIconButtons(context, right: true),
+      onDelete: () => _removeItem(context),
+      onEdit: () => _editItem(context),
+      onShare: () => _shareItem(context),
     );
   }
 }

@@ -6,6 +6,10 @@ import '../utils/sendEmail.dart';
 import '../utils/sendSMS.dart';
 import '../utils/text_format.dart';
 
+import 'address_tile.dart';
+import 'email_tile.dart';
+import 'phone_tile.dart';
+
 class ThreeRowTile extends StatelessWidget {
   final Widget title, subtitle;
   final Utility box1, box2;
@@ -31,134 +35,62 @@ class ThreeRowTile extends StatelessWidget {
     this.onShare,
   });
 
+  List<Widget> getActions(BuildContext context) {
+    List<Widget> builder = [];
+    if (cell.isNotEmpty && !cell.toString().contains("--")) {
+      builder.add(buildPhoneTile(context,
+          label: "Cell", number: cell, icon: Icons.phone));
+    }
+    if (office.isNotEmpty && !office.toString().contains("--")) {
+      builder.add(buildPhoneTile(context,
+          label: "Office", number: office, icon: Icons.work));
+    }
+    if (home.isNotEmpty && !home.toString().contains("--")) {
+      builder.add(buildPhoneTile(context,
+          label: "Home", number: home, icon: Icons.home));
+    }
+    if (email.isNotEmpty && !email.contains('No Email Address')) {
+      buildEmailTile(context, label: "Email", email: email);
+    }
+    return builder;
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    List<Widget> buildChildren() {
-      List<Widget> builder = [];
-      if (cell.isNotEmpty && !cell.toString().contains("--")) {
-        builder.add(ListTile(
-          leading: const Icon(Icons.phone),
-          title: Text(
-            'Cell',
-            textScaleFactor: textScaleFactor,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            cell.toString().length > 0 ? cell : "No Number Found",
-            textScaleFactor: textScaleFactor,
-          ),
-          trailing: IconButton(
-            icon: Icon(
-              Icons.message,
-            ),
-            onPressed: cell == null || cell.isEmpty
-                ? null
-                : () {
-                    sendSMS("", [cell.toString()]);
-                  },
-          ),
-          onTap: cell.toString().contains("--")
-              ? null
-              : () => makePhoneCall(context, cell),
-        ));
-      }
-
-      if (office.isNotEmpty && !office.toString().contains("--")) {
-        builder.add(ListTile(
-          leading: const Icon(Icons.work),
-          title: Text(
-            'Office',
-            textScaleFactor: textScaleFactor,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            office.toString().length > 0 ? office : "No Number Found",
-            textScaleFactor: textScaleFactor,
-          ),
-          trailing: IconButton(
-            icon: Icon(
-              Icons.message,
-            ),
-            onPressed: office == null || office.isEmpty
-                ? null
-                : () {
-                    sendSMS("", [office.toString()]);
-                  },
-          ),
-          onTap: office.toString().contains("--")
-              ? null
-              : () => makePhoneCall(context, office),
-        ));
-      }
-      if (home.isNotEmpty && !home.toString().contains("--")) {
-        builder.add(ListTile(
-          leading: const Icon(Icons.home),
-          title: Text(
-            'Home',
-            textScaleFactor: textScaleFactor,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            home.toString().length > 0 ? home : "No Number Found",
-            textScaleFactor: textScaleFactor,
-          ),
-          trailing: IconButton(
-            icon: Icon(
-              Icons.message,
-            ),
-            onPressed: home == null || home.isEmpty
-                ? null
-                : () {
-                    sendSMS("", [home.toString()]);
-                  },
-          ),
-          onTap: home.toString().contains("--")
-              ? null
-              : () => makePhoneCall(context, home),
-        ));
-      }
-      if (email.isNotEmpty && !email.contains('No Email Address')) {
-        builder.add(ListTile(
-          leading: const Icon(Icons.email),
-          title: Text(
-            'Email',
-            textScaleFactor: textScaleFactor,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            email.toString().length > 0 ? email : "No Email Found",
-            textScaleFactor: textScaleFactor,
-          ),
-          onTap: email.toString().isEmpty
-              ? null
-              : () => sendEmail(context, recipients: [email]),
-        ));
-      }
-      if (builder.isEmpty) {
-        builder.add(
-          ListTile(
-            leading: const Icon(Icons.info),
-            title: Text(
-              'No Contact Information Found',
-              textScaleFactor: textScaleFactor,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        );
-      }
-      return builder;
-    }
+    // List<Widget> buildChildren() {
+    //   List<Widget> builder = [];
+    //   if (cell.isNotEmpty && !cell.toString().contains("--")) {
+    //     builder.add(buildPhoneTile(context,
+    //         label: "Cell", number: cell, icon: Icons.phone));
+    //   }
+    //   if (office.isNotEmpty && !office.toString().contains("--")) {
+    //     builder.add(buildPhoneTile(context,
+    //         label: "Office", number: office, icon: Icons.work));
+    //   }
+    //   if (home.isNotEmpty && !home.toString().contains("--")) {
+    //     builder.add(buildPhoneTile(context,
+    //         label: "Home", number: home, icon: Icons.home));
+    //   }
+    //   if (email.isNotEmpty && !email.contains('No Email Address')) {
+    //     buildEmailTile(context, label: "Email", email: email);
+    //   }
+    //   if (builder.isEmpty) {
+    //     builder.add(
+    //       ListTile(
+    //         leading: const Icon(Icons.info),
+    //         title: Text(
+    //           'No Contact Information Found',
+    //           textScaleFactor: textScaleFactor,
+    //           style: TextStyle(
+    //             fontWeight: FontWeight.bold,
+    //           ),
+    //         ),
+    //       ),
+    //     );
+    //   }
+    //   return builder;
+    // }
 
     List<Widget> buildUtility() {
       List<Widget> _utilities = [];
@@ -269,10 +201,7 @@ class ThreeRowTile extends StatelessWidget {
             Align(
               child: IconButton(
                 icon: Icon(Icons.arrow_drop_down),
-                onPressed: (cell == null &&
-                        home == null &&
-                        office == null &&
-                        email == null)
+                onPressed: getActions(context).isEmpty
                     ? null
                     : () {
                         showModalBottomSheet<void>(
@@ -282,7 +211,7 @@ class ThreeRowTile extends StatelessWidget {
                                   child: SingleChildScrollView(
                                 child: Column(
                                     mainAxisSize: MainAxisSize.min,
-                                    children: buildChildren()),
+                                    children: getActions(context)),
                               ));
                             });
                       },

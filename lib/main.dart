@@ -3,13 +3,9 @@ import 'package:scoped_model/scoped_model.dart';
 
 import 'data/models/auth/model.dart';
 import 'data/models/contact/model.dart';
-import 'data/models/counter.dart';
-import 'data/models/crud_model.dart';
 import 'data/models/theme.dart';
 import 'screens/auth/login.dart';
 import 'screens/contacts/screen.dart';
-import 'screens/counter/counter_page.dart';
-import 'screens/crud/screen.dart';
 import 'screens/home.dart';
 import 'screens/settings.dart';
 import 'screens/account.dart';
@@ -23,8 +19,6 @@ void main() => runApp(MyApp());
 // -- Models --
 final AuthModel authModel = AuthModel();
 final ThemeModel themeModel = ThemeModel();
-final CounterModel counterModel = CounterModel();
-final CRUDModel crudModel = CRUDModel();
 final ContactModel contactModel = ContactModel();
 
 class MyApp extends StatelessWidget {
@@ -54,8 +48,6 @@ class AppTheme extends StatelessWidget {
         '/account': (BuildContext context) => AccountPage(),
         '/settings': (BuildContext context) => SettingsPage(),
         // STARTER: routes - do not remove comment
-        '/counter': (BuildContext context) => CounterPage(model: counterModel),
-        '/crud': (BuildContext context) => CRUDScreen(model: crudModel),
         '/contacts': (BuildContext context) =>
             ContactScreen(model: contactModel),
       },
