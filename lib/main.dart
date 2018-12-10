@@ -45,11 +45,7 @@ class AppTheme extends StatelessWidget {
     return MaterialApp(
       title: 'Scoped Model Starter',
       theme: _model.theme,
-      home: SplashScreen(
-        duration: Duration(seconds: 3),
-        themeModel: themeModel,
-        authModel: authModel,
-      ),
+      home: SplashScreen(),
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => LoginPage(),
         '/home': (BuildContext context) => HomePage(),
