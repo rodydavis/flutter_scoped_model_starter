@@ -67,7 +67,7 @@ class ContactModel extends Model {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     // -- Load Items from API or Local --
     var _contacts = await ContactRepository().loadList(_auth, paging: _paging);
-    _items = _contacts;
+    _items = _contacts?.result;
     _lastUpdated = DateTime.now().millisecondsSinceEpoch;
     notifyListeners();
     return true;

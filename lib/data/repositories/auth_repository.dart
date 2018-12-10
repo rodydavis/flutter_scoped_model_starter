@@ -29,14 +29,14 @@ class AuthRepository {
     return response['access_token'];
   }
 
-  Future<UserInfoResult> getInfo(String token) async {
+  Future<UserInfo> getInfo(String token) async {
     dynamic _response;
     final response = await webClient.get(
       kApiUrl + '/account/info',
       token: token,
     );
     _response = response;
-    var _user = UserInfo.fromJson(_response).result;
+    var _user = UserInfo.fromJson(_response);
     return _user;
   }
 }

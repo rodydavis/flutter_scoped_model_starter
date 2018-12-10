@@ -35,12 +35,12 @@ class AuthModel extends Model {
     // -- Get User Info --
     try {
       var _userInfo = await _auth.getInfo(_token);
-
+      var _user = _userInfo?.result;
       // -- Update User --
       _currentUser = User(
-        fullName: _userInfo?.fullName,
-        email: _userInfo?.email ?? "",
-        profileImage: _userInfo?.profileImageUrl ?? "",
+        fullName: _user?.fullName,
+        email: _user?.email ?? "",
+        profileImage: _user?.profileImageUrl ?? "",
       );
     } catch (e) {
       print(e);

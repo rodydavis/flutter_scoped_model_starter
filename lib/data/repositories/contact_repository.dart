@@ -17,7 +17,7 @@ class ContactRepository {
     this.webClient = const WebClient(),
   });
 
-  Future<List<ContactObject>> loadList(
+  Future<ContactResult> loadList(
     AuthModel auth, {
     @required PagingModel paging,
     SearchModel search,
@@ -44,21 +44,9 @@ class ContactRepository {
       _response = response;
     }
 
-    // // -- Not Found --
-    // if (_response.toString().contains("No Contacts Found")) {
-    //   return new List<CRUDObject>();
-    // }
+    var result = ContactResult.fromJson(_response);
 
-    // -- Create List of Contacts --
-    // var list = new List<CRUDObject>(_response.map((contact) {
-    //   return serializers.deserializeWith(ContactEntity.serializer, contact);
-    // }));
-
-    // var list = [];
-
-    var list = ContactResult.fromJson(_response).result;
-
-    return list;
+    return result;
   }
 
   Future deleteContact(AuthModel auth, String id) async {
