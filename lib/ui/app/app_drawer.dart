@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../data/models/auth/model.dart';
-import '../../data/models/theme.dart';
 import '../../widgets/profile_avatar.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -40,25 +39,25 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.home),
             title: Text('Home'),
-            onTap: () => navigator.popAndPushNamed("/home"),
+            onTap: () => navigator.pushReplacementNamed("/home"),
           ),
           // STARTER: menu - do not remove comment
           ListTile(
             leading: Icon(Icons.my_location),
             title: Text('CRUD'),
-            onTap: () => navigator.popAndPushNamed("/crud"),
+            onTap: () => navigator.pushReplacementNamed("/crud"),
           ),
 
           ListTile(
             leading: Icon(Icons.timer),
             title: Text('Counter'),
-            onTap: () => navigator.popAndPushNamed("/counter"),
+            onTap: () => navigator.pushReplacementNamed("/counter"),
           ),
 
           ListTile(
             leading: Icon(Icons.people),
             title: Text('Contacts'),
-            onTap: () => navigator.popAndPushNamed("/contacts"),
+            onTap: () => navigator.pushReplacementNamed("/contacts"),
           ),
 
           Divider(),
@@ -66,7 +65,7 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
-            onTap: () => navigator.popAndPushNamed("/settings"),
+            onTap: () => navigator.pushReplacementNamed("/settings"),
           ),
 
           AboutListTile(
