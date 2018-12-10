@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../data/models/auth.dart';
+import '../../data/models/auth/model.dart';
 import '../../data/models/theme.dart';
 import '../../widgets/profile_avatar.dart';
 

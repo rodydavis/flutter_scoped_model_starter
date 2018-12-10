@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'data/models/auth.dart';
+import 'data/models/auth/model.dart';
 import 'data/models/contact_model.dart';
 import 'data/models/counter.dart';
 import 'data/models/crud_model.dart';

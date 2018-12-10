@@ -4,7 +4,7 @@ import 'dart:core';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import '../file_storage.dart';
-import '../models/auth.dart';
+import '../models/auth/model.dart';
 import 'package:meta/meta.dart';
 
 class PersistenceRepository {

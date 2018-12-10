@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/models/theme.dart';
-import '../data/models/auth.dart';
+import '../data/models/auth/model.dart';
 import '../data/local_storage.dart';
 import 'package:native_widgets/native_widgets.dart';
 

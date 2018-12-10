@@ -4,7 +4,7 @@ import '../models/paging_model.dart';
 import 'package:flutter/foundation.dart';
 import '../models/search_model.dart';
 import '../models/crud_model.dart';
-import '../models/auth.dart';
+import '../models/auth/model.dart';
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';

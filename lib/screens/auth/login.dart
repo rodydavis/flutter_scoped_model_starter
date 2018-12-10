@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../data/local_storage.dart';
-import '../../data/models/auth.dart';
+import '../../data/models/auth/model.dart';
 import 'create_account.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,6 +12,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   TextEditingController _usernameController, _passwordController;
+  String _error = "";
 
   @override
   void initState() {
@@ -39,6 +40,11 @@ class _LoginPageState extends State<LoginPage> {
       user.login(username: _username, password: _password).then((_) {
         if (user?.loggedIn ?? false) {
           Navigator.pushReplacementNamed(context, "/home");
+        } else {
+          setState(() {
+            // _error = user.error;
+            _error = "Username or Password Incorrect";
+          });
         }
       });
     }
@@ -111,6 +117,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ],
             ),
+            _error.toString().isEmpty
+                ? Container()
+                : ListTile(
+                    title: Text(
+                    _error,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.red),
+                  )),
           ],
         ),
       )),

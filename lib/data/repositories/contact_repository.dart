@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import '../../constants.dart';
-import '../models/auth.dart';
+import '../models/auth/model.dart';
 import '../models/contact_model.dart';
 import '../models/paging_model.dart';
 import '../models/search_model.dart';
