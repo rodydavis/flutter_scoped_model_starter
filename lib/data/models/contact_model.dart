@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import '../../constants.dart';
 import '../models/auth/model.dart';
 import '../models/paging_model.dart';
 import '../repositories/contact_repository.dart';
-import '../../constants.dart';
+import 'general/address.dart';
+import 'general/company_category.dart';
+import 'general/contact_groups.dart';
+import 'general/phones.dart';
 
 class ContactFields {
   static const String id = 'ID';
@@ -418,93 +422,4 @@ class ContactDetails {
   }
 }
 
-class Address {
-  String street;
-  String apartment;
-  String state;
-  String city;
-  String zip;
 
-  Address({this.street, this.apartment, this.state, this.city, this.zip});
-
-  Address.fromJson(Map<String, dynamic> json) {
-    street = json['street'];
-    apartment = json['apartment'];
-    state = json['state'];
-    city = json['city'];
-    zip = json['zip'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['street'] = this.street;
-    data['apartment'] = this.apartment;
-    data['state'] = this.state;
-    data['city'] = this.city;
-    data['zip'] = this.zip;
-    return data;
-  }
-}
-
-class Phones {
-  String label;
-  String areaCode;
-  String prefix;
-  String number;
-
-  Phones({this.label, this.areaCode, this.prefix, this.number});
-
-  Phones.fromJson(Map<String, dynamic> json) {
-    label = json['label'];
-    areaCode = json['area_code'];
-    prefix = json['prefix'];
-    number = json['number'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['label'] = this.label;
-    data['area_code'] = this.areaCode;
-    data['prefix'] = this.prefix;
-    data['number'] = this.number;
-    return data;
-  }
-}
-
-class CompanyCategory {
-  String name;
-  int order;
-
-  CompanyCategory({this.name, this.order});
-
-  CompanyCategory.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    order = json['order'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['order'] = this.order;
-    return data;
-  }
-}
-
-class ContactGroups {
-  String id;
-  String name;
-
-  ContactGroups({this.id, this.name});
-
-  ContactGroups.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    return data;
-  }
-}

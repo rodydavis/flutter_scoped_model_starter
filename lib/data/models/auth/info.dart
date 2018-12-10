@@ -1,4 +1,4 @@
-import '../phones.dart';
+import '../general/phones.dart';
 
 class UserInfo {
   String status;
