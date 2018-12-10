@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../utils/phoneCall.dart';
-import '../utils/sendEmail.dart';
-import '../utils/sendSMS.dart';
-import '../utils/text_format.dart';
-
-import 'address_tile.dart';
-import 'email_tile.dart';
-import 'phone_tile.dart';
+import '../../ui/containers/email_tile.dart';
+import '../../ui/containers/phone_tile.dart';
+import '../../utils/text_format.dart';
 
 class ThreeRowTile extends StatelessWidget {
   final Widget title, subtitle;

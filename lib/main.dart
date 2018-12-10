@@ -10,7 +10,6 @@ import 'screens/home.dart';
 import 'screens/settings.dart';
 import 'screens/account.dart';
 import 'screens/splash_screen.dart';
-import 'widgets/flutter_drawer_demo.dart';
 
 // STARTER: import - do not remove comment
 

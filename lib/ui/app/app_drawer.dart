@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../data/models/auth/model.dart';
-import '../../widgets/profile_avatar.dart';
+import '../../ui/containers/profile_avatar.dart';
 import '../../utils/two_letter_name.dart';
 
 class AppDrawer extends StatelessWidget {
