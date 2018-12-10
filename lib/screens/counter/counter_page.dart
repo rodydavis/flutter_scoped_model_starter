@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../data/models/counter.dart';
+import '../../ui/app/app_drawer.dart';
 import '../../widgets/counter/add.dart';
 import '../../widgets/counter/subtract.dart';
 
@@ -25,6 +26,7 @@ class _CounterPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Counter"),
       ),
+       drawer: AppDrawer(),
       body: ListView(
         children: <Widget>[
           ListTile(

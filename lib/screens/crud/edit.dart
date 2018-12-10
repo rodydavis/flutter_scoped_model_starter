@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../../../data/models/crud_model.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../data/models/crud_model.dart';
 
 class CRUDItemEdit extends StatefulWidget {
   final CRUDObject item;

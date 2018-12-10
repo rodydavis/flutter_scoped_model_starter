@@ -9,7 +9,7 @@ import 'data/models/theme.dart';
 import 'screens/auth/login.dart';
 import 'screens/contacts/screen.dart';
 import 'screens/counter/counter_page.dart';
-import 'screens/crud/crud_screen.dart';
+import 'screens/crud/screen.dart';
 import 'screens/home.dart';
 import 'screens/settings.dart';
 import 'screens/splash_screen.dart';

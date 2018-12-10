@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import './../../ui/app/app_drawer.dart';
 import '../../data/models/crud_model.dart';
+import '../../data/models/sort_model.dart';
 import '../../ui/app/app_bottom_bar.dart';
 import '../../ui/app/app_search_bar.dart';
-import 'crud_list.dart';
-import 'edit/crud_edit.dart';
-import '../../data/models/sort_model.dart';
+import 'edit.dart';
+import 'list.dart';
 
 class CRUDScreen extends StatelessWidget {
   final CRUDModel model;
@@ -63,6 +64,7 @@ class __CRUDScreenState extends State<_CRUDScreen> {
           )
         ],
       ),
+       drawer: AppDrawer(),
       body: FutureBuilder(
         future: _model.loadItems(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {

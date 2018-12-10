@@ -6,6 +6,7 @@ import '../../data/models/contact/list.dart';
 import '../../data/models/contact/model.dart';
 import '../../data/models/sort_model.dart';
 import '../../ui/app/app_bottom_bar.dart';
+import '../../ui/app/app_drawer.dart';
 import '../../ui/app/app_search_bar.dart';
 import 'edit.dart';
 import 'list.dart';
@@ -78,6 +79,7 @@ class __ContactScreenState extends State<_ContactScreen> {
           )
         ],
       ),
+       drawer: AppDrawer(),
       body: FutureBuilder(
         // future: _model.loadItems(context),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
