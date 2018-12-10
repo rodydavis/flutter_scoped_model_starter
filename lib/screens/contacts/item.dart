@@ -5,6 +5,8 @@ import '../../data/models/contact/list.dart';
 import '../../data/models/contact/model.dart';
 import 'edit.dart';
 import 'view.dart';
+import '../../widgets/three_row_tile.dart';
+import '../../utils/date_formatter.dart';
 
 class ContactItem extends StatelessWidget {
   final ContactObject item;
@@ -87,16 +89,37 @@ class ContactItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // var _name = item?.lastName.toString() + ", " + item?.firstName;
+    // var _tile = ListTile(
+    //   // dense: true,
+    //   title: Text(item?.displayName),
+    //   subtitle: Text(item?.id),
+    //   onTap: () => _viewItem(context),
+    //   onLongPress: () => _editItem(context),
+    // );
+
+    var _tile = ThreeRowTile(
+      icon: Icon(Icons.person),
+      title: Text(item?.displayName),
+      subtitle: Text(item?.lastActivity),
+      onTap: () => _viewItem(context),
+      onLongPress: () => _editItem(context),
+      cell: item?.cellPhone,
+      home: item?.homePhone,
+      office: item?.officePhone,
+      email: item?.email,
+      box1: Utility(
+        value: formatDate(item?.dateCreated),
+        hint: "Date Created",
+      ),
+      box2: Utility(
+        value: formatDate(item?.dateModified),
+        hint: "Date Modified",
+      ),
+    );
     return new Slidable(
       delegate: new SlidableDrawerDelegate(),
       actionExtentRatio: 0.25,
-      child: ListTile(
-        // dense: true,
-        title: Text(item?.displayName),
-        subtitle: Text(item?.id),
-        onTap: () => _viewItem(context),
-        onLongPress: () => _editItem(context),
-      ),
+      child: _tile,
       actions: _getIconButtons(context, right: false),
       secondaryActions: _getIconButtons(context, right: true),
     );
