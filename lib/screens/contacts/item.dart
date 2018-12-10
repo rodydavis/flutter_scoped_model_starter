@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../../data/models/contact/list.dart';
 import '../../data/models/contact/model.dart';
 import 'edit.dart';
 import 'view.dart';
-import '../../utils/null_or_empty.dart';
 
 class ContactItem extends StatelessWidget {
   final ContactObject item;
