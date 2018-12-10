@@ -3,8 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../data/models/auth/model.dart';
 import '../../widgets/profile_avatar.dart';
-import '../../data/models/auth/info.dart';
-import '../../data/models/auth/user.dart';
+import '../../utils/two_letter_name.dart';
 
 class AppDrawer extends StatelessWidget {
   AppDrawer({
@@ -29,7 +28,10 @@ class AppDrawer extends StatelessWidget {
                 label: "Switch to this Account",
                 child: AvatarWidget(
                   imageURL: _item?.profileImageUrl,
-                  noImageText: _item?.fullName,
+                  noImageText: convertNamesToLetters(
+                    _item?.firstName,
+                    _item?.lastName,
+                  ),
                 ),
               ),
             ),
@@ -125,30 +127,8 @@ class AppDrawer extends StatelessWidget {
   }
 
   void _onOtherAccountsTap(BuildContext context, {@required UserObject user}) {
-    print("Switching Accounts...");
+    print("Switching Accounts... ${user?.data?.fullName}");
     final _user = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
-    if (user != null) {
-      _user.switchToAccount(user);
-      // if (_user?.loggedIn ?? false) {
-      //   Navigator.pushReplacementNamed(context, "/home");
-      // } else {
-      //   showDialog<void>(
-      //     context: context,
-      //     builder: (BuildContext context) {
-      //       return AlertDialog(
-      //         title: const Text('Account Login Error'),
-      //         actions: <Widget>[
-      //           FlatButton(
-      //             child: const Text('OK'),
-      //             onPressed: () {
-      //               Navigator.pop(context);
-      //             },
-      //           ),
-      //         ],
-      //       );
-      //     },
-      //   );
-      // }
-    }
+    if (user != null) _user.switchToAccount(user);
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 enum Settings { darkMode, trueBlack, autoSignin }
 
-enum Info { username, password }
+enum Info { username, password, users }
 
 class AppPreferences {
   void setSetting(Settings key, bool value) async {
@@ -64,6 +64,26 @@ class AppPreferences {
     } catch (e) {
       print(e);
       return ""; // Default Value
+    }
+  }
+
+  void setList(Info key, List<String> values) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setStringList(key.toString(), values);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<List<String>> getList(Info key) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      var _values = prefs.getStringList(key.toString());
+      return _values;
+    } catch (e) {
+      print(e);
+      return []; // Default Value
     }
   }
 }

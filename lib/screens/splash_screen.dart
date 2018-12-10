@@ -57,9 +57,10 @@ class _SplashScreenState extends State<_SplashScreen>
   }
 
   void _loginAuto(BuildContext context) async {
-    // -- Auto Login --
-    await widget.auth.autoLogin();
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    // -- Auto Login --
+    await _auth.autoLogin();
+
     if (_auth?.loggedIn ?? false) {
       print("Logged In :${_auth?.loggedIn}");
       // -- Login Failed --

@@ -12,6 +12,7 @@ import 'screens/counter/counter_page.dart';
 import 'screens/crud/screen.dart';
 import 'screens/home.dart';
 import 'screens/settings.dart';
+import 'screens/account.dart';
 import 'screens/splash_screen.dart';
 
 // STARTER: import - do not remove comment
@@ -49,6 +50,7 @@ class AppTheme extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => LoginPage(),
         '/home': (BuildContext context) => HomePage(),
+        '/account': (BuildContext context) => AccountPage(),
         '/settings': (BuildContext context) => SettingsPage(),
         // STARTER: routes - do not remove comment
         '/counter': (BuildContext context) => CounterPage(model: counterModel),
