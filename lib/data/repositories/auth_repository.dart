@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import '../../constants.dart';
-import '../web_client.dart';
 import '../models/auth/info.dart';
-import 'dart:convert';
-import '../models/auth/model.dart';
+import '../web_client.dart';
 
 class AuthRepository {
   final WebClient webClient;

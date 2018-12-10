@@ -13,4 +13,3 @@ class User {
     return _user.toString();
   }
 }
-

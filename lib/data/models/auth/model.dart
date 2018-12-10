@@ -1,8 +1,8 @@
-import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 import '../../local_storage.dart';
 import '../../repositories/auth_repository.dart';
-import '../phones.dart';
 import '../auth/user.dart';
 
 class AuthModel extends Model {
