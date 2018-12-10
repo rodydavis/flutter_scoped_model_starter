@@ -9,6 +9,7 @@ import '../../ui/app/app_bottom_bar.dart';
 import '../../ui/app/app_drawer.dart';
 import '../../ui/app/app_search_bar.dart';
 import 'edit.dart';
+import '../../data/models/auth/model.dart';
 import 'list.dart';
 // import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -52,6 +53,7 @@ class __ContactScreenState extends State<_ContactScreen> {
   Widget build(BuildContext context) {
     final _model = ScopedModel.of<ContactModel>(context, rebuildOnChange: true);
     final _sort = ScopedModel.of<SortModel>(context, rebuildOnChange: true);
+    final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
 
     return Scaffold(
       appBar: AppBar(
@@ -82,7 +84,7 @@ class __ContactScreenState extends State<_ContactScreen> {
       body: FutureBuilder(
         // future: _model.loadItems(context),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (_model.isLoaded == false) {
+          if (_model.isLoaded == false || _auth.userChanged) {
             _model.loadItems(context);
             _model.loaded = true;
             return Center(child: CircularProgressIndicator());

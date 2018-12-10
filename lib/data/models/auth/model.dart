@@ -38,6 +38,7 @@ class AuthModel extends Model {
   List<UserObject> _users = [];
   UserObject _currentUser;
   bool _loggedIn = false;
+  bool _userChanged = false;
   String _token = "";
   String _error = "";
 
@@ -45,6 +46,7 @@ class AuthModel extends Model {
   String get token => _token;
   List<UserObject> get users => _users;
   UserObject get currentUser => _currentUser;
+  bool get userChanged => _userChanged;
 
   Future login(
       {@required String username,
@@ -106,8 +108,14 @@ class AuthModel extends Model {
       _currentUser = newUser;
       _token = newUser?.token;
       _loggedIn = true;
+      _userChanged = true;
       saveUsers();
     }
+    notifyListeners();
+  }
+
+  void confirmUserChange() {
+    _userChanged = false;
     notifyListeners();
   }
 

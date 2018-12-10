@@ -65,6 +65,7 @@ class ContactModel extends Model {
 
   Future<bool> loadItems(BuildContext context) async {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    _auth.confirmUserChange();
     // -- Load Items from API or Local --
     var _contacts = await ContactRepository().loadList(_auth, paging: _paging);
     _items = _contacts?.result;
