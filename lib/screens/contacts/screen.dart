@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../data/models/contact_model.dart';
+import '../../data/models/contact/model.dart';
 import '../../data/models/sort_model.dart';
 import '../../ui/app/app_bottom_bar.dart';
 import '../../ui/app/app_search_bar.dart';

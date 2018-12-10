@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/contact_model.dart';
+import '../../data/models/contact/model.dart';
 import '../../ui/app/app_bottom_bar.dart';
 import 'edit.dart';
 

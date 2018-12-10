@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../data/models/contact_model.dart';
+import '../../data/models/contact/model.dart';
 
 class ContactItemEdit extends StatefulWidget {
   final ContactObject item;

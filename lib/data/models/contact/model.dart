@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../constants.dart';
-import '../models/auth/model.dart';
-import '../models/paging_model.dart';
-import '../repositories/contact_repository.dart';
-import 'general/address.dart';
-import 'general/company_category.dart';
-import 'general/contact_groups.dart';
-import 'general/phones.dart';
+import '../../../constants.dart';
+import '../../models/auth/model.dart';
+import '../../models/paging_model.dart';
+import '../../repositories/contact_repository.dart';
+import '../general/address.dart';
+import '../general/company_category.dart';
+import '../general/contact_groups.dart';
+import '../general/phones.dart';
 
 class ContactFields {
   static const String id = 'ID';
@@ -421,5 +421,3 @@ class ContactDetails {
     return data;
   }
 }
-
-

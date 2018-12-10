@@ -1,4 +1,3 @@
-
 class ContactGroups {
   String id;
   String name;
