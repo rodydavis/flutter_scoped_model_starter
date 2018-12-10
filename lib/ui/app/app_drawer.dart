@@ -65,7 +65,7 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
-            onTap: () => navigator.pushReplacementNamed("/settings"),
+            onTap: () => navigator.popAndPushNamed("/settings"),
           ),
 
           AboutListTile(
