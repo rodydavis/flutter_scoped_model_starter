@@ -47,7 +47,15 @@ class AppDrawer extends StatelessWidget {
         children: <Widget>[
           Container(
             child: new UserAccountsDrawerHeader(
-              decoration: new BoxDecoration(color: Colors.transparent),
+              decoration: new BoxDecoration(
+                color: Colors.transparent,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(_item?.companyImageUrl),
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                ),
+              ),
               accountName: Text(
                 _item?.fullName ?? "Guest",
                 style: TextStyle(
@@ -116,10 +124,22 @@ class AppDrawer extends StatelessWidget {
               navigator.pop();
               navigator.pushReplacementNamed("/login");
             },
-            onLongPress: () {
-              _user.logout(force: false);
-              navigator.popAndPushNamed("/login");
-            },
+            onLongPress: _user?.users?.length == 3
+                ? null
+                : () {
+                    _user.logout(force: false);
+                    navigator.popAndPushNamed("/login");
+                  },
+            trailing: _user?.users?.length == 3
+                ? null
+                : IconButton(
+                    tooltip: "Login to Multiple Accounts",
+                    icon: Icon(Icons.account_circle),
+                    onPressed: () {
+                      _user.logout(force: false);
+                      navigator.popAndPushNamed("/login");
+                    },
+                  ),
           ),
         ],
       ),

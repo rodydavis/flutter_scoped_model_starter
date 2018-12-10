@@ -19,6 +19,8 @@ class ThemeModel extends Model {
       _currentTheme = ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,
         backgroundColor: Colors.black,
+        bottomAppBarColor: Colors.black,
+        primaryColorDark: Colors.grey,
       );
     } else {
       _currentTheme = ThemeData.dark();
