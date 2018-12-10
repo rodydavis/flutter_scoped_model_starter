@@ -3,7 +3,8 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../local_storage.dart';
 import '../../repositories/auth_repository.dart';
-import '../auth/user.dart';
+// import '../auth/user.dart';
+import 'info.dart';
 
 class AuthModel extends Model {
   User _currentUser;
@@ -37,11 +38,12 @@ class AuthModel extends Model {
       var _userInfo = await _auth.getInfo(_token);
       var _user = _userInfo?.result;
       // -- Update User --
-      _currentUser = User(
-        fullName: _user?.fullName,
-        email: _user?.email ?? "",
-        profileImage: _user?.profileImageUrl ?? "",
-      );
+      // _currentUser = User(
+      //   fullName: _user?.fullName,
+      //   email: _user?.email ?? "",
+      //   profileImage: _user?.profileImageUrl ?? "",
+      // );
+      _currentUser = _user;
     } catch (e) {
       print(e);
     }

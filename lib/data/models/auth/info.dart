@@ -3,7 +3,7 @@ import '../general/phones.dart';
 class UserInfo {
   String status;
   String message;
-  UserInfoResult result;
+  User result;
 
   UserInfo({this.status, this.message, this.result});
 
@@ -11,7 +11,7 @@ class UserInfo {
     status = json['Status'];
     message = json['Message'];
     result = json['Result'] != null
-        ? new UserInfoResult.fromJson(json['Result'])
+        ? new User.fromJson(json['Result'])
         : null;
   }
 
@@ -26,7 +26,7 @@ class UserInfo {
   }
 }
 
-class UserInfoResult {
+class User {
   String userId;
   String fullName;
   String firstName;
@@ -42,7 +42,7 @@ class UserInfoResult {
   String kalturaId;
   List<String> kalturaTags;
 
-  UserInfoResult(
+  User(
       {this.userId,
       this.fullName,
       this.firstName,
@@ -58,7 +58,7 @@ class UserInfoResult {
       this.kalturaId,
       this.kalturaTags});
 
-  UserInfoResult.fromJson(Map<String, dynamic> json) {
+  User.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
     fullName = json['full_name'];
     firstName = json['first_name'];

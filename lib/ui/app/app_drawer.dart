@@ -34,7 +34,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                 ),
                 currentAccountPicture: AvatarWidget(
-                  imageURL: _user?.currentUser?.profileImage,
+                  imageURL: _user?.currentUser?.profileImageUrl,
                 )),
           ),
           ListTile(
