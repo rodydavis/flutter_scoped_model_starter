@@ -13,6 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController _usernameController, _passwordController;
   String _error = "";
+  bool _hidePassword = true;
 
   @override
   void initState() {
@@ -80,10 +81,18 @@ class _LoginPageState extends State<LoginPage> {
               title: TextFormField(
                 decoration: InputDecoration(labelText: "Password"),
                 controller: _passwordController,
-                obscureText: true,
+                obscureText: _hidePassword,
                 keyboardType: TextInputType.text,
                 validator: (val) =>
                     val.isEmpty ? 'Please enter a password' : null,
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.remove_red_eye),
+                onPressed: () {
+                  setState(() {
+                    _hidePassword = !_hidePassword;
+                  });
+                },
               ),
             ),
             Row(

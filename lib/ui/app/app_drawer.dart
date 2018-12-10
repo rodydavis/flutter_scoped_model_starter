@@ -3,6 +3,8 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../data/models/auth/model.dart';
 import '../../widgets/profile_avatar.dart';
+import '../../data/models/auth/info.dart';
+import '../../data/models/auth/user.dart';
 
 class AppDrawer extends StatelessWidget {
   AppDrawer({
@@ -13,28 +15,56 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final _user = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     NavigatorState navigator = Navigator.of(context);
+    List<Widget> _buildOtherAccounts() {
+      List<Widget> list = [];
+      for (var user in _user?.users) {
+        var _item = user.data;
+        if (user != _user.currentUser) {
+          list.add(
+            GestureDetector(
+              onTap: () {
+                _onOtherAccountsTap(context, user: user);
+              },
+              child: Semantics(
+                label: "Switch to this Account",
+                child: AvatarWidget(
+                  imageURL: _item?.profileImageUrl,
+                  noImageText: _item?.fullName,
+                ),
+              ),
+            ),
+          );
+        }
+      }
+      return list;
+    }
 
+    var _item = _user?.currentUser?.data;
     return Drawer(
       child: ListView(
         children: <Widget>[
           Container(
             child: new UserAccountsDrawerHeader(
-                decoration: new BoxDecoration(color: Colors.transparent),
-                accountName: Text(
-                  _user?.currentUser?.fullName ?? "Guest",
-                  style: TextStyle(
-                    color: Theme.of(context).textTheme.title.color,
-                  ),
+              decoration: new BoxDecoration(color: Colors.transparent),
+              accountName: Text(
+                _item?.fullName ?? "Guest",
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.title.color,
                 ),
-                accountEmail: Text(
-                  _user?.currentUser?.email ?? "No Email Found",
-                  style: TextStyle(
-                    color: Theme.of(context).textTheme.subtitle.color,
-                  ),
+              ),
+              accountEmail: Text(
+                _item?.email ?? "No Email Found",
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.subtitle.color,
                 ),
-                currentAccountPicture: AvatarWidget(
-                  imageURL: _user?.currentUser?.profileImageUrl,
-                )),
+              ),
+              currentAccountPicture: AvatarWidget(
+                imageURL: _item?.profileImageUrl,
+              ),
+              otherAccountsPictures: _buildOtherAccounts(),
+              margin: EdgeInsets.zero,
+              onDetailsPressed: () => navigator.popAndPushNamed("/account"),
+            ),
           ),
           ListTile(
             leading: Icon(Icons.home),
@@ -84,9 +114,41 @@ class AppDrawer extends StatelessWidget {
               navigator.pop();
               navigator.pushReplacementNamed("/login");
             },
+            onLongPress: () {
+              _user.logout(force: false);
+              navigator.popAndPushNamed("/login");
+            },
           ),
         ],
       ),
     );
+  }
+
+  void _onOtherAccountsTap(BuildContext context, {@required UserObject user}) {
+    print("Switching Accounts...");
+    final _user = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    if (user != null) {
+      _user.switchToAccount(user);
+      // if (_user?.loggedIn ?? false) {
+      //   Navigator.pushReplacementNamed(context, "/home");
+      // } else {
+      //   showDialog<void>(
+      //     context: context,
+      //     builder: (BuildContext context) {
+      //       return AlertDialog(
+      //         title: const Text('Account Login Error'),
+      //         actions: <Widget>[
+      //           FlatButton(
+      //             child: const Text('OK'),
+      //             onPressed: () {
+      //               Navigator.pop(context);
+      //             },
+      //           ),
+      //         ],
+      //       );
+      //     },
+      //   );
+      // }
+    }
   }
 }
