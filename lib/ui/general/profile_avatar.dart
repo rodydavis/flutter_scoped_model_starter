@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../constants.dart';
 import '../../utils/network_image_ssl.dart';
 
 class AvatarWidget extends StatelessWidget {
@@ -13,7 +14,11 @@ class AvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (hideImage || imageURL == null || imageURL.isEmpty) {
+    String _url = imageURL;
+    if (devMode) {
+      _url = imageURL.replaceAll("www", "devm");
+    }
+    if (hideImage || _url == null || _url.isEmpty) {
       return new CircleAvatar(
         backgroundColor: Colors.blueGrey,
         child: new Text(noImageText ?? "No URL"),
@@ -21,7 +26,7 @@ class AvatarWidget extends StatelessWidget {
     }
     return new CircleAvatar(
       backgroundColor: Colors.blueGrey,
-      backgroundImage: NetworkImageSSL(imageURL.replaceAll("www", "devm")),
+      backgroundImage: NetworkImageSSL(_url),
     );
   }
 }

@@ -46,9 +46,10 @@ class NetworkImageSSL extends ImageProvider<NetworkImageSSL> {
       request.headers.add(name, value);
     });
     final HttpClientResponse response = await request.close();
-    if (response.statusCode != HttpStatus.ok)
+    if (response.statusCode != HttpStatus.ok) {
       throw new Exception(
           'HTTP request failed, statusCode: ${response?.statusCode}, $resolved');
+    }
 
     final Uint8List bytes = await consolidateHttpClientResponseBytes(response);
     if (bytes.lengthInBytes == 0)

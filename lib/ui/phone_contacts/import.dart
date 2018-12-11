@@ -7,6 +7,7 @@ import '../general/email_tile.dart';
 import '../app/app_bottom_bar.dart';
 import '../general/list_widget.dart';
 import '../app/app_search_bar.dart';
+import '../../utils/null_or_empty.dart';
 
 class ImportContactsScreen extends StatefulWidget {
   @override
@@ -88,7 +89,7 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: AppSearchBar(
-          name: "Phone Contact" + "s",
+          name: "Phone Contacts",
           isSearching: _isSearching,
           onSearchChanged: (String value) {
             if (value == null || value.isEmpty) {
@@ -124,7 +125,7 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
               ),
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: _contacts.length,
+                itemCount: _contacts?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) {
                   final _item = _contacts[index];
                   final _contact = _item.contact;
@@ -139,6 +140,9 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
                       ),
                     ),
                     title: Text(_contact?.displayName),
+                    subtitle: isNullOrEmpty(_contact?.company)
+                        ? null
+                        : Text(_contact?.company),
                     trailing: IconButton(
                       icon: Icon(Icons.info),
                       onPressed: () => _viewContact(context, contact: _contact),
@@ -204,9 +208,9 @@ class _ContactDetailsScreen extends StatelessWidget {
     var _details = <Widget>[
       ListTile(
         leading: Icon(Icons.person),
-        title: Text(
-          contact?.displayName,
-        ),
+        title: Text(contact?.displayName),
+        subtitle:
+            isNullOrEmpty(contact?.company) ? null : Text(contact?.company),
       ),
     ];
     if (contact?.phones != null && contact.phones.isNotEmpty) {
