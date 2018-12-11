@@ -43,7 +43,7 @@ class ContactItem extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ContactItemDetails(item: item, model: model)),
+          builder: (context) => ContactItemDetails(item: item, model: model, showNameInAppBar: false)),
     );
   }
 
