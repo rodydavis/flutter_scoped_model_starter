@@ -16,6 +16,7 @@ class ImportContactsScreen extends StatefulWidget {
 
 class ImportContactsScreenState extends State<ImportContactsScreen> {
   List<ContactSelect> _contacts;
+  List<ContactSelect> _filteredContacts;
   @override
   void initState() {
     // Get all contacts
@@ -30,6 +31,7 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
         .toList();
     setState(() {
       _contacts = _items;
+      _filteredContacts = _items;
     });
     _updateCount();
   }
@@ -40,7 +42,7 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
         .map((Contact item) => ContactSelect(contact: item, selected: false))
         .toList();
     setState(() {
-      _contacts = _items;
+      _filteredContacts = _items;
     });
     _updateCount();
   }
@@ -86,16 +88,19 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
   @override
   Widget build(BuildContext context) {
     final bool _allSelected = _selectedContacts == _contacts?.length;
+    List<ContactSelect> items = _isSearching ? _filteredContacts : _contacts;
     return Scaffold(
       appBar: AppBar(
         title: AppSearchBar(
           name: "Phone Contacts",
           isSearching: _isSearching,
           onSearchChanged: (String value) {
-            if (value == null || value.isEmpty) {
-              _loadContacts();
-            } else {
+            if (!isNullOrEmpty(value)) {
               _searchContacts(value);
+            } else {
+              setState(() {
+                _filteredContacts = _contacts;
+              });
             }
           },
         ),
@@ -104,15 +109,15 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
             isSearching: _isSearching,
             onSearchPressed: () {
               setState(() {
+                _filteredContacts = _contacts;
                 _isSearching = !_isSearching;
               });
-              if (!_isSearching) _loadContacts();
             },
           )
         ],
       ),
       body: ListWidget(
-          items: _contacts,
+          items: items,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -125,9 +130,9 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
               ),
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: _contacts?.length ?? 0,
+                itemCount: items?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) {
-                  final _item = _contacts[index];
+                  final _item = items[index];
                   final _contact = _item.contact;
                   final _selected = _item?.selected ?? false;
                   return ListTile(
@@ -150,9 +155,19 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
                       onPressed: () => _viewContact(context, contact: _contact),
                     ),
                     onTap: () {
-                      setState(() {
-                        _item?.selected = !_selected;
-                      });
+                      if (_isSearching) {
+                        for (var _row in _contacts) {
+                          if (_item.contact == _row.contact) {
+                            setState(() {
+                              _row?.selected = !_selected;
+                            });
+                          }
+                        }
+                      } else {
+                        setState(() {
+                          _item?.selected = !_selected;
+                        });
+                      }
                       _updateCount();
                     },
                     onLongPress: () => _viewContact(context, contact: _contact),
