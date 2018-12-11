@@ -4,6 +4,9 @@ import '../../data/models/contact/list.dart';
 import '../../data/models/contact/model.dart';
 import '../../ui/app/app_bottom_bar.dart';
 import 'edit.dart';
+import '../../ui/containers/address_tile.dart';
+import '../../ui/containers/email_tile.dart';
+import '../../ui/containers/phone_tile.dart';
 
 class ContactItemDetails extends StatefulWidget {
   final ContactObject item;
@@ -47,26 +50,23 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
           children: <Widget>[
             // STARTER: details - do not remove comment
             ListTile(
-              title: Text(item?.firstName ?? ""),
+              leading: Icon(Icons.person),
+              title: Text(
+                (item?.firstName ?? "" + " " + (item?.lastName ?? "")),
+              ),
+              subtitle: Text(item?.lastActivity ?? ""),
             ),
-            ListTile(
-              title: Text(item?.lastName ?? ""),
-            ),
-            ListTile(
-              title: Text(item?.cellPhone ?? ""),
-            ),
-            ListTile(
-              title: Text(item?.homePhone ?? ""),
-            ),
-            ListTile(
-              title: Text(item?.officePhone ?? ""),
-            ),
-            ListTile(
-              title: Text(item?.email ?? ""),
-            ),
-            ListTile(
-              title: Text(item?.lastActivity ?? ""),
-            ),
+            buildPhoneTile(context,
+                label: "Cell Phone",
+                number: item?.cellPhone,
+                icon: Icons.phone),
+            buildPhoneTile(context,
+                label: "Home Phone", number: item?.homePhone, icon: Icons.home),
+            buildPhoneTile(context,
+                label: "Office Phone",
+                number: item?.officePhone,
+                icon: Icons.work),
+            buildEmailTile(context, label: "Email Address", email: item?.email),
           ],
         ),
       ),

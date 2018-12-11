@@ -194,11 +194,11 @@ class ThreeRowTile extends StatelessWidget {
                     alignment: FractionalOffset.centerRight,
                   ),
             Align(
-              child: IconButton(
-                icon: Icon(Icons.arrow_drop_down),
-                onPressed: getActions(context).isEmpty
-                    ? null
-                    : () {
+              child: getActions(context).isEmpty
+                  ? Container()
+                  : IconButton(
+                      icon: Icon(Icons.arrow_drop_down),
+                      onPressed: () {
                         showModalBottomSheet<void>(
                             context: context,
                             builder: (BuildContext context) {
@@ -210,7 +210,7 @@ class ThreeRowTile extends StatelessWidget {
                               ));
                             });
                       },
-              ),
+                    ),
               alignment: FractionalOffset.centerRight,
             ),
           ],

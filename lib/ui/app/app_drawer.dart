@@ -132,8 +132,8 @@ class AppDrawer extends StatelessWidget {
             trailing: (_user?.users?.length ?? 0) == kMultipleAccounts
                 ? null
                 : IconButton(
-                    tooltip: "Login to Multiple Accounts",
-                    icon: Icon(Icons.account_circle),
+                    tooltip: "Login to Another Account",
+                    icon: Icon(Icons.add),
                     onPressed: () {
                       _user.logout(force: false);
                       // navigator.popAndPushNamed("/login");
