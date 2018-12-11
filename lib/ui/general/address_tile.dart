@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../utils/text_format.dart';
+
+import '../../constants.dart';
 import '../../utils/openMaps.dart';
 
 class AddressTile extends StatelessWidget {

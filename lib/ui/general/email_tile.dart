@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../utils/sendEmail.dart';
+
+import '../../constants.dart';
 import '../../utils/null_or_empty.dart';
-import '../../utils/text_format.dart';
+import '../../utils/sendEmail.dart';
 
 ListTile buildEmailTile(BuildContext context,
     {String label, @required String email, IconData icon}) {

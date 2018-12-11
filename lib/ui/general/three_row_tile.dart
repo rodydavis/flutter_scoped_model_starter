@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../../utils/text_format.dart';
+import '../../constants.dart';
 import 'email_tile.dart';
 import 'phone_tile.dart';
 
