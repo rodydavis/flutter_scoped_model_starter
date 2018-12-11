@@ -42,7 +42,7 @@ class __DateViewState extends State<_DateView> {
     }
 
     if (model?.tasks != null && model.tasks.isEmpty) {
-      return Text("No Items Found");
+      return Text("No Tasks Found");
     }
 
     return ListView.builder(

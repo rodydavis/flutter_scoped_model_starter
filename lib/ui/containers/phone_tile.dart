@@ -10,11 +10,17 @@ ListTile buildPhoneTile(
   IconData icon,
   @required String number,
 }) {
-  if (isNullOrEmpty(number)) {
+  var _raw = (number ?? "")
+      .replaceAll("(", "")
+      .replaceAll(")", "")
+      .replaceAll("-", "")
+      .replaceAll(" ", "")
+      .trim();
+  if (isNullOrEmpty(_raw)) {
     return ListTile(
       leading: Icon(icon ?? Icons.phone),
       title: Text(
-        label ?? 'Phone Number',
+        isNullOrEmpty(label) ? 'Phone Number' : label,
         textScaleFactor: textScaleFactor,
       ),
       subtitle: const Text(
@@ -23,6 +29,7 @@ ListTile buildPhoneTile(
       ),
     );
   }
+
   return ListTile(
     leading: Icon(icon ?? Icons.phone),
     title: Text(
@@ -35,8 +42,8 @@ ListTile buildPhoneTile(
     ),
     trailing: IconButton(
       icon: Icon(Icons.message),
-      onPressed: () => sendSMS("", [number]),
+      onPressed: () => sendSMS("", [_raw]),
     ),
-    onTap: () => makePhoneCall(context, number),
+    onTap: () => makePhoneCall(context, _raw),
   );
 }

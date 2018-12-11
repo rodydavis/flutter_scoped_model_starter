@@ -102,7 +102,7 @@ class AppDrawer extends StatelessWidget {
           ),
 
           AboutListTile(
-            applicationName: 'Scoped Model',
+            applicationName: 'My Unify Mobile',
             icon: Icon(Icons.info_outline),
             child: Text('About'),
           ),

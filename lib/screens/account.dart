@@ -9,6 +9,7 @@ import '../utils/two_letter_name.dart';
 import 'auth/login.dart';
 import '../ui/containers/email_tile.dart';
 import '../ui/containers/phone_tile.dart';
+import '../data/models/general/phones.dart';
 
 class AccountPage extends StatelessWidget {
   @override
@@ -53,6 +54,11 @@ class AccountPage extends StatelessWidget {
 }
 
 class _AccountInfoScreen extends StatelessWidget {
+  Widget _buildPhone(BuildContext context, {Phones phone, String label = ""}) {
+    if (phone == null) return Container();
+    return buildPhoneTile(context, label: label, number: phone.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     final _model = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
@@ -64,11 +70,21 @@ class _AccountInfoScreen extends StatelessWidget {
           title: Text(_user?.fullName),
           subtitle: Text(_user?.title),
         ),
-        buildEmailTile(context, label: "Email Address", email: _user?.email),
-        buildPhoneTile(context,
-            label: "Primary Number", number: _user?.phones[0].number),
-        buildPhoneTile(context,
-            label: "Secondary Number", number: _user?.phones[1].number),
+        buildEmailTile(
+          context,
+          label: "Email Address",
+          email: _user?.email,
+        ),
+        _buildPhone(
+          context,
+          phone: _user?.phones[0],
+          label: "Primary Number",
+        ),
+        _buildPhone(
+          context,
+          phone: _user?.phones[1],
+          label: "Secondary Number",
+        ),
         ListTile(
           title: Text(_user?.licenseNumber),
         ),

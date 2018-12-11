@@ -21,4 +21,9 @@ class Phones {
     data['number'] = this.number;
     return data;
   }
+
+  @override
+  String toString() {
+    return "($areaCode) $prefix-$number".toString();
+  }
 }
