@@ -269,8 +269,7 @@ class _ContactDetailsScreen extends StatelessWidget {
   List<Widget> getPhones(BuildContext context, {@required List<Item> items}) {
     var _widgets = <Widget>[];
     for (var _item in items) {
-      _widgets.add(buildPhoneTile(
-        context,
+      _widgets.add(PhoneTile(
         label: _item?.label,
         number: _item?.value,
         icon: getIcon(_item?.label ?? ""),
@@ -282,11 +281,12 @@ class _ContactDetailsScreen extends StatelessWidget {
   List<Widget> getEmails(BuildContext context, {@required List<Item> items}) {
     var _widgets = <Widget>[];
     for (var _item in items) {
-      _widgets.add(buildEmailTile(
-        context,
-        label: _item?.label,
-        email: _item?.value,
-      ));
+      _widgets.add(
+        EmailTile(
+          label: _item?.label,
+          email: _item?.value,
+        ),
+      );
     }
     return _widgets;
   }

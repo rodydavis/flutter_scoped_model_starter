@@ -33,19 +33,16 @@ class ThreeRowTile extends StatelessWidget {
   List<Widget> getActions(BuildContext context) {
     List<Widget> builder = [];
     if (cell.isNotEmpty && !cell.toString().contains("--")) {
-      builder.add(buildPhoneTile(context,
-          label: "Cell", number: cell, icon: Icons.phone));
+      builder.add(PhoneTile(label: "Cell", number: cell, icon: Icons.phone));
     }
     if (office.isNotEmpty && !office.toString().contains("--")) {
-      builder.add(buildPhoneTile(context,
-          label: "Office", number: office, icon: Icons.work));
+      builder.add(PhoneTile(label: "Office", number: office, icon: Icons.work));
     }
     if (home.isNotEmpty && !home.toString().contains("--")) {
-      builder.add(buildPhoneTile(context,
-          label: "Home", number: home, icon: Icons.home));
+      builder.add(PhoneTile(label: "Home", number: home, icon: Icons.home));
     }
     if (email.isNotEmpty && !email.contains('No Email Address')) {
-      buildEmailTile(context, label: "Email", email: email);
+      builder.add(EmailTile(label: "Email", email: email));
     }
     return builder;
   }

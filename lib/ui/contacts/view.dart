@@ -64,13 +64,12 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
         ),
         subtitle: Text(item?.lastActivity ?? ""),
       ),
-      buildPhoneTile(context,
+      PhoneTile(
           label: "Cell Phone", number: item?.cellPhone, icon: Icons.phone),
-      buildPhoneTile(context,
-          label: "Home Phone", number: item?.homePhone, icon: Icons.home),
-      buildPhoneTile(context,
+      PhoneTile(label: "Home Phone", number: item?.homePhone, icon: Icons.home),
+      PhoneTile(
           label: "Office Phone", number: item?.officePhone, icon: Icons.work),
-      buildEmailTile(context, label: "Email Address", email: item?.email),
+      EmailTile(label: "Email Address", email: item?.email),
     ];
 
     if (details != null) {

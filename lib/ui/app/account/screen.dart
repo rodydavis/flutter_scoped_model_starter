@@ -56,7 +56,7 @@ class AccountPage extends StatelessWidget {
 class _AccountInfoScreen extends StatelessWidget {
   Widget _buildPhone(BuildContext context, {Phones phone, String label = ""}) {
     if (phone == null) return Container();
-    return buildPhoneTile(context, label: label, number: phone.toString());
+    return PhoneTile(label: label, number: phone.toString());
   }
 
   @override
@@ -72,8 +72,7 @@ class _AccountInfoScreen extends StatelessWidget {
             title: Text(_user?.fullName),
             subtitle: Text(_user?.title),
           ),
-          buildEmailTile(
-            context,
+          EmailTile(
             label: "Email Address",
             email: _user?.email,
           ),
