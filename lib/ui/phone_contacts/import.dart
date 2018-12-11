@@ -139,7 +139,9 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
                         _contact?.familyName,
                       ),
                     ),
-                    title: Text(_contact?.displayName),
+                    title: Text(isNullOrEmpty(_contact?.displayName)
+                        ? "No Name Found"
+                        : _contact?.displayName),
                     subtitle: isNullOrEmpty(_contact?.company)
                         ? null
                         : Text(_contact?.company),
@@ -208,7 +210,9 @@ class _ContactDetailsScreen extends StatelessWidget {
     var _details = <Widget>[
       ListTile(
         leading: Icon(Icons.person),
-        title: Text(contact?.displayName),
+        title: Text(isNullOrEmpty(contact?.displayName)
+            ? "No Name Found"
+            : contact?.displayName),
         subtitle:
             isNullOrEmpty(contact?.company) ? null : Text(contact?.company),
       ),
