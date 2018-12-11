@@ -12,7 +12,7 @@ import 'edit.dart';
 import '../../data/models/auth/model.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'list.dart';
-// import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ContactScreen extends StatelessWidget {
   final ContactModel model;
@@ -50,9 +50,16 @@ class __ContactScreenState extends State<_ContactScreen> {
   bool _isSearching = false;
   bool _sortASC = false;
   String _sortField = "";
+  RefreshController _refreshController;
 
   void showInSnackBar(Widget child) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(content: child));
+  }
+
+  @override
+  void initState() {
+    _refreshController = new RefreshController();
+    super.initState();
   }
 
   @override
@@ -102,10 +109,35 @@ class __ContactScreenState extends State<_ContactScreen> {
           _sort.sortField = _sortField;
           _sort.sortAscending = _sortASC;
           _model.sort(_sortField, _sortASC);
-          return ContactList(
-            model: _model,
-            isSearching: _isSearching,
-          );
+          return new SmartRefresher(
+              enablePullDown: true,
+              enablePullUp: true,
+              controller: _refreshController,
+              onRefresh: (up) {
+                if (up) {
+                  _model.refresh(context).then((_) {
+                    _refreshController.sendBack(true, RefreshStatus.idle);
+                    setState(() {});
+                  });
+                } else {
+                  _model.nextPage(context).then((_) {
+                    if (_model?.lastPage == true) {
+                      print("No Items Found on Next Page");
+                      showInSnackBar(Text("No More Items"));
+                    } else {
+                      _refreshController.scrollTo(
+                          _refreshController.scrollController.offset + 100.0);
+                    }
+                    _refreshController.sendBack(false, RefreshStatus.idle);
+                    setState(() {});
+                  });
+                }
+              },
+              // onOffsetChange: _onOffsetCallback,
+              child: buildList(
+                model: _model,
+                isSearching: _isSearching,
+              ));
         },
       ),
       // body: ContactList(model: _model, isSearching: _isSearching),
@@ -113,7 +145,13 @@ class __ContactScreenState extends State<_ContactScreen> {
         buttons: [
           IconButton(
             icon: Icon(Icons.refresh),
-            onPressed: () => _model.refresh(context),
+            onPressed: () {
+              _refreshController.requestRefresh(true);
+              _model.refresh(context).then((_) {
+                _refreshController.sendBack(true, RefreshStatus.idle);
+                setState(() {});
+              });
+            },
           ),
           IconButton(
             tooltip: "Import Contacts",

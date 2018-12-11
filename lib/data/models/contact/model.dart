@@ -11,22 +11,36 @@ import 'info.dart';
 class ContactModel extends Model {
   // -- Paging --
   PagingModel _paging = PagingModel(rows: 100, page: 1);
+  bool _lastPage = false;
 
-  void nextPage(BuildContext context) {
+  bool get lastPage => _lastPage;
+
+  Future<bool> nextPage(BuildContext context) async {
     _paging = PagingModel(
       rows: _paging.rows,
       page: _paging.page + 1,
     );
-    loadItems(context);
+
+    await loadItems(context, nextFetch: true);
+
+    if (_lastPage) {
+      _paging = PagingModel(
+        rows: _paging.rows,
+        page: _paging.page - 1,
+      );
+    }
+
     notifyListeners();
+    return true;
   }
 
-  void refresh(BuildContext context) {
-    _paging = PagingModel(
-      rows: _paging.rows,
-      page: _paging.page,
-    );
-    loadItems(context);
+  Future refresh(BuildContext context) async {
+    // _loaded = false;
+    // notifyListeners();
+
+    _paging = PagingModel(rows: 100, page: 1);
+
+    await loadItems(context);
     notifyListeners();
   }
 
@@ -64,12 +78,22 @@ class ContactModel extends Model {
   List<ContactObject> get items => _items;
   List<ContactObject> get filteredItems => _filtered;
 
-  Future<bool> loadItems(BuildContext context) async {
+  Future<bool> loadItems(BuildContext context, {bool nextFetch = false}) async {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     _auth.confirmUserChange();
     // -- Load Items from API or Local --
     var _contacts = await ContactRepository().loadList(_auth, paging: _paging);
-    _items = _contacts?.result;
+    if (nextFetch) {
+      if (_contacts?.result?.isEmpty ?? true) {
+        _lastPage = true;
+      } else {
+        _lastPage = false;
+      }
+      _items.addAll(_contacts?.result);
+    } else {
+      _items = _contacts?.result;
+    }
+
     _lastUpdated = DateTime.now().millisecondsSinceEpoch;
     notifyListeners();
     return true;
