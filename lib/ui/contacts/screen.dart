@@ -112,6 +112,10 @@ class __ContactScreenState extends State<_ContactScreen> {
       bottomNavigationBar: AppBottomBar(
         buttons: [
           IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () => _model.refresh(context),
+          ),
+          IconButton(
             tooltip: "Import Contacts",
             icon: Icon(Icons.import_contacts),
             onPressed: () =>
@@ -131,10 +135,6 @@ class __ContactScreenState extends State<_ContactScreen> {
                     }
                   }
                 }),
-          ),
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () => _model.refresh(context),
           ),
         ],
         onChangeSortOrder: (bool value) {

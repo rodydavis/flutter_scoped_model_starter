@@ -8,6 +8,7 @@ import '../app/app_bottom_bar.dart';
 import '../general/list_widget.dart';
 import '../app/app_search_bar.dart';
 import '../../utils/null_or_empty.dart';
+import 'package:uuid/uuid.dart';
 
 class ImportContactsScreen extends StatefulWidget {
   @override
@@ -41,6 +42,7 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
 
   void _searchContacts(String value) async {
     var contacts = await ContactsService.getContacts(query: value);
+
     final _items = contacts
         .map((Contact item) => ContactSelect(contact: item, selected: false))
         .toList();
@@ -100,7 +102,7 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
   @override
   Widget build(BuildContext context) {
     final bool _allSelected = _selectedContacts == _contacts?.length;
-    List<ContactSelect> items = _isSearching ? _filteredContacts : _contacts;
+    // List<ContactSelect> items = _isSearching ? _filteredContacts : _contacts;
     return Scaffold(
       appBar: AppBar(
         title: AppSearchBar(
@@ -121,15 +123,15 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
             isSearching: _isSearching,
             onSearchPressed: () {
               setState(() {
-                _filteredContacts = _contacts;
                 _isSearching = !_isSearching;
+                _filteredContacts = _contacts;
               });
             },
           )
         ],
       ),
       body: ListWidget(
-          items: items,
+          items: _isSearching ? _filteredContacts : _contacts,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -142,9 +144,11 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
               ),
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: items?.length ?? 0,
+                itemCount:
+                    (_isSearching ? _filteredContacts : _contacts)?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) {
-                  final _item = items[index];
+                  var _item =
+                      (_isSearching ? _filteredContacts : _contacts)[index];
                   final _contact = _item.contact;
                   final _selected = _item?.selected ?? false;
                   return ListTile(
@@ -167,18 +171,21 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
                       onPressed: () => _viewContact(context, contact: _contact),
                     ),
                     onTap: () {
+                      print("Selected => ${_item?.contact?.displayName}");
+
+                      setState(() {
+                        _item?.selected = !_selected;
+                      });
+
                       if (_isSearching) {
-                        for (var _row in _contacts) {
-                          if (_item.contact == _row.contact) {
+                        for (var _newItem in _contacts) {
+                          if (_newItem.contact.displayName ==
+                              _item.contact.displayName) {
                             setState(() {
-                              _row?.selected = !_selected;
+                              _newItem?.selected = !_selected;
                             });
                           }
                         }
-                      } else {
-                        setState(() {
-                          _item?.selected = !_selected;
-                        });
                       }
                       _updateCount();
                     },
@@ -226,7 +233,11 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
 class ContactSelect {
   final Contact contact;
   bool selected;
-  ContactSelect({this.contact, this.selected = false});
+
+  ContactSelect({
+    this.contact,
+    this.selected = false,
+  });
 }
 
 class _ContactDetailsScreen extends StatelessWidget {
