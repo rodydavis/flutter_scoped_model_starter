@@ -7,6 +7,8 @@ import '../../ui/app/app_bottom_bar.dart';
 import '../../ui/general/email_tile.dart';
 import '../../ui/general/phone_tile.dart';
 import 'edit.dart';
+import '../../ui/general/address_tile.dart';
+import '../../utils/null_or_empty.dart';
 
 class ContactItemDetails extends StatefulWidget {
   final ContactObject item;
@@ -72,6 +74,13 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
     ];
 
     if (details != null) {
+      if (!isNullOrEmpty(details?.address?.raw()?.trim())) {
+        _widgets.add(AddressTile(
+          address: details.address.toString(),
+          label: "Current Address",
+          icon: Icons.map,
+        ));
+      }
     } else {
       _widgets.add(CircularProgressIndicator());
     }

@@ -24,4 +24,38 @@ class Address {
     data['zip'] = this.zip;
     return data;
   }
+
+  String raw() {
+    return "$street $apartment $city $state $zip".toString();
+  }
+
+  @override
+  String toString() {
+    if (raw().trim().isEmpty) {
+      return "";
+    }
+    var _address = "";
+    _address += "$street $apartment".trim();
+    if (_cityStateZip().isNotEmpty) {
+      _address += "\n";
+      _address += _cityStateZip();
+    }
+    return _address.trim().toString();
+  }
+
+  String _cityStateZip() {
+    bool _city = city != null && city.isNotEmpty;
+    bool _state = state != null && state.isNotEmpty;
+    bool _zip = zip != null && zip.isNotEmpty;
+    if (_city && _state && _zip) {
+      return "$city, $state $zip".trim();
+    } else {
+      if (_city || _state || _zip) {
+        if (!_city) return "$state $zip".trim();
+        if (_city && !_state && !_zip) return "$city".trim();
+        return "$city, $state $zip".trim();
+      }
+    }
+    return "";
+  }
 }

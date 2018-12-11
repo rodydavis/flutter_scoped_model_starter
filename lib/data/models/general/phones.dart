@@ -22,6 +22,10 @@ class Phones {
     return data;
   }
 
+  String raw() {
+    return "$areaCode$prefix$number".toString();
+  }
+
   @override
   String toString() {
     return "($areaCode) $prefix-$number".toString();
