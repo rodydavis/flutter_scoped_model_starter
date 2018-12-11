@@ -42,6 +42,8 @@ class AuthModel extends Model {
   bool _userChanged = false;
   String _error = "";
   bool _isLoading = false;
+  int _savedUsersCount = 0;
+  int _saveUsersAdded = 0;
 
   bool get isLoading => _isLoading;
 
@@ -49,6 +51,14 @@ class AuthModel extends Model {
   List<UserObject> get users => _users;
   UserObject get currentUser => _currentUser;
   bool get userChanged => _userChanged;
+
+  int get usersCount => _savedUsersCount;
+  int get usersAdded => _saveUsersAdded;
+
+  double get progress {
+    if (_saveUsersAdded == 0) return 0.0;
+    return _saveUsersAdded / _savedUsersCount;
+  }
 
   Future<bool> login(
       {@required String username,
@@ -149,6 +159,8 @@ class AuthModel extends Model {
       prefs.setList(Info.users, [_list[0], _list[1], _list[2], _list[3]]);
       _list = await prefs.getList(Info.users);
     }
+    _savedUsersCount = _list?.length;
+    notifyListeners();
     final storage = new FlutterSecureStorage();
     final sharedPrefs = await SharedPreferences.getInstance();
     print("List of Users => $_list");
@@ -165,6 +177,8 @@ class AuthModel extends Model {
               username: _username, password: _password);
           if (_newUser != null && !_newUsers.contains(_newUser?.username)) {
             _newUsers.add(_newUser);
+            _saveUsersAdded += 1;
+            notifyListeners();
           }
         }
       }

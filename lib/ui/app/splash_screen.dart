@@ -33,6 +33,7 @@ class _SplashScreenState extends State<_SplashScreen>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
   bool autoLogin = false;
+  String _message = "Loading...";
 
   @override
   void initState() {
@@ -49,6 +50,9 @@ class _SplashScreenState extends State<_SplashScreen>
     });
     print("Should Log In :$_autoLogin");
     if (_autoLogin ?? false) {
+      setState(() {
+        _message = "Signing In...";
+      });
       _loginAuto(context);
     } else {
       // -- Manual Login --
@@ -72,12 +76,26 @@ class _SplashScreenState extends State<_SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    int _count = _auth?.usersCount ?? 0;
+    int _users = _auth?.users?.length;
     return Scaffold(
       body: Center(
-        child: NativeLoadingIndicator(
-          text: Text("Loading..."),
-        ),
-      ),
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: LinearProgressIndicator(
+              value: _auth?.progress,
+            ),
+          ),
+          Text(_message.contains("Signing In")
+              ? _message + " ($_count/$_users)"
+              : _message),
+        ],
+      )),
     );
   }
 }
