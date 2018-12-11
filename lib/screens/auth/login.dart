@@ -87,7 +87,8 @@ class _LoginPageState extends State<LoginPage> {
                     val.isEmpty ? 'Please enter a password' : null,
               ),
               trailing: IconButton(
-                icon: Icon(Icons.remove_red_eye),
+                icon: Icon(
+                    _hidePassword ? Icons.visibility : Icons.visibility_off),
                 onPressed: () {
                   setState(() {
                     _hidePassword = !_hidePassword;

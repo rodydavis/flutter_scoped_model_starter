@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 import '../../local_storage.dart';
 import '../../repositories/auth_repository.dart';
 import 'info.dart';
+import '../../../constants.dart';
 
 class UserObject {
   String username, password, token;
@@ -39,49 +40,28 @@ class AuthModel extends Model {
   UserObject _currentUser;
   bool _loggedIn = false;
   bool _userChanged = false;
-  String _token = "";
   String _error = "";
 
   bool get loggedIn => _loggedIn;
-  String get token => _token;
   List<UserObject> get users => _users;
   UserObject get currentUser => _currentUser;
   bool get userChanged => _userChanged;
 
-  Future login(
+  Future<bool> login(
       {@required String username,
       @required String password,
       bool softLogin = false}) async {
-    var _auth = AuthRepository();
-    // -- Login --
-    try {
-      _token = await _auth.login(username, password);
-      _error = "";
-      // _saveInfoToDisk(username: username, password: password);
-    } catch (e) {
-      _token = "";
-      _error = e;
-      print(_error);
-      logout();
-    }
-
-    if (_token.toString().isNotEmpty) {
-      // -- Get User Info --
-      try {
-        var _result = await _auth.getInfo(_token);
-        var _user = UserObject(
-          token: _token,
-          data: _result?.result,
-          username: username,
-          password: password,
-        );
-        // if (!_users.contains(_user)) _users.add(_user);
-        switchToAccount(_user, softLogin: softLogin);
-      } catch (e) {
-        print("Error Getting Info: $e");
-      }
+    var _newToken = await _getToken(username: username, password: password);
+    if (_newToken.isNotEmpty) {
+      var _newUser =
+          await _getUser(_newToken, username: username, password: password);
+      switchToAccount(_newUser, softLogin: softLogin);
+    } else {
+      notifyListeners();
+      return false;
     }
     notifyListeners();
+    return true;
   }
 
   Future logout({bool force = true, bool all = false}) async {
@@ -106,10 +86,9 @@ class AuthModel extends Model {
     if (!_users.contains(newUser)) _users.add(newUser);
     if (!softLogin) {
       _currentUser = newUser;
-      _token = newUser?.token;
       _loggedIn = true;
       _userChanged = true;
-      saveUsers();
+      _saveUsers();
     }
     notifyListeners();
   }
@@ -119,14 +98,25 @@ class AuthModel extends Model {
     notifyListeners();
   }
 
-  Future autoLogin() async {
-    await loadUsers();
-    // var prefs = AppPreferences();
-    // var _username = await prefs.getInfo(Info.username);
-    // var _password = await prefs.getSecure(Info.password);
+  Future<bool> autoLogin() async {
+    var _newUsers = await _loadUsers();
+    if (_newUsers.isNotEmpty) {
+      _users = _newUsers;
+    } else {
+      _loggedIn = false;
+      notifyListeners();
+      return false;
+    }
+    switchToAccount(_users?.first);
+    notifyListeners();
+    return true;
+  }
 
-    // login(username: _username, password: _password);
-    if (_users == null || _users.isEmpty) _loggedIn = false;
+  Future refreshToken() async {
+    await login(
+      username: _currentUser?.username,
+      password: _currentUser?.password,
+    );
   }
 
   // void _saveInfoToDisk({@required String username, @required String password}) {
@@ -137,25 +127,40 @@ class AuthModel extends Model {
   //   saveUsers();
   // }
 
-  Future loadUsers() async {
+  Future<List<UserObject>> _loadUsers() async {
     var prefs = AppPreferences();
+    List<UserObject> _newUsers = [];
     var _list = await prefs.getList(Info.users);
-
+    if (_list != null && _list.length > kMultipleAccounts) {
+      prefs.setList(Info.users, [_list[0], _list[1], _list[2], _list[3]]);
+      _list = await prefs.getList(Info.users);
+    }
     final storage = new FlutterSecureStorage();
     final sharedPrefs = await SharedPreferences.getInstance();
-
+    print("List of Users => $_list");
     if (_list != null && _list.isNotEmpty) {
       for (var _id in _list) {
+        print("ID => $_id");
         var _username = sharedPrefs.getString(_id);
         var _password = await storage.read(key: _id);
-        login(username: _username, password: _password, softLogin: true);
+        var _newToken =
+            await _getToken(username: _username, password: _password);
+        print("Username: $_username, Password: $_password => $_newToken");
+        if (_newToken.isNotEmpty) {
+          var _newUser = await _getUser(_newToken,
+              username: _username, password: _password);
+          if (_newUser != null && !_newUsers.contains(_newUser?.username)) {
+            _newUsers.add(_newUser);
+          }
+        }
       }
-      if (_users != null && _users.isNotEmpty)
-        switchToAccount(_users?.first, softLogin: false);
+      print("List of Users => $_newUsers");
     }
+
+    return _newUsers;
   }
 
-  Future saveUsers() async {
+  Future _saveUsers() async {
     var prefs = AppPreferences();
     var uuid = new Uuid();
     final storage = new FlutterSecureStorage();
@@ -171,10 +176,58 @@ class AuthModel extends Model {
     prefs.setList(Info.users, _list);
   }
 
+  void removeUser(UserObject user) {
+    _users.remove(user);
+    if (user == _currentUser && (_users != null && _users.isNotEmpty)) {
+      switchToAccount(_users?.first);
+    }
+    notifyListeners();
+  }
+
   Future resetUsers() async {
     _currentUser = null;
     _users.clear();
     var prefs = AppPreferences();
     prefs.setList(Info.users, []);
+  }
+
+  // -- Helpers --
+  Future<String> _getToken({
+    @required String username,
+    @required String password,
+  }) async {
+    var _auth = AuthRepository();
+    String _newToken = "";
+    try {
+      _newToken = await _auth.login(username, password);
+      _error = "";
+    } catch (e) {
+      _newToken = "";
+      _error = e.toString();
+      print(_error);
+    }
+    return _newToken;
+  }
+
+  Future<UserObject> _getUser(
+    String token, {
+    @required String username,
+    @required String password,
+  }) async {
+    var _auth = AuthRepository();
+    UserObject _user;
+    try {
+      var _result = await _auth.getInfo(token);
+      _user = UserObject(
+        token: token,
+        data: _result?.result,
+        username: username,
+        password: password,
+      );
+      return _user;
+    } catch (e) {
+      print("Error Getting Info: $e");
+    }
+    return _user;
   }
 }

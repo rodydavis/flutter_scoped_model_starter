@@ -4,6 +4,8 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../data/models/auth/model.dart';
 import '../../ui/containers/profile_avatar.dart';
 import '../../utils/two_letter_name.dart';
+import '../../constants.dart';
+import '../../screens/auth/login.dart';
 
 class AppDrawer extends StatelessWidget {
   AppDrawer({
@@ -49,12 +51,14 @@ class AppDrawer extends StatelessWidget {
             child: new UserAccountsDrawerHeader(
               decoration: new BoxDecoration(
                 color: Colors.transparent,
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(_item?.companyImageUrl),
-                  colorFilter: new ColorFilter.mode(
-                      Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                ),
+                image: _item?.companyImageUrl == null
+                    ? null
+                    : DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(_item?.companyImageUrl),
+                        colorFilter: new ColorFilter.mode(
+                            Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                      ),
               ),
               accountName: Text(
                 _item?.fullName ?? "Guest",
@@ -113,20 +117,32 @@ class AppDrawer extends StatelessWidget {
               navigator.pop();
               navigator.pushReplacementNamed("/login");
             },
-            onLongPress: _user?.users?.length == 3
+            onLongPress: (_user?.users?.length ?? 0) == kMultipleAccounts
                 ? null
                 : () {
                     _user.logout(force: false);
-                    navigator.popAndPushNamed("/login");
+                    // navigator.popAndPushNamed("/login");
+                    navigator.pop();
+                    navigator.push(
+                      MaterialPageRoute(
+                          builder: (context) => LoginPage(),
+                          fullscreenDialog: true),
+                    );
                   },
-            trailing: _user?.users?.length == 3
+            trailing: (_user?.users?.length ?? 0) == kMultipleAccounts
                 ? null
                 : IconButton(
                     tooltip: "Login to Multiple Accounts",
                     icon: Icon(Icons.account_circle),
                     onPressed: () {
                       _user.logout(force: false);
-                      navigator.popAndPushNamed("/login");
+                      // navigator.popAndPushNamed("/login");
+                      navigator.pop();
+                      navigator.push(
+                        MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                            fullscreenDialog: true),
+                      );
                     },
                   ),
           ),

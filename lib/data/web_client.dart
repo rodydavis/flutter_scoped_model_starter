@@ -2,14 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart' as inner;
 
 class WebClient {
   const WebClient();
 
-  Future<dynamic> get(String url, {String token}) async {
+  Future<dynamic> get(String url, {@required String token}) async {
     final http.Response response = await getClient().get(
       url,
       headers: {
@@ -30,7 +30,7 @@ class WebClient {
     return json.decode(response.body);
   }
 
-  Future<dynamic> delete(String url, {String token}) async {
+  Future<dynamic> delete(String url, {@required String token}) async {
     final http.Response response = await getClient().delete(
       url,
       headers: {
@@ -68,6 +68,7 @@ class WebClient {
     print("URL: $url");
     print("Headers: $bodyContentType");
     print("Body: $data");
+    print("Token: $token");
     print("Response Code: " + response.statusCode.toString());
     print("Response Body: " + response.body.toString());
 

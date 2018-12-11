@@ -17,11 +17,8 @@ class ContactRepository {
     this.webClient = const WebClient(),
   });
 
-  Future<ContactResult> loadList(
-    AuthModel auth, {
-    @required PagingModel paging,
-    SearchModel search,
-  }) async {
+  Future<ContactResult> loadList(AuthModel auth,
+      {@required PagingModel paging, SearchModel search}) async {
     dynamic _response;
 
     // search = SearchModel(search: "Prospect", filters: [5]);
@@ -31,15 +28,15 @@ class ContactRepository {
       final response = await webClient.post(
         kApiUrl + '/search/contacts/${paging.rows}/${paging.page}',
         json.encode(search),
-        token: auth?.token,
+        token: auth?.currentUser?.token,
       );
-      _response = response;
 
-      // -- Get List --
+      _response = response;
     } else {
+      // -- Get List --
       final response = await webClient.get(
         kApiUrl + '/contacts/${paging.rows}/${paging.page}',
-        token: auth?.token,
+        token: auth?.currentUser?.token,
       );
       _response = response;
     }
@@ -52,7 +49,10 @@ class ContactRepository {
   Future deleteContact(AuthModel auth, String id) async {
     var url = kApiUrl + '/contacts/info/' + id.toString();
     var response;
-    response = await webClient.delete(url, token: auth?.token);
+    response = await webClient.delete(
+      url,
+      token: auth?.currentUser?.token,
+    );
     print(response);
   }
 

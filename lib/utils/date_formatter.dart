@@ -8,6 +8,7 @@ String formatDate(String value) {
 }
 
 String formatDateCustom(DateTime value, {String format = "MM-dd-yyyy"}) {
+  if (value == null) return "";
   return DateFormat(format).format(value);
 }
 

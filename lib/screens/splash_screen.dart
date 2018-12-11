@@ -59,10 +59,9 @@ class _SplashScreenState extends State<_SplashScreen>
   void _loginAuto(BuildContext context) async {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     // -- Auto Login --
-    await _auth.autoLogin();
+    var _valid = await _auth.autoLogin();
 
-    if (_auth?.loggedIn ?? false) {
-      print("Logged In :${_auth?.loggedIn}");
+    if (!_valid) {
       // -- Login Failed --
       Navigator.pushReplacementNamed(context, '/login');
     } else {

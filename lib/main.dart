@@ -10,6 +10,7 @@ import 'screens/home.dart';
 import 'screens/settings.dart';
 import 'screens/account.dart';
 import 'screens/splash_screen.dart';
+import 'data/models/task/model.dart';
 
 // STARTER: import - do not remove comment
 
@@ -19,6 +20,7 @@ void main() => runApp(MyApp());
 final AuthModel authModel = AuthModel();
 final ThemeModel themeModel = ThemeModel();
 final ContactModel contactModel = ContactModel();
+final TaskModel taskModel = TaskModel();
 
 class MyApp extends StatelessWidget {
   @override
@@ -43,7 +45,7 @@ class AppTheme extends StatelessWidget {
       home: SplashScreen(),
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => LoginPage(),
-        '/home': (BuildContext context) => HomePage(),
+        '/home': (BuildContext context) => HomePage(model: taskModel),
         '/account': (BuildContext context) => AccountPage(),
         '/settings': (BuildContext context) => SettingsPage(),
         // STARTER: routes - do not remove comment
