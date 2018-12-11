@@ -169,6 +169,16 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
           ),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: _selectedContacts == 0
+          ? null
+          : FloatingActionButton(
+              tooltip: "Import Contacts",
+              child: Icon(Icons.save),
+              heroTag: "Import",
+              backgroundColor: Theme.of(context).primaryColorDark,
+              onPressed: () {},
+            ),
     );
   }
 
