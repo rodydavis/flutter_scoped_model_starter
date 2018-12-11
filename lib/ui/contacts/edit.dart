@@ -12,7 +12,7 @@ class ContactItemEdit extends StatefulWidget {
 }
 
 class _ContactItemEditState extends State<ContactItemEdit> {
-  TextEditingController _nameController, _descriptionController;
+  TextEditingController _firstName, _lastName, _email;
   bool _isNew = false;
   @override
   void initState() {
@@ -27,24 +27,18 @@ class _ContactItemEditState extends State<ContactItemEdit> {
       });
     }
     // -- Load Info --
-    _nameController =
-        TextEditingController(text: widget?.item?.firstName ?? "");
-    _descriptionController =
-        TextEditingController(text: widget?.item?.lastActivity ?? "");
+    _firstName = TextEditingController(text: widget?.item?.firstName ?? "");
+    _lastName = TextEditingController(text: widget?.item?.lastName ?? "");
   }
 
   void _saveInfo(BuildContext context) async {
     var uuid = new Uuid();
 
     if (_formKey.currentState.validate()) {
-      // - Get info From Input --
-      var _name = _nameController.text.toString();
-      var _description = _descriptionController.text.toString();
-
       final ContactObject _item = ContactObject(
         id: _isNew ? uuid.v4() : widget.item?.id,
-        firstName: _name,
-        lastActivity: _description,
+        firstName: _firstName.text.toString(),
+        lastName: _lastName.text.toString(),
       );
 
       // if (_isNew) {
@@ -76,7 +70,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                   autofocus: true,
                   decoration:
                       InputDecoration(labelText: ContactFields.first_name),
-                  controller: _nameController,
+                  controller: _firstName,
                   keyboardType: TextInputType.text,
                   validator: (val) => val.isEmpty
                       ? 'Please enter a ${ContactFields.first_name}'
@@ -86,12 +80,12 @@ class _ContactItemEditState extends State<ContactItemEdit> {
               ListTile(
                 title: TextFormField(
                   decoration:
-                      InputDecoration(labelText: ContactFields.last_activity),
-                  controller: _descriptionController,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  // validator: (val) =>
-                  //     val.isEmpty ? 'Please enter a ${ContactFields.last_activity}' : null,
+                      InputDecoration(labelText: ContactFields.last_name),
+                  controller: _lastName,
+                  keyboardType: TextInputType.text,
+                  validator: (val) => val.isEmpty
+                      ? 'Please enter a ${ContactFields.last_name}'
+                      : null,
                 ),
               ),
               Row(

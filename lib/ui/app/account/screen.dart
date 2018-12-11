@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_list_drag_and_drop/drag_and_drop_list.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../constants.dart';
-import '../../data/models/auth/model.dart';
-import '../../data/models/general/phones.dart';
-import '../../ui/auth/login.dart';
-import '../../ui/general/email_tile.dart';
-import '../../ui/general/phone_tile.dart';
-import '../../ui/general/profile_avatar.dart';
-import '../../utils/two_letter_name.dart';
+import '../../../constants.dart';
+import '../../../data/models/auth/model.dart';
+import '../../../data/models/general/phones.dart';
+import '../../../ui/auth/login.dart';
+import '../../../ui/general/email_tile.dart';
+import '../../../ui/general/phone_tile.dart';
+import '../../../ui/general/profile_avatar.dart';
+import '../../../utils/two_letter_name.dart';
 
 class AccountPage extends StatelessWidget {
   @override

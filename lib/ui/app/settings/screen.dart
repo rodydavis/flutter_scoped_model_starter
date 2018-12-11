@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../data/local_storage.dart';
-import '../../data/models/auth/model.dart';
-import '../../data/models/theme.dart';
-import '../../ui/general/settings_section.dart';
+import '../../../data/local_storage.dart';
+import '../../../data/models/auth/model.dart';
+import '../../../data/models/theme.dart';
+import '../../../ui/general/settings_section.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -65,7 +65,7 @@ class _State extends State<SettingsPage> {
               _darkMode ?? false
                   ? ListTile(
                       title: Text("True Black"),
-                      subtitle: Text("Looks better on OLED Screens"),
+                      subtitle: Text("Black on OLED Screens"),
                       trailing: Switch(
                         value: _trueBlack ?? false,
                         onChanged: (bool value) {
