@@ -133,13 +133,13 @@ class AuthModel extends Model {
     );
   }
 
-  // void _saveInfoToDisk({@required String username, @required String password}) {
-  //   var prefs = AppPreferences();
-  //   prefs.setInfo(Info.username, username);
-  //   prefs.setSecure(Info.password, password);
-
-  //   saveUsers();
-  // }
+  void changeUsersOrder(int before, int after) {
+    var data = _users[before];
+    _users.removeAt(before);
+    _users.insert(after, data);
+    notifyListeners();
+    _saveUsers();
+  }
 
   Future<List<UserObject>> _loadUsers() async {
     var prefs = AppPreferences();

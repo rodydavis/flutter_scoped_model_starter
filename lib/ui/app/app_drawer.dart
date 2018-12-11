@@ -117,18 +117,7 @@ class AppDrawer extends StatelessWidget {
               navigator.pop();
               navigator.pushReplacementNamed("/login");
             },
-            // onLongPress: (_user?.users?.length ?? 0) == kMultipleAccounts
-            //     ? null
-            //     : () {
-            //         _user.logout(force: false);
-            //         navigator.pop();
-            //         navigator.push(
-            //           MaterialPageRoute(
-            //               builder: (context) => LoginPage(addUser: true),
-            //               fullscreenDialog: true),
-            //         );
-            //       },
-            trailing: (_user?.users?.length ?? 0) == kMultipleAccounts
+            trailing: (_user?.users?.length ?? 0) >= kMultipleAccounts
                 ? null
                 : IconButton(
                     tooltip: "Login to Another Account",
