@@ -10,6 +10,7 @@ import '../../ui/app/app_drawer.dart';
 import '../../ui/app/app_search_bar.dart';
 import 'edit.dart';
 import '../../data/models/auth/model.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'list.dart';
 // import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -45,9 +46,14 @@ class _ContactScreen extends StatefulWidget {
 }
 
 class __ContactScreenState extends State<_ContactScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _isSearching = false;
   bool _sortASC = false;
   String _sortField = "";
+
+  void showInSnackBar(Widget child) {
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(content: child));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +62,7 @@ class __ContactScreenState extends State<_ContactScreen> {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: AppSearchBar(
           name: "Contact" + "s",
@@ -107,7 +114,14 @@ class __ContactScreenState extends State<_ContactScreen> {
           IconButton(
             tooltip: "Import Contacts",
             icon: Icon(Icons.import_contacts),
-            onPressed: () => Navigator.pushNamed(context, "/import"),
+            onPressed: () =>
+                Navigator.pushNamed(context, "/import").then((value) {
+                  if (value != null) {
+                    List<Contact> _items = value;
+                    // Add Items
+                    showInSnackBar(Text("Importing Contacts..."));
+                  }
+                }),
           ),
           IconButton(
             icon: Icon(Icons.refresh),

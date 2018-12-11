@@ -17,6 +17,9 @@ class ImportContactsScreen extends StatefulWidget {
 class ImportContactsScreenState extends State<ImportContactsScreen> {
   List<ContactSelect> _contacts;
   List<ContactSelect> _filteredContacts;
+  bool _isSearching = false;
+  int _selectedContacts = 0;
+
   @override
   void initState() {
     // Get all contacts
@@ -69,7 +72,6 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
     _updateCount();
   }
 
-  int _selectedContacts = 0;
   void _updateCount() {
     int _count = 0;
     if (_contacts != null && _contacts.isNotEmpty)
@@ -83,7 +85,17 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
     });
   }
 
-  bool _isSearching = false;
+  void _importSelectedContacts(BuildContext context) {
+    List<Contact> _items = [];
+    if (_contacts != null && _contacts.isNotEmpty) {
+      for (var _item in _contacts) {
+        if (_item?.selected == true) {
+          _items.add(_item?.contact);
+        }
+      }
+    }
+    Navigator.pop(context, _items);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +210,7 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
               child: Icon(Icons.save),
               heroTag: "Import",
               backgroundColor: Theme.of(context).primaryColorDark,
-              onPressed: () {},
+              onPressed: () => _importSelectedContacts(context),
             ),
     );
   }
