@@ -15,11 +15,11 @@ class ListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items == null) {
-      return onNull ?? CircularProgressIndicator();
+      return onNull ?? Center(child: CircularProgressIndicator());
     }
 
     if (items.isEmpty) {
-      return onEmpty ?? Text("No Items Found");
+      return onEmpty ?? Center(child: Text("No Items Found"));
     }
 
     return child;

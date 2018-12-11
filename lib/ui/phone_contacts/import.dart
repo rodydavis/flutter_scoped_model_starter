@@ -6,6 +6,7 @@ import '../general/phone_tile.dart';
 import '../general/email_tile.dart';
 import '../app/app_bottom_bar.dart';
 import '../general/list_widget.dart';
+import '../app/app_search_bar.dart';
 
 class ImportContactsScreen extends StatefulWidget {
   @override
@@ -23,6 +24,17 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
 
   void _loadContacts() async {
     var contacts = await ContactsService.getContacts();
+    final _items = contacts
+        .map((Contact item) => ContactSelect(contact: item, selected: false))
+        .toList();
+    setState(() {
+      _contacts = _items;
+    });
+    _updateCount();
+  }
+
+  void _searchContacts(String value) async {
+    var contacts = await ContactsService.getContacts(query: value);
     final _items = contacts
         .map((Contact item) => ContactSelect(contact: item, selected: false))
         .toList();
@@ -68,12 +80,35 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
     });
   }
 
+  bool _isSearching = false;
+
   @override
   Widget build(BuildContext context) {
     final bool _allSelected = _selectedContacts == _contacts?.length;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Phone Contacts"),
+        title: AppSearchBar(
+          name: "Phone Contact" + "s",
+          isSearching: _isSearching,
+          onSearchChanged: (String value) {
+            if (value == null || value.isEmpty) {
+              _loadContacts();
+            } else {
+              _searchContacts(value);
+            }
+          },
+        ),
+        actions: <Widget>[
+          AppSearchButton(
+            isSearching: _isSearching,
+            onSearchPressed: () {
+              setState(() {
+                _isSearching = !_isSearching;
+              });
+              if (!_isSearching) _loadContacts();
+            },
+          )
+        ],
       ),
       body: ListWidget(
           items: _contacts,
