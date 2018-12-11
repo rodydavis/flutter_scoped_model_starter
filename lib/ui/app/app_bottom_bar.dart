@@ -94,7 +94,7 @@ class _AppBottomBarState extends State<AppBottomBar> {
       ));
     }
 
-    _buttons.addAll(widget.buttons);
+    if (widget?.buttons != null) _buttons.addAll(widget.buttons);
 
     return new BottomAppBar(
       shape: CircularNotchedRectangle(),

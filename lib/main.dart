@@ -11,6 +11,7 @@ import 'ui/app/settings.dart';
 import 'ui/app/splash_screen.dart';
 import 'ui/auth/login.dart';
 import 'ui/contacts/screen.dart';
+import 'ui/phone_contacts/import.dart';
 
 // STARTER: import - do not remove comment
 
@@ -52,6 +53,7 @@ class AppTheme extends StatelessWidget {
         // STARTER: routes - do not remove comment
         '/contacts': (BuildContext context) =>
             ContactScreen(model: contactModel),
+        '/import': (BuildContext context) => ImportContactsScreen(),
       },
     );
   }

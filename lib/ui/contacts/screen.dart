@@ -105,12 +105,9 @@ class __ContactScreenState extends State<_ContactScreen> {
       bottomNavigationBar: AppBottomBar(
         buttons: [
           IconButton(
-            icon: Icon(Icons.filter_list),
-            onPressed: null,
-          ),
-          IconButton(
-            icon: Icon(Icons.restore),
-            onPressed: null,
+            tooltip: "Import Contacts",
+            icon: Icon(Icons.import_contacts),
+            onPressed: () => Navigator.pushNamed(context, "/import"),
           ),
           IconButton(
             icon: Icon(Icons.refresh),
