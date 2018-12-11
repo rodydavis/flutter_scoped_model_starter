@@ -3,14 +3,14 @@ import 'package:scoped_model/scoped_model.dart';
 
 import 'data/models/auth/model.dart';
 import 'data/models/contact/model.dart';
-import 'data/models/theme.dart';
-import 'screens/auth/login.dart';
-import 'screens/contacts/screen.dart';
-import 'screens/home.dart';
-import 'screens/settings.dart';
-import 'screens/account.dart';
-import 'screens/splash_screen.dart';
 import 'data/models/task/model.dart';
+import 'data/models/theme.dart';
+import 'ui/app/account.dart';
+import 'ui/app/home.dart';
+import 'ui/app/settings.dart';
+import 'ui/app/splash_screen.dart';
+import 'ui/auth/login.dart';
+import 'ui/contacts/screen.dart';
 
 // STARTER: import - do not remove comment
 

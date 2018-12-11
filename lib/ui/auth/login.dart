@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../data/local_storage.dart';
 import '../../data/models/auth/model.dart';
 import 'create_account.dart';
 

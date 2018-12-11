@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/models/contact/list.dart';
 import '../../data/models/contact/model.dart';
-import '../../ui/components/three_row_tile.dart';
+import '../../ui/general/three_row_tile.dart';
 import '../../utils/date_formatter.dart';
 import 'edit.dart';
 import 'view.dart';

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../data/models/contact/list.dart';
 import '../../data/models/contact/model.dart';
 import '../../ui/app/app_bottom_bar.dart';
-import '../../ui/containers/email_tile.dart';
-import '../../ui/containers/phone_tile.dart';
+import '../../ui/general/email_tile.dart';
+import '../../ui/general/phone_tile.dart';
 import 'edit.dart';
 
 class ContactItemDetails extends StatefulWidget {

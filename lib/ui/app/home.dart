@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
-import '../ui/app/app_drawer.dart';
-import '../ui/containers/date_view.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../data/models/task/model.dart';
+
+import '../../data/models/task/model.dart';
+import '../../ui/app/app_drawer.dart';
+import '../../ui/general/date_view.dart';
 
 class HomePage extends StatelessWidget {
   final TaskModel model;

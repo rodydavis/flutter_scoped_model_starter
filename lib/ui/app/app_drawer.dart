@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../data/models/auth/model.dart';
-import '../../ui/containers/profile_avatar.dart';
-import '../../utils/two_letter_name.dart';
 import '../../constants.dart';
-import '../../screens/auth/login.dart';
+import '../../data/models/auth/model.dart';
+import '../../ui/auth/login.dart';
+import '../../ui/general/profile_avatar.dart';
+import '../../utils/two_letter_name.dart';
 
 class AppDrawer extends StatelessWidget {
   AppDrawer({
