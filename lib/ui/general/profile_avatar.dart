@@ -20,12 +20,12 @@ class AvatarWidget extends StatelessWidget {
     }
     if (hideImage || _url == null || _url.isEmpty) {
       return new CircleAvatar(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Theme.of(context).primaryColor,
         child: new Text(noImageText ?? "No URL"),
       );
     }
     return new CircleAvatar(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: Theme.of(context).primaryColor,
       backgroundImage: NetworkImageSSL(_url),
     );
   }
