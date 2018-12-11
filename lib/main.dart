@@ -44,7 +44,8 @@ class AppTheme extends StatelessWidget {
       theme: _model.theme,
       home: SplashScreen(),
       routes: <String, WidgetBuilder>{
-        '/login': (BuildContext context) => LoginPage(),
+        '/login': (BuildContext context) =>
+            LoginPage(username: authModel?.currentUser?.username),
         '/home': (BuildContext context) => HomePage(model: taskModel),
         '/account': (BuildContext context) => AccountPage(),
         '/settings': (BuildContext context) => SettingsPage(),

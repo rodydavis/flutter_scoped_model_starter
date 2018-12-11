@@ -58,5 +58,11 @@ class TaskModel extends Model {
     return true;
   }
 
-  
+  Future changeDate(BuildContext context, {DateTime newDate}) async {
+    _loaded = false;
+    notifyListeners();
+
+    _date = newDate;
+    await loadTasks(context);
+  }
 }

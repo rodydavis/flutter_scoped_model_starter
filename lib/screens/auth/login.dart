@@ -6,6 +6,9 @@ import '../../data/models/auth/model.dart';
 import 'create_account.dart';
 
 class LoginPage extends StatefulWidget {
+  final bool addUser;
+  final String username;
+  LoginPage({this.addUser = false, this.username = ""});
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -24,10 +27,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _initPlatformState() async {
-    var prefs = AppPreferences();
-    var _username = await prefs.getInfo(Info.username);
     setState(() {
-      _usernameController = TextEditingController(text: _username);
+      _usernameController = TextEditingController(text: widget.username);
     });
   }
 
@@ -38,9 +39,13 @@ class _LoginPageState extends State<LoginPage> {
       var _password = _passwordController.text.toString();
 
       // -- Login --
-      user.login(username: _username, password: _password).then((_) {
-        if (user?.loggedIn ?? false) {
-          Navigator.pushReplacementNamed(context, "/home");
+      user.login(username: _username, password: _password).then((valid) {
+        if (valid) {
+          if (widget.addUser) {
+            Navigator.pop(context);
+          } else {
+            Navigator.pushReplacementNamed(context, "/home");
+          }
         } else {
           setState(() {
             // _error = user.error;
@@ -70,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             ListTile(
               title: TextFormField(
+                autofocus: true,
                 decoration: InputDecoration(labelText: "Username"),
                 controller: _usernameController,
                 keyboardType: TextInputType.emailAddress,
@@ -96,18 +102,21 @@ class _LoginPageState extends State<LoginPage> {
                 },
               ),
             ),
+            Container(height: 30.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                RaisedButton(
-                  color: Colors.blue,
-                  child: Text(
-                    "Login",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () => _login(context, user: _user),
-                ),
+                _user?.isLoading ?? false
+                    ? CircularProgressIndicator()
+                    : RaisedButton(
+                        color: Colors.blue,
+                        child: Text(
+                          "Login",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () => _login(context, user: _user),
+                      ),
               ],
             ),
             Row(

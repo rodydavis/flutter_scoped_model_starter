@@ -29,7 +29,9 @@ class _DateView extends StatefulWidget {
 }
 
 class __DateViewState extends State<_DateView> {
-  void _onDateChange(DateTime value) {}
+  void _onDateChange(BuildContext context, {TaskModel model, DateTime value}) {
+    model.changeDate(context, newDate: value);
+  }
 
   Widget _buildListView(BuildContext context, {TaskModel model}) {
     if (model.date == null) model.today();
@@ -64,7 +66,8 @@ class __DateViewState extends State<_DateView> {
         children: <Widget>[
           DateViewWidget(
             date: _model?.date,
-            dateChanged: _onDateChange,
+            dateChanged: (DateTime value) =>
+                _onDateChange(context, model: _model, value: value),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

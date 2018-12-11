@@ -41,6 +41,9 @@ class AuthModel extends Model {
   bool _loggedIn = false;
   bool _userChanged = false;
   String _error = "";
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
 
   bool get loggedIn => _loggedIn;
   List<UserObject> get users => _users;
@@ -51,6 +54,8 @@ class AuthModel extends Model {
       {@required String username,
       @required String password,
       bool softLogin = false}) async {
+    _isLoading = true;
+    notifyListeners();
     var _newToken = await _getToken(username: username, password: password);
     if (_newToken.isNotEmpty) {
       var _newUser =
@@ -60,6 +65,7 @@ class AuthModel extends Model {
       notifyListeners();
       return false;
     }
+    _isLoading = false;
     notifyListeners();
     return true;
   }
@@ -83,7 +89,15 @@ class AuthModel extends Model {
   }
 
   void switchToAccount(UserObject newUser, {bool softLogin = false}) {
-    if (!_users.contains(newUser)) _users.add(newUser);
+    List<String> _usernames = [];
+    for (var _item in _users) {
+      _usernames.add(_item?.username);
+    }
+    print("User: ${newUser?.username} => Users: $_usernames");
+    if (!_usernames.contains(newUser?.username)) {
+      _users.add(newUser);
+    }
+
     if (!softLogin) {
       _currentUser = newUser;
       _loggedIn = true;
