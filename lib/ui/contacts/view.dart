@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../data/models/contact/info.dart';
 import '../../data/models/contact/list.dart';
 import '../../data/models/contact/model.dart';
 import '../../ui/app/app_bottom_bar.dart';
@@ -24,6 +25,8 @@ class ContactItemDetails extends StatefulWidget {
 
 class _ContactItemDetailsState extends State<ContactItemDetails> {
   ContactObject item;
+  ContactDetails details;
+  bool _isLoaded = false;
 
   @override
   void initState() {
@@ -38,8 +41,40 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
     // -- Load Info From API --
   }
 
+  void _getDetails(BuildContext context, {ContactModel model}) async {
+    var _contact = await model.getDetails(context, id: widget?.item?.id);
+    setState(() {
+      details = _contact;
+      _isLoaded = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final _model = widget.model;
+    if (details == null) _getDetails(context, model: _model);
+
+    var _widgets = <Widget>[
+      ListTile(
+        leading: Icon(Icons.person),
+        title: Text(
+          ((item?.firstName ?? "") + " " + (item?.lastName ?? "")),
+        ),
+        subtitle: Text(item?.lastActivity ?? ""),
+      ),
+      buildPhoneTile(context,
+          label: "Cell Phone", number: item?.cellPhone, icon: Icons.phone),
+      buildPhoneTile(context,
+          label: "Home Phone", number: item?.homePhone, icon: Icons.home),
+      buildPhoneTile(context,
+          label: "Office Phone", number: item?.officePhone, icon: Icons.work),
+      buildEmailTile(context, label: "Email Address", email: item?.email),
+    ];
+
+    if (details != null) {
+    } else {
+      _widgets.add(CircularProgressIndicator());
+    }
     return Scaffold(
       appBar: AppBar(
         title: widget.showNameInAppBar
@@ -47,31 +82,10 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
             : Text("Details"),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            // STARTER: details - do not remove comment
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text(
-                (item?.firstName ?? "" + " " + (item?.lastName ?? "")),
-              ),
-              subtitle: Text(item?.lastActivity ?? ""),
-            ),
-            buildPhoneTile(context,
-                label: "Cell Phone",
-                number: item?.cellPhone,
-                icon: Icons.phone),
-            buildPhoneTile(context,
-                label: "Home Phone", number: item?.homePhone, icon: Icons.home),
-            buildPhoneTile(context,
-                label: "Office Phone",
-                number: item?.officePhone,
-                icon: Icons.work),
-            buildEmailTile(context, label: "Email Address", email: item?.email),
-          ],
-        ),
+        child: Column(children: _widgets),
       ),
       bottomNavigationBar: AppBottomBar(
+        showSort: false,
         buttons: [
           IconButton(
             icon: Icon(Icons.share),

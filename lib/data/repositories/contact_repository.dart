@@ -9,6 +9,7 @@ import '../models/contact/list.dart';
 import '../models/paging_model.dart';
 import '../models/search_model.dart';
 import '../web_client.dart';
+import '../models/contact/info.dart';
 
 class ContactRepository {
   final WebClient webClient;
@@ -42,6 +43,22 @@ class ContactRepository {
     }
 
     var result = ContactResult.fromJson(_response);
+
+    return result;
+  }
+
+  Future<ContactDetailsResult> getInfo(AuthModel auth,
+      {@required String id}) async {
+    dynamic _response;
+
+    // -- Get List --
+    final response = await webClient.get(
+      kApiUrl + '/contacts/info/$id',
+      token: auth?.currentUser?.token,
+    );
+    _response = response;
+
+    var result = ContactDetailsResult.fromJson(_response);
 
     return result;
   }

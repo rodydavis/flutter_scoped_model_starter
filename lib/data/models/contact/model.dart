@@ -6,6 +6,7 @@ import '../../models/auth/model.dart';
 import '../../models/paging_model.dart';
 import '../../repositories/contact_repository.dart';
 import 'list.dart';
+import 'info.dart';
 
 class ContactModel extends Model {
   // -- Paging --
@@ -126,5 +127,13 @@ class ContactModel extends Model {
   void stopSearching(BuildContext context) {
     loadItems(context);
     notifyListeners();
+  }
+
+  Future<ContactDetails> getDetails(BuildContext context,
+      {@required String id}) async {
+    final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    _auth.confirmUserChange();
+    var _result = await ContactRepository().getInfo(_auth, id: id);
+    return _result?.result;
   }
 }
