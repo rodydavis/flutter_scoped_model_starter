@@ -117,9 +117,18 @@ class __ContactScreenState extends State<_ContactScreen> {
             onPressed: () =>
                 Navigator.pushNamed(context, "/import").then((value) {
                   if (value != null) {
-                    List<Contact> _items = value;
+                    List<Contact> _items = value ?? [];
                     // Add Items
                     showInSnackBar(Text("Importing Contacts..."));
+
+                    for (var _item in _items) {
+                      ContactObject _contactObject = ContactObject(
+                        firstName: _item?.givenName,
+                        lastName: _item?.familyName,
+                      );
+                      // _model.addItem(_contactObject);
+                      print("Adding... ${_contactObject?.firstName}");
+                    }
                   }
                 }),
           ),
