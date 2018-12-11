@@ -46,6 +46,7 @@ class __DateViewState extends State<_DateView> {
     }
 
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: model?.tasks?.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
         var _item = model?.tasks[index];
@@ -59,8 +60,6 @@ class __DateViewState extends State<_DateView> {
     final _model = ScopedModel.of<TaskModel>(context, rebuildOnChange: true);
     return SingleChildScrollView(
       child: Container(
-          // height: 400.0,
-          // padding:  EdgeInsets.all(5.0),
           child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

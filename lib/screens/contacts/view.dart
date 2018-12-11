@@ -16,7 +16,7 @@ class ContactItemDetails extends StatefulWidget {
     @required this.item,
     this.showNameInAppBar = true,
     @required this.model,
-    this.name = "",
+    this.name,
   });
   @override
   _ContactItemDetailsState createState() => _ContactItemDetailsState();
@@ -43,7 +43,7 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
     return Scaffold(
       appBar: AppBar(
         title: widget.showNameInAppBar
-            ? Text(item?.firstName ?? "Details")
+            ? Text(widget?.name ?? item?.firstName ?? "Details")
             : Text("Details"),
       ),
       body: SingleChildScrollView(
