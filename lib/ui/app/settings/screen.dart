@@ -112,6 +112,17 @@ class _State extends State<SettingsPage> {
               });
             },
           ),
+          // ListTile(
+          //   title: Row(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       children: <Widget>[
+          //         Text(
+          //           "Delete All Data",
+          //           style: TextStyle(color: Colors.red),
+          //         ),
+          //       ]),
+          //   onTap: () {},
+          // ),
         ],
       ),
     );
