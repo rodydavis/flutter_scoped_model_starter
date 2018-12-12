@@ -9,6 +9,8 @@ import '../general/email_tile.dart';
 import '../general/list_widget.dart';
 import '../general/phone_tile.dart';
 import '../general/profile_avatar.dart';
+import '../general/address_tile.dart';
+import '../../data/models/general/address.dart';
 
 class ImportContactsScreen extends StatefulWidget {
   final bool selectSingle;
@@ -90,15 +92,27 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
   }
 
   void _importSelectedContacts(BuildContext context) {
-    List<Contact> _items = [];
-    if (_contacts != null && _contacts.isNotEmpty) {
-      for (var _item in _contacts) {
-        if (_item?.selected == true) {
-          _items.add(_item?.contact);
+    if (widget.selectSingle) {
+      Contact _value;
+      if (_contacts != null && _contacts.isNotEmpty) {
+        for (var _item in _contacts) {
+          if (_item?.selected == true) {
+            _value = _item?.contact;
+          }
         }
       }
+      Navigator.pop(context, _value);
+    } else {
+      List<Contact> _items = [];
+      if (_contacts != null && _contacts.isNotEmpty) {
+        for (var _item in _contacts) {
+          if (_item?.selected == true) {
+            _items.add(_item?.contact);
+          }
+        }
+      }
+      Navigator.pop(context, _items);
     }
-    Navigator.pop(context, _items);
   }
 
   @override
@@ -274,6 +288,12 @@ class _ContactDetailsScreen extends StatelessWidget {
       var _emails = getEmails(context, items: contact.emails.toList());
       _details.addAll(_emails);
     }
+    if (contact?.postalAddresses != null &&
+        contact.postalAddresses.isNotEmpty) {
+      var _addresses =
+          getAddresses(context, items: contact.postalAddresses.toList());
+      _details.addAll(_addresses);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -307,6 +327,25 @@ class _ContactDetailsScreen extends StatelessWidget {
         EmailTile(
           label: _item?.label,
           email: _item?.value,
+        ),
+      );
+    }
+    return _widgets;
+  }
+
+  List<Widget> getAddresses(BuildContext context,
+      {@required List<PostalAddress> items}) {
+    var _widgets = <Widget>[];
+    for (var _item in items) {
+      _widgets.add(
+        AddressTile(
+          label: _item?.label,
+          address: Address(
+            street: _item?.street,
+            state: _item?.region,
+            city: _item?.city,
+            zip: _item?.postcode,
+          ).toString(),
         ),
       );
     }

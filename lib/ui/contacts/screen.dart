@@ -47,12 +47,12 @@ class _ContactScreen extends StatefulWidget {
 }
 
 class __ContactScreenState extends State<_ContactScreen> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _isSearching = false;
   bool _sortASC = false;
   String _sortField = "";
   RefreshController _refreshController;
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   void showInSnackBar(Widget child) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(content: child));
   }

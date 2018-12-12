@@ -3,6 +3,7 @@ class Phones {
   String areaCode;
   String prefix;
   String number;
+  String ext;
 
   Phones({this.label, this.areaCode, this.prefix, this.number});
 
@@ -11,6 +12,7 @@ class Phones {
     areaCode = json['area_code'];
     prefix = json['prefix'];
     number = json['number'];
+    if (json['extension'] != null) ext = json['extension'];
   }
 
   Map<String, dynamic> toJson() {
@@ -19,6 +21,7 @@ class Phones {
     data['area_code'] = this.areaCode;
     data['prefix'] = this.prefix;
     data['number'] = this.number;
+    if (ext != null) data['extension'] = this.ext;
     return data;
   }
 
@@ -27,6 +30,9 @@ class Phones {
       return "";
     }
     try {
+      if (ext != null) {
+        return "$areaCode$prefix$number,$ext".toString();
+      }
       return "$areaCode$prefix$number".toString();
     } catch (e) {
       print(e);
@@ -36,24 +42,36 @@ class Phones {
 
   Phones.fromString(String value, {String name}) {
     label = name ?? "phone";
-    var _number = value
-        .replaceAll("+", "")
-        .replaceAll("-", "")
-        .replaceAll("(", "")
-        .replaceAll(")", "")
-        .replaceAll(" ", "")
-        .trim();
+    var _number = replaceCommon(value);
     if (_number.length >= 10) {
       if (_number.length == 10) {
         areaCode = value.substring(0, 3);
         prefix = value.substring(3, 6);
         number = value.substring(6, 10);
       }
+      if (_number.length > 10) {
+        ext = value.substring(10, _number.length);
+      }
     }
+  }
+
+  String replaceCommon(String value) {
+    var _number = value
+        .replaceAll("+", "")
+        .replaceAll("-", "")
+        .replaceAll("(", "")
+        .replaceAll(")", "")
+        .replaceAll(" ", "")
+        .replaceAll(",", "")
+        .trim();
+    return _number;
   }
 
   @override
   String toString() {
+    if (ext != null) {
+      return "($areaCode) $prefix-$number ;$ext".toString();
+    }
     return "($areaCode) $prefix-$number".toString();
   }
 }
