@@ -142,8 +142,8 @@ class ContactDetails {
     if (this.phones != null) {
       data['phones'] = this.phones.map((v) => v.toJson()).toList();
     }
-    data['birthdate'] = this.birthdate;
-    data['integration_id'] = this.integrationId;
+    // data['birthdate'] = this.birthdate;
+    // data['integration_id'] = this.integrationId;
     if (this.companyCategory != null) {
       data['company_category'] = this.companyCategory.toJson();
     }

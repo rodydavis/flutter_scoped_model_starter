@@ -88,19 +88,15 @@ class _AddressInputTileState extends State<AddressInputTile> {
       state: _state?.text ?? "",
       zip: _zip?.text ?? "",
     );
-    if (_address.raw().isEmpty) return null;
+    // if (_address.raw().isEmpty) return null;
     return _address;
   }
 
   void onError(PlacesAutocompleteResponse response) {
-    // homeScaffoldKey.currentState.showSnackBar(
-    //   SnackBar(content: Text(response.errorMessage)),
-    // );
+    print(response);
   }
 
   Future<void> _handlePressButton(BuildContext context) async {
-    // show input autocomplete with selected mode
-    // then get the Prediction selected
     Prediction p = await PlacesAutocomplete.show(
       context: context,
       apiKey: kGoogleApiKey,
@@ -112,57 +108,30 @@ class _AddressInputTileState extends State<AddressInputTile> {
     if (p != null) {
       print(p.description);
 
-      String street, city, state, zip;
-
-      // int _index = 0;
-      // for (var _term in p.terms) {
-      //   print(_term.value.toString());
-      //   if (_index == 0) {
-      //     street = _term.value.toString();
-      //   }
-      //   if (_index == 1) {
-      //     street += " " + _term.value.toString();
-      //   }
-      //   if (_index == 2) {
-      //     city = _term.value.toString();
-      //   }
-      //   if (_index == 4) {
-      //     state = _term.value.toString();
-      //   }
-      //   if (_index == 5) {
-      //     zip = _term.value.toString();
-      //   }
-      //   _index++;
-      // }
-
       PlacesDetailsResponse detail =
           await _places.getDetailsByPlaceId(p.placeId);
 
       for (var _item in detail?.result?.addressComponents) {
         if (_item?.types?.contains("street_number") ?? false) {
-          street = _item.longName;
+          _street.text = _item.longName;
         }
         if (_item?.types?.contains("route") ?? false) {
-          street += " " + _item.longName;
+          _street.text += " " + _item.longName;
         }
         if (_item?.types?.contains("locality") ?? false) {
-          city = _item.longName;
+          _city.text = _item.longName;
         }
         if (_item?.types?.contains("administrative_area_level_1") ?? false) {
-          state = _item.shortName;
+          _state.text = _item.shortName;
         }
         if (_item?.types?.contains("postal_code") ?? false) {
-          zip = _item.shortName;
+          _zip.text = _item.shortName;
         }
-        // print(_item?.shortName);
-        // print(_item?.longName);
-        // print(_item?.types);
       }
 
-      _street = TextEditingController(text: street ?? "");
-      _city = TextEditingController(text: city ?? "");
-      _state = TextEditingController(text: state ?? "");
-      _zip = TextEditingController(text: zip ?? "");
+      setState(() {});
+
+      widget.addressChanged(address);
     }
   }
 
@@ -177,10 +146,12 @@ class _AddressInputTileState extends State<AddressInputTile> {
           widget?.label ?? "Address",
           style: Theme.of(context).textTheme?.body1,
         ),
-        subtitle: address.toString().isEmpty
+        subtitle: address == null || address.raw().trim().isEmpty
             ? Text("No Address Added")
             : Text(address.toString()),
-        trailing: Icon(address.toString().isEmpty ? Icons.add : Icons.edit),
+        trailing: Icon(address == null || address.raw().trim().isEmpty
+            ? Icons.add
+            : Icons.edit),
         onTap: () {
           setState(() {
             _isEditing = !_isEditing;

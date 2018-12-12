@@ -19,15 +19,7 @@ class ContactItemEdit extends StatefulWidget {
 }
 
 class _ContactItemEditState extends State<ContactItemEdit> {
-  TextEditingController _firstName,
-      _middleName,
-      _lastName,
-      _email,
-      _street,
-      _apartment,
-      _city,
-      _state,
-      _zip;
+  TextEditingController _firstName, _middleName, _lastName, _email;
   bool _isNew = false;
 
   ContactDetails details;
@@ -60,20 +52,24 @@ class _ContactItemEditState extends State<ContactItemEdit> {
 
   void _saveInfo(BuildContext context) async {
     if (_formKey.currentState.validate()) {
+      var _phones = <Phones>[];
+      if (_cell != null && _cell.raw().isNotEmpty) _phones.add(_cell);
+      if (_home != null && _home.raw().isNotEmpty) _phones.add(_home);
+      if (_office != null && _office.raw().isNotEmpty) _phones.add(_office);
+      // setState(() {
+      //   _address = details?.address;
+      // });
+      print("Address => " + _address?.raw());
       ContactDetails _contact = ContactDetails(
         firstName: _firstName?.text ?? "",
         middleName: _middleName?.text ?? "",
         lastName: _lastName?.text ?? "",
         email: _email?.text ?? "",
-        address: Address(
-          street: _street?.text ?? "",
-          apartment: _apartment?.text ?? "",
-          city: _city?.text ?? "",
-          state: _state?.text ?? "",
-          zip: _zip?.text ?? "",
-        ),
-        phones: [_cell, _home, _office],
+        address: _address,
+        phones: _phones,
       );
+
+      print(_contact.toJson());
 
       Navigator.pop(context, _contact);
     }
@@ -136,12 +132,10 @@ class _ContactItemEditState extends State<ContactItemEdit> {
       }
 
       _middleName = TextEditingController(text: details?.middleName ?? "");
-      _street = TextEditingController(text: details?.address?.street ?? "");
-      _apartment =
-          TextEditingController(text: details?.address?.apartment ?? "");
-      _city = TextEditingController(text: details?.address?.city ?? "");
-      _state = TextEditingController(text: details?.address?.state ?? "");
-      _zip = TextEditingController(text: details?.address?.zip ?? "");
+
+      setState(() {
+        _address = details?.address;
+      });
     }
 
     // setState(() {
@@ -258,41 +252,6 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                       });
                     },
                   ),
-                  // ListTile(
-                  //   title: TextFormField(
-                  //     decoration: InputDecoration(labelText: "Street"),
-                  //     controller: _street,
-                  //     keyboardType: TextInputType.text,
-                  //   ),
-                  // ),
-                  // ListTile(
-                  //   title: TextFormField(
-                  //     decoration: InputDecoration(labelText: "Apartment"),
-                  //     controller: _apartment,
-                  //     keyboardType: TextInputType.text,
-                  //   ),
-                  // ),
-                  // ListTile(
-                  //   title: TextFormField(
-                  //     decoration: InputDecoration(labelText: "City"),
-                  //     controller: _city,
-                  //     keyboardType: TextInputType.text,
-                  //   ),
-                  // ),
-                  // ListTile(
-                  //   title: TextFormField(
-                  //     decoration: InputDecoration(labelText: "State"),
-                  //     controller: _state,
-                  //     keyboardType: TextInputType.text,
-                  //   ),
-                  // ),
-                  // ListTile(
-                  //   title: TextFormField(
-                  //     decoration: InputDecoration(labelText: "Zip"),
-                  //     controller: _zip,
-                  //     keyboardType: TextInputType.text,
-                  //   ),
-                  // ),
                   Container(height: 5.0),
                 ],
               ),

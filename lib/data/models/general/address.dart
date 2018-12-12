@@ -4,6 +4,7 @@ class Address {
   String state;
   String city;
   String zip;
+  String county;
 
   Address({this.street, this.apartment, this.state, this.city, this.zip});
 
@@ -13,6 +14,7 @@ class Address {
     state = json['state'];
     city = json['city'];
     zip = json['zip'];
+    county = "";
   }
 
   Map<String, dynamic> toJson() {
@@ -22,6 +24,7 @@ class Address {
     data['state'] = this.state;
     data['city'] = this.city;
     data['zip'] = this.zip;
+    data['county'] = "";
     return data;
   }
 

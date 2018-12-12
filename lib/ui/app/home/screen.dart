@@ -38,20 +38,36 @@ class __DateViewState extends State<_DateView> {
 
     if (!model.isLoaded || model?.tasks == null) {
       model.loadTasks(context);
-      return Center(child: CircularProgressIndicator());
+      return Center(
+        child: Container(
+          child: CircularProgressIndicator(),
+        ),
+      );
     }
 
-    if (model?.tasks != null && model.tasks.isEmpty) {
-      return Text("No Tasks Found");
+    final _items = model?.tasks;
+
+    if (_items != null && _items.isEmpty) {
+      return Center(
+        child: Text("No Tasks Found"),
+      );
     }
 
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: model?.tasks?.length ?? 0,
-      itemBuilder: (BuildContext context, int index) {
-        var _item = model?.tasks[index];
-        return Text(_item?.leadTaskTitle);
-      },
+    return Container(
+      // height: 400.0,
+      width: MediaQuery.of(context).size.width,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: _items.length ?? 0,
+        itemBuilder: (BuildContext context, int index) {
+          var _item = _items[index];
+          return ListTile(
+            leading: Icon(Icons.info),
+            title: Text(_item?.leadTaskTitle),
+            subtitle: Text(_item?.leadTaskDescription),
+          );
+        },
+      ),
     );
   }
 
@@ -63,17 +79,15 @@ class __DateViewState extends State<_DateView> {
           child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          DateViewWidget(
-            date: _model?.date,
-            dateChanged: (DateTime value) =>
-                _onDateChange(context, model: _model, value: value),
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: DateViewWidget(
+              date: _model?.date,
+              dateChanged: (DateTime value) =>
+                  _onDateChange(context, model: _model, value: value),
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _buildListView(context, model: _model),
-            ],
-          ),
+          _buildListView(context, model: _model),
         ],
       )),
     );

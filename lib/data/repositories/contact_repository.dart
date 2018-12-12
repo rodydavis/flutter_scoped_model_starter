@@ -79,23 +79,28 @@ class ContactRepository {
   Future<bool> saveData(AuthModel auth,
       {@required ContactDetails contact, String id}) async {
     var data = contact.toJson();
+    print(data);
     var response;
 
     if (isNullOrEmpty(id)) {
+      print("Creating Contact...");
       response = await webClient.post(
         kApiUrl + '/contacts/add',
         json.encode(data),
         token: auth?.currentUser?.token,
       );
+      print(response);
       if (response["Status"].toString().contains("Success")) return true;
       return false;
     } else {
+      print("Editing Contact... $id");
       var url = kApiUrl + '/contacts/info/' + id.toString();
       response = await webClient.put(
         url,
         json.encode(data),
         token: auth?.currentUser?.token,
       );
+      print(response);
       if (response["Status"].toString().contains("Success")) return true;
       return false;
     }
@@ -105,26 +110,15 @@ class ContactRepository {
       {@required List<ContactDetails> contacts}) async {
     var data = json.encode(contacts);
     print(data);
-    return true;
-    // var response;
+    var response;
 
-    // if (isNullOrEmpty(id)) {
-    //   response = await webClient.post(
-    //     kApiUrl + '/contacts/add',
-    //     json.encode(data),
-    //     token: auth?.currentUser?.token,
-    //   );
-    //   if (response["Status"].toString().contains("Success")) return true;
-    //   return false;
-    // } else {
-    //   var url = kApiUrl + '/contacts/info/' + id.toString();
-    //   response = await webClient.put(
-    //     url,
-    //     json.encode(data),
-    //     token: auth?.currentUser?.token,
-    //   );
-    //   if (response["Status"].toString().contains("Success")) return true;
-    //   return false;
-    // }
+    response = await webClient.post(
+      kApiUrl + '/contacts/import',
+      data,
+      token: auth?.currentUser?.token,
+    );
+    print(response);
+    if (response["Status"].toString().contains("Success")) return true;
+    return false;
   }
 }

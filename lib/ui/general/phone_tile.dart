@@ -93,7 +93,7 @@ class _PhoneInputTileState extends State<PhoneInputTile> {
       prefix: _prefix?.text ?? "",
       number: _number?.text ?? "",
     );
-    if (_phone.raw().isEmpty) return null;
+    // if (_phone.raw().isEmpty) return null;
     return _phone;
   }
 
@@ -105,9 +105,11 @@ class _PhoneInputTileState extends State<PhoneInputTile> {
           widget?.label ?? "Phone Number",
           style: Theme.of(context).textTheme?.body1,
         ),
-        subtitle:
-            phone == null ? Text("No Number Added") : Text(phone.toString()),
-        trailing: Icon(phone == null ? Icons.add : Icons.edit),
+        subtitle: phone == null || phone.raw().isEmpty
+            ? Text("No Number Added")
+            : Text(phone.toString()),
+        trailing:
+            Icon(phone == null || phone.raw().isEmpty ? Icons.add : Icons.edit),
         onTap: () {
           setState(() {
             _isEditing = !_isEditing;

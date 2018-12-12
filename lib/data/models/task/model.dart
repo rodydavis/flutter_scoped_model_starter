@@ -53,7 +53,7 @@ class TaskModel extends Model {
     _tasks = _result?.result;
     _lastUpdated = DateTime.now().millisecondsSinceEpoch;
     _loaded = true;
-
+    print("Tasks: ${_tasks?.length}");
     notifyListeners();
     return true;
   }
