@@ -123,6 +123,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
       ),
       body: SingleChildScrollView(
         child: Form(
+          autovalidate: true,
           key: _formKey,
           child: Column(
             children: <Widget>[
@@ -164,6 +165,11 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                       decoration: InputDecoration(labelText: "Cell Phone"),
                       controller: _cellPhone,
                       keyboardType: TextInputType.number,
+                      validator: (val) => val.length != 10
+                          ? val.isEmpty
+                              ? null
+                              : 'Please enter a Valid Phone Number'
+                          : null,
                     ),
                   ),
                   ListTile(
@@ -171,6 +177,11 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                       decoration: InputDecoration(labelText: "Office Phone"),
                       controller: _officePhone,
                       keyboardType: TextInputType.text,
+                      validator: (val) => val.length != 10
+                          ? val.isEmpty
+                              ? null
+                              : 'Please enter a Valid Phone Number'
+                          : null,
                     ),
                   ),
                   ListTile(
@@ -178,6 +189,11 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                       decoration: InputDecoration(labelText: "Home Phone"),
                       controller: _homePhone,
                       keyboardType: TextInputType.text,
+                      validator: (val) => val.length != 10
+                          ? val.isEmpty
+                              ? null
+                              : 'Please enter a Valid Phone Number'
+                          : null,
                     ),
                   ),
                   Container(height: 5.0),
