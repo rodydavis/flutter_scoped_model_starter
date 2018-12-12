@@ -144,6 +144,21 @@ class ContactModel extends Model {
     return false;
   }
 
+  Future<bool> importItems(BuildContext context,
+      {@required List<ContactDetails> items}) async {
+    final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    _auth.confirmUserChange();
+    print("Adding Items => ${items?.toString()}");
+    var _result = await ContactRepository().importData(_auth, contacts: items);
+    notifyListeners();
+    print("Status: $_result");
+    if (_result) {
+      refresh(context);
+      return true;
+    }
+    return false;
+  }
+
   void sort(String field, bool ascending) {
     _items.sort((a, b) => a.compareTo(b, field, ascending));
     notifyListeners();

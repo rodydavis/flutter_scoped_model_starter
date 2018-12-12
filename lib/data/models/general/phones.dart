@@ -44,15 +44,14 @@ class Phones {
     label = name ?? "phone";
     var _number = replaceCommon(value);
     if (_number.length >= 10) {
-      if (_number.length == 10) {
-        areaCode = value.substring(0, 3);
-        prefix = value.substring(3, 6);
-        number = value.substring(6, 10);
-      }
-      if (_number.length > 10) {
-        ext = value.substring(10, _number.length);
-      }
+      areaCode = _number.substring(0, 3);
+      prefix = _number.substring(3, 6);
+      number = _number.substring(6, 10);
+      // if (_number.length > 10) {
+      //   ext = value.substring(10, _number.length);
+      // }
     }
+    // print("Convert Number => $value | $_number");
   }
 
   String replaceCommon(String value) {
@@ -69,9 +68,10 @@ class Phones {
 
   @override
   String toString() {
-    if (ext != null) {
-      return "($areaCode) $prefix-$number ;$ext".toString();
-    }
+    if (raw().isEmpty) return "";
+    // if (ext != null) {
+    //   return "($areaCode) $prefix-$number ;$ext".toString();
+    // }
     return "($areaCode) $prefix-$number".toString();
   }
 }

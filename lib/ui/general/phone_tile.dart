@@ -75,7 +75,7 @@ class PhoneInputTile extends StatefulWidget {
 class _PhoneInputTileState extends State<PhoneInputTile> {
   TextEditingController _areaCode, _prefix, _number, _ext;
   final _formKey = GlobalKey<FormState>();
-
+  bool _isEditing = false;
   @override
   void initState() {
     _areaCode = TextEditingController(text: widget?.number?.areaCode ?? "");
@@ -85,10 +85,57 @@ class _PhoneInputTileState extends State<PhoneInputTile> {
     super.initState();
   }
 
+  // ListTile(
+  //                   title: Text(
+  //                     "Cell Phone",
+  //                     style: Theme.of(context).textTheme?.body1,
+  //                   ),
+  //                   subtitle: _cell == null ? null : Text(_cell.toString()),
+  //                 ),
+  // Container(
+  //   padding: EdgeInsets.symmetric(horizontal: 15.0),
+  //   child: PhoneInputTile(
+  //     label: "cell",
+  //     number: _cell,
+  //     numberChanged: (Phones value) {
+  //       setState(() {
+  //         _cell = value;
+  //       });
+  //     },
+  //   ),
+  // ),
+
+  Phones get phone {
+    var _phone = Phones(
+      label: widget?.label?.toLowerCase()?.replaceAll("number", "")?.trim() ??
+          "number",
+      areaCode: _areaCode?.text ?? "",
+      prefix: _prefix?.text ?? "",
+      number: _number?.text ?? "",
+    );
+    if (_phone.raw().isEmpty) return null;
+    return _phone;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Form(
+    if (!_isEditing)
+      return ListTile(
+        title: Text(
+          widget?.label ?? "Phone Number",
+          style: Theme.of(context).textTheme?.body1,
+        ),
+        subtitle:
+            phone == null ? Text("No Number Added") : Text(phone.toString()),
+        trailing: Icon(Icons.edit),
+        onTap: () {
+          setState(() {
+            _isEditing = !_isEditing;
+          });
+        },
+      );
+    return ListTile(
+      title: Form(
         autovalidate: true,
         key: _formKey,
         child: Row(
@@ -141,14 +188,15 @@ class _PhoneInputTileState extends State<PhoneInputTile> {
           ],
         ),
         onChanged: () {
-          widget.numberChanged(Phones(
-            label: widget?.label ?? "number",
-            areaCode: _areaCode?.text ?? "",
-            prefix: _prefix?.text ?? "",
-            number: _number?.text ?? "",
-          ));
+          widget.numberChanged(phone);
         },
       ),
+      trailing: Icon(Icons.close),
+      onTap: () {
+        setState(() {
+          _isEditing = !_isEditing;
+        });
+      },
     );
   }
 }

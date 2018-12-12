@@ -100,4 +100,31 @@ class ContactRepository {
       return false;
     }
   }
+
+  Future<bool> importData(AuthModel auth,
+      {@required List<ContactDetails> contacts}) async {
+    var data = json.encode(contacts);
+    print(data);
+    return true;
+    // var response;
+
+    // if (isNullOrEmpty(id)) {
+    //   response = await webClient.post(
+    //     kApiUrl + '/contacts/add',
+    //     json.encode(data),
+    //     token: auth?.currentUser?.token,
+    //   );
+    //   if (response["Status"].toString().contains("Success")) return true;
+    //   return false;
+    // } else {
+    //   var url = kApiUrl + '/contacts/info/' + id.toString();
+    //   response = await webClient.put(
+    //     url,
+    //     json.encode(data),
+    //     token: auth?.currentUser?.token,
+    //   );
+    //   if (response["Status"].toString().contains("Success")) return true;
+    //   return false;
+    // }
+  }
 }

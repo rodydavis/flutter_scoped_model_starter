@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../data/models/contact/fields.dart';
 import '../../data/models/contact/list.dart';
@@ -46,11 +45,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
         _isNew = true;
       });
     }
-
-    // -- Load Info --
-    _firstName = TextEditingController(text: widget?.item?.firstName ?? "");
-    _lastName = TextEditingController(text: widget?.item?.lastName ?? "");
-    _email = TextEditingController(text: widget?.item?.email ?? "");
+    _updateView();
   }
 
   void _getDetails(BuildContext context, {ContactModel model}) async {
@@ -58,28 +53,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
     setState(() {
       details = _contact;
     });
-
-    // -- Load from API --
-    var _phones = details?.phones;
-    for (var _phone in _phones) {
-      if (_phone.label.contains("home")) {
-        _home = _phone;
-      }
-      if (_phone.label.contains("office")) {
-        _office = _phone;
-      }
-      if (_phone.label.contains("cell") || _phone.label.contains("mobile")) {
-        _cell = _phone;
-      }
-    }
-    setState(() {});
-
-    _middleName = TextEditingController(text: details?.middleName ?? "");
-    _street = TextEditingController(text: details?.address?.street ?? "");
-    _apartment = TextEditingController(text: details?.address?.apartment ?? "");
-    _city = TextEditingController(text: details?.address?.city ?? "");
-    _state = TextEditingController(text: details?.address?.state ?? "");
-    _zip = TextEditingController(text: details?.address?.zip ?? "");
+    _updateView(contactDetails: _contact);
   }
 
   void _saveInfo(BuildContext context) async {
@@ -110,50 +84,68 @@ class _ContactItemEditState extends State<ContactItemEdit> {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(content: child));
   }
 
-  void _updateView(Contact contact) {
-    // -- Load Info from Phone Contact --
-    _firstName = TextEditingController(text: contact?.givenName ?? "");
-    _middleName = TextEditingController(text: contact?.middleName ?? "");
-    _lastName = TextEditingController(text: contact?.familyName ?? "");
+  void _updateView({Contact phoneContact, ContactDetails contactDetails}) {
+    if (phoneContact == null || details == null) {
+      _firstName = TextEditingController(text: widget?.item?.firstName ?? "");
+      _lastName = TextEditingController(text: widget?.item?.lastName ?? "");
+      _email = TextEditingController(text: widget?.item?.email ?? "");
 
-    var _emails = contact?.emails;
-    for (var _item in _emails) {
-      _email = TextEditingController(text: _item.value ?? "");
-    }
+      setState(() {
+        _cell = Phones.fromString(widget?.item?.cellPhone ?? "");
+        _home = Phones.fromString(widget?.item?.homePhone ?? "");
+        _office = Phones.fromString(widget?.item?.officePhone ?? "");
+      });
+    } else {
+      if (phoneContact != null) {
+        setState(() {
+          details = ContactDetails.fromPhoneContact(phoneContact);
+          print(details.toJson().toString());
+        });
+      }
+      if (contactDetails != null) {
+        setState(() {
+          details = contactDetails;
+        });
+      }
 
-    var _phones = contact?.phones;
-    for (var _phone in _phones) {
-      if (!_phone.label.contains("fax")) {
+      // -- Load Info from Phone Contact --
+      _firstName = TextEditingController(text: details?.firstName ?? "");
+      _middleName = TextEditingController(text: details?.middleName ?? "");
+      _lastName = TextEditingController(text: details?.lastName ?? "");
+      _email = TextEditingController(text: details?.email ?? "");
+
+      var _phones = details?.phones ?? [];
+      for (var _phone in _phones) {
         if (_phone.label.contains("home")) {
-          _home =
-              Phones.fromString(Phones().replaceCommon(_phone?.value ?? ""));
+          setState(() {
+            _home = _phone;
+          });
         }
         if (_phone.label.contains("office")) {
-          _office =
-              Phones.fromString(Phones().replaceCommon(_phone?.value ?? ""));
+          setState(() {
+            _office = _phone;
+          });
         }
         if (_phone.label.contains("cell") || _phone.label.contains("mobile")) {
-          _cell =
-              Phones.fromString(Phones().replaceCommon(_phone?.value ?? ""));
+          setState(() {
+            _cell = _phone;
+          });
         }
       }
+
+      _middleName = TextEditingController(text: details?.middleName ?? "");
+      _street = TextEditingController(text: details?.address?.street ?? "");
+      _apartment =
+          TextEditingController(text: details?.address?.apartment ?? "");
+      _city = TextEditingController(text: details?.address?.city ?? "");
+      _state = TextEditingController(text: details?.address?.state ?? "");
+      _zip = TextEditingController(text: details?.address?.zip ?? "");
     }
 
-    var _addresses = contact?.postalAddresses;
-    for (var _address in _addresses) {
-      _street = TextEditingController(text: _address?.street ?? "");
-      _apartment = TextEditingController(text: "");
-      _city = TextEditingController(text: _address?.city ?? "");
-      _state = TextEditingController(text: _address?.region ?? "");
-      _zip = TextEditingController(text: _address?.postcode ?? "");
-    }
-
-    setState(() {
-      _formKey.currentState.validate();
-    });
+    // setState(() {
+    //   _formKey.currentState.validate();
+    // });
   }
-
-  String _replaceNumber() {}
 
   @override
   Widget build(BuildContext context) {
@@ -171,14 +163,13 @@ class _ContactItemEditState extends State<ContactItemEdit> {
             icon: Icon(Icons.import_contacts),
             onPressed: () =>
                 Navigator.pushNamed(context, "/import_single").then((value) {
-                  if (value != null) _updateView(value);
+                  if (value != null) _updateView(phoneContact: value);
                 }),
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Form(
-          autovalidate: true,
           key: _formKey,
           child: Column(
             children: <Widget>[
@@ -222,58 +213,33 @@ class _ContactItemEditState extends State<ContactItemEdit> {
               ExpansionTile(
                 title: Text("Phones"),
                 children: <Widget>[
-                  ListTile(
-                    title: Text(
-                      "Cell Phone",
-                      style: Theme.of(context).textTheme?.body1,
-                    ),
+                  PhoneInputTile(
+                    label: "Cell Phone",
+                    number: _cell,
+                    numberChanged: (Phones value) {
+                      setState(() {
+                        _cell = value;
+                      });
+                    },
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15.0),
-                    child: PhoneInputTile(
-                      label: "cell",
-                      number: _cell,
-                      numberChanged: (Phones value) {
-                        setState(() {
-                          _cell = value;
-                        });
-                      },
-                    ),
+                  PhoneInputTile(
+                    label: "Home Phone",
+                    number: _home,
+                    numberChanged: (Phones value) {
+                      setState(() {
+                        _home = value;
+                      });
+                    },
                   ),
-                  ListTile(
-                      title: Text(
-                    "Home Phone",
-                    style: Theme.of(context).textTheme?.body1,
-                  )),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15.0),
-                    child: PhoneInputTile(
-                      label: "home",
-                      number: _home,
-                      numberChanged: (Phones value) {
-                        setState(() {
-                          _home = value;
-                        });
-                      },
-                    ),
-                  ),
-                  ListTile(
-                      title: Text(
-                    "Office Phone",
-                    style: Theme.of(context).textTheme?.body1,
-                  )),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15.0),
-                    child: PhoneInputTile(
-                      showExt: true,
-                      label: "office",
-                      number: _office,
-                      numberChanged: (Phones value) {
-                        setState(() {
-                          _office = value;
-                        });
-                      },
-                    ),
+                  PhoneInputTile(
+                    showExt: true,
+                    label: "Office Phone",
+                    number: _office,
+                    numberChanged: (Phones value) {
+                      setState(() {
+                        _office = value;
+                      });
+                    },
                   ),
                   Container(height: 5.0),
                 ],

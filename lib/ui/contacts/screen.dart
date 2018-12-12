@@ -163,15 +163,17 @@ class __ContactScreenState extends State<_ContactScreen> {
                     List<Contact> _items = value ?? [];
                     // Add Items
                     showInSnackBar(Text("Importing Contacts..."));
-
+                    var _list = <ContactDetails>[];
                     for (var _item in _items) {
-                      ContactObject _contactObject = ContactObject(
-                        firstName: _item?.givenName,
-                        lastName: _item?.familyName,
-                      );
+                      // ContactObject _contactObject = ContactObject(
+                      //   firstName: _item?.givenName,
+                      //   lastName: _item?.familyName,
+                      // );
                       // _model.addItem(_contactObject);
-                      print("Adding... ${_contactObject?.firstName}");
+                      // print("Adding... ${_contactObject?.firstName}");
+                      _list.add(ContactDetails.fromPhoneContact(_item));
                     }
+                    _model?.importItems(context, items: _list);
                   }
                 }),
           ),

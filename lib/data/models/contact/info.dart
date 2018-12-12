@@ -2,6 +2,7 @@ import '../general/address.dart';
 import '../general/company_category.dart';
 import '../general/contact_groups.dart';
 import '../general/phones.dart';
+import 'package:contacts_service/contacts_service.dart';
 
 class ContactDetailsResult {
   String status;
@@ -76,6 +77,56 @@ class ContactDetails {
       json['contact_groups'].forEach((v) {
         contactGroups.add(new ContactGroups.fromJson(v));
       });
+    }
+  }
+
+  ContactDetails.fromPhoneContact(Contact contact) {
+    firstName = contact?.givenName ?? "";
+    middleName = contact?.middleName ?? "";
+    lastName = contact?.familyName ?? "";
+
+    // -- Phones --
+    var _phones = contact?.phones ?? [];
+    var _items = <Phones>[];
+    for (var _phone in _phones) {
+      if (!_phone.label.contains("fax")) {
+        if (_phone.label.contains("home")) {
+          _items.add(Phones.fromString(
+            _phone?.value ?? "",
+            name: "home",
+          ));
+        }
+        if (_phone.label.contains("office")) {
+          _items.add(Phones.fromString(
+            _phone?.value ?? "",
+            name: "office",
+          ));
+        }
+        if (_phone.label.contains("cell") || _phone.label.contains("mobile")) {
+          _items.add(Phones.fromString(
+            _phone?.value ?? "",
+            name: "cell",
+          ));
+        }
+      }
+    }
+    if (_items != null) phones = _items;
+
+    // -- Emails --
+    var _emails = contact?.emails ?? [];
+    for (var _item in _emails) {
+      email = _item.value;
+    }
+
+    // - Addresses --
+    var _addresses = contact?.postalAddresses ?? [];
+    for (var _address in _addresses) {
+      address = Address(
+        street: _address?.street ?? "",
+        city: _address?.city ?? "",
+        state: _address?.region ?? "",
+        zip: _address?.postcode ?? "",
+      );
     }
   }
 
