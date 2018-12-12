@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../data/models/theme.dart';
-import '../../data/models/auth/model.dart';
-import '../../data/local_storage.dart';
-import 'package:native_widgets/native_widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import '../../data/local_storage.dart';
+import '../../data/models/auth/model.dart';
+import '../../data/models/theme.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -78,7 +78,7 @@ class _SplashScreenState extends State<_SplashScreen>
   Widget build(BuildContext context) {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     int _count = _auth?.usersCount ?? 0;
-    int _users = _auth?.users?.length;
+    int _users = _auth?.usersAdded ?? 0;
     return Scaffold(
       body: Center(
           child: Column(
@@ -92,7 +92,7 @@ class _SplashScreenState extends State<_SplashScreen>
             ),
           ),
           Text(_message.contains("Signing In")
-              ? _message + " ($_count/$_users)"
+              ? _message + " ($_users/$_count)"
               : _message),
         ],
       )),
