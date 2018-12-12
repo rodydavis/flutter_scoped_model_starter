@@ -64,8 +64,7 @@ class ContactRepository {
     return result;
   }
 
-  Future<ContactDeleteResult> deleteContact(AuthModel auth,
-      {@required String id}) async {
+  Future<bool> deleteContact(AuthModel auth, {@required String id}) async {
     var url = kApiUrl + '/contacts/info/' + id.toString();
     var response;
     response = await webClient.delete(
@@ -73,8 +72,8 @@ class ContactRepository {
       token: auth?.currentUser?.token,
     );
     print(response);
-
-    return ContactDeleteResult.fromJson(response);
+    if (response["Status"].toString().contains("Success")) return true;
+    return false;
   }
 
   Future<bool> saveData(AuthModel auth,

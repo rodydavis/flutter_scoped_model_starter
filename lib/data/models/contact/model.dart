@@ -136,7 +136,8 @@ class ContactModel extends Model {
     print("Deleting Item => $id");
     var _result = await ContactRepository().deleteContact(_auth, id: id);
     notifyListeners();
-    if (_result.status.contains("Success")) {
+    print("Status: $_result");
+    if (_result) {
       refresh(context);
       return true;
     }
