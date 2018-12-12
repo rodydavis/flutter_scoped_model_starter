@@ -85,26 +85,6 @@ class _PhoneInputTileState extends State<PhoneInputTile> {
     super.initState();
   }
 
-  // ListTile(
-  //                   title: Text(
-  //                     "Cell Phone",
-  //                     style: Theme.of(context).textTheme?.body1,
-  //                   ),
-  //                   subtitle: _cell == null ? null : Text(_cell.toString()),
-  //                 ),
-  // Container(
-  //   padding: EdgeInsets.symmetric(horizontal: 15.0),
-  //   child: PhoneInputTile(
-  //     label: "cell",
-  //     number: _cell,
-  //     numberChanged: (Phones value) {
-  //       setState(() {
-  //         _cell = value;
-  //       });
-  //     },
-  //   ),
-  // ),
-
   Phones get phone {
     var _phone = Phones(
       label: widget?.label?.toLowerCase()?.replaceAll("number", "")?.trim() ??
@@ -127,7 +107,7 @@ class _PhoneInputTileState extends State<PhoneInputTile> {
         ),
         subtitle:
             phone == null ? Text("No Number Added") : Text(phone.toString()),
-        trailing: Icon(Icons.edit),
+        trailing: Icon(phone == null ? Icons.add : Icons.edit),
         onTap: () {
           setState(() {
             _isEditing = !_isEditing;

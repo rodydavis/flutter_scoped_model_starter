@@ -26,6 +26,9 @@ class Address {
   }
 
   String raw() {
+    if (street == null && city == null && state == null && zip == null) {
+      return "";
+    }
     return "$street $apartment $city $state $zip".toString();
   }
 

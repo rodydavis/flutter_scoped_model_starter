@@ -8,6 +8,7 @@ import '../../data/models/general/phones.dart';
 import '../../data/models/contact/model.dart';
 import 'package:contacts_service/contacts_service.dart';
 import '../general/phone_tile.dart';
+import '../general/address_tile.dart';
 
 class ContactItemEdit extends StatefulWidget {
   final ContactObject item;
@@ -32,6 +33,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
   ContactDetails details;
 
   Phones _cell, _home, _office;
+  Address _address;
 
   @override
   void initState() {
@@ -247,41 +249,50 @@ class _ContactItemEditState extends State<ContactItemEdit> {
               ExpansionTile(
                 title: Text("Address"),
                 children: <Widget>[
-                  ListTile(
-                    title: TextFormField(
-                      decoration: InputDecoration(labelText: "Street"),
-                      controller: _street,
-                      keyboardType: TextInputType.text,
-                    ),
+                  AddressInputTile(
+                    label: "Current Address",
+                    address: _address,
+                    addressChanged: (Address value) {
+                      setState(() {
+                        _address = value;
+                      });
+                    },
                   ),
-                  ListTile(
-                    title: TextFormField(
-                      decoration: InputDecoration(labelText: "Apartment"),
-                      controller: _apartment,
-                      keyboardType: TextInputType.text,
-                    ),
-                  ),
-                  ListTile(
-                    title: TextFormField(
-                      decoration: InputDecoration(labelText: "City"),
-                      controller: _city,
-                      keyboardType: TextInputType.text,
-                    ),
-                  ),
-                  ListTile(
-                    title: TextFormField(
-                      decoration: InputDecoration(labelText: "State"),
-                      controller: _state,
-                      keyboardType: TextInputType.text,
-                    ),
-                  ),
-                  ListTile(
-                    title: TextFormField(
-                      decoration: InputDecoration(labelText: "Zip"),
-                      controller: _zip,
-                      keyboardType: TextInputType.text,
-                    ),
-                  ),
+                  // ListTile(
+                  //   title: TextFormField(
+                  //     decoration: InputDecoration(labelText: "Street"),
+                  //     controller: _street,
+                  //     keyboardType: TextInputType.text,
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title: TextFormField(
+                  //     decoration: InputDecoration(labelText: "Apartment"),
+                  //     controller: _apartment,
+                  //     keyboardType: TextInputType.text,
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title: TextFormField(
+                  //     decoration: InputDecoration(labelText: "City"),
+                  //     controller: _city,
+                  //     keyboardType: TextInputType.text,
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title: TextFormField(
+                  //     decoration: InputDecoration(labelText: "State"),
+                  //     controller: _state,
+                  //     keyboardType: TextInputType.text,
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   title: TextFormField(
+                  //     decoration: InputDecoration(labelText: "Zip"),
+                  //     controller: _zip,
+                  //     keyboardType: TextInputType.text,
+                  //   ),
+                  // ),
                   Container(height: 5.0),
                 ],
               ),

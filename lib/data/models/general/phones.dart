@@ -26,7 +26,7 @@ class Phones {
   }
 
   String raw() {
-    if (areaCode == null || prefix == null || number == null) {
+    if (areaCode == null && prefix == null && number == null) {
       return "";
     }
     try {
