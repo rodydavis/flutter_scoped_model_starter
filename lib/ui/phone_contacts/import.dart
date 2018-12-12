@@ -1,16 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
-import '../general/profile_avatar.dart';
-import '../../utils/two_letter_name.dart';
-import '../general/phone_tile.dart';
-import '../general/email_tile.dart';
-import '../app/app_bottom_bar.dart';
-import '../general/list_widget.dart';
-import '../app/app_search_bar.dart';
+import 'package:flutter/material.dart';
+
 import '../../utils/null_or_empty.dart';
-import 'package:uuid/uuid.dart';
+import '../../utils/two_letter_name.dart';
+import '../app/app_bottom_bar.dart';
+import '../app/app_search_bar.dart';
+import '../general/email_tile.dart';
+import '../general/list_widget.dart';
+import '../general/phone_tile.dart';
+import '../general/profile_avatar.dart';
 
 class ImportContactsScreen extends StatefulWidget {
+  final bool selectSingle;
+  ImportContactsScreen({this.selectSingle = false});
   @override
   ImportContactsScreenState createState() => ImportContactsScreenState();
 }
@@ -171,19 +173,26 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
                       onPressed: () => _viewContact(context, contact: _contact),
                     ),
                     onTap: () {
-                      print("Selected => ${_item?.contact?.displayName}");
+                      if (widget.selectSingle) {
+                        _selectAll(deselect: true);
+                        setState(() {
+                          _item?.selected = !_selected;
+                        });
+                      } else {
+                        print("Selected => ${_item?.contact?.displayName}");
 
-                      setState(() {
-                        _item?.selected = !_selected;
-                      });
+                        setState(() {
+                          _item?.selected = !_selected;
+                        });
 
-                      if (_isSearching) {
-                        for (var _newItem in _contacts) {
-                          if (_newItem.contact.displayName ==
-                              _item.contact.displayName) {
-                            setState(() {
-                              _newItem?.selected = !_selected;
-                            });
+                        if (_isSearching) {
+                          for (var _newItem in _contacts) {
+                            if (_newItem.contact.displayName ==
+                                _item.contact.displayName) {
+                              setState(() {
+                                _newItem?.selected = !_selected;
+                              });
+                            }
                           }
                         }
                       }
@@ -204,8 +213,10 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
               Icons.select_all,
               color: _allSelected ? Colors.blue : null,
             ),
-            onPressed: () =>
-                _allSelected ? _selectAll(deselect: true) : _selectAll(),
+            onPressed: widget.selectSingle || _isSearching
+                ? null
+                : () =>
+                    _allSelected ? _selectAll(deselect: true) : _selectAll(),
           ),
         ],
       ),
@@ -216,7 +227,7 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
               tooltip: "Import Contacts",
               child: Icon(Icons.save),
               heroTag: "Import",
-              backgroundColor: Theme.of(context).primaryColorDark,
+              backgroundColor: Theme.of(context).primaryColor,
               onPressed: () => _importSelectedContacts(context),
             ),
     );
