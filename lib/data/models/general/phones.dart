@@ -23,7 +23,33 @@ class Phones {
   }
 
   String raw() {
-    return "$areaCode$prefix$number".toString();
+    if (areaCode == null || prefix == null || number == null) {
+      return "";
+    }
+    try {
+      return "$areaCode$prefix$number".toString();
+    } catch (e) {
+      print(e);
+      return "";
+    }
+  }
+
+  Phones.fromString(String value, {String name}) {
+    label = name ?? "phone";
+    var _number = value
+        .replaceAll("+", "")
+        .replaceAll("-", "")
+        .replaceAll("(", "")
+        .replaceAll(")", "")
+        .replaceAll(" ", "")
+        .trim();
+    if (_number.length >= 10) {
+      if (_number.length == 10) {
+        areaCode = value.substring(0, 3);
+        prefix = value.substring(3, 6);
+        number = value.substring(6, 10);
+      }
+    }
   }
 
   @override

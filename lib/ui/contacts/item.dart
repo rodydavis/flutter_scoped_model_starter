@@ -6,6 +6,7 @@ import '../../ui/general/three_row_tile.dart';
 import '../../utils/date_formatter.dart';
 import 'edit.dart';
 import 'view.dart';
+import '../../data/models/contact/info.dart';
 
 class ContactItem extends StatelessWidget {
   final ContactObject item;
@@ -25,25 +26,26 @@ class ContactItem extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ContactItemEdit(item: item),
+          builder: (context) => ContactItemEdit(item: item, model: model),
           fullscreenDialog: true),
     ).then((value) {
       if (value != null) {
-        ContactObject _item = value;
-        model.editItem(_item);
+        ContactDetails _item = value;
+        model.editItem(context, item: _item, id: item?.id);
       }
     });
   }
 
   void _removeItem(BuildContext context) {
-    model.removeItem(item);
+    model.deleteItem(context, id: item?.id);
   }
 
   void _viewItem(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ContactItemDetails(item: item, model: model, showNameInAppBar: false)),
+          builder: (context) => ContactItemDetails(
+              item: item, model: model, showNameInAppBar: false)),
     );
   }
 

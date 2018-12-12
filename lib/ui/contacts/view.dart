@@ -102,7 +102,7 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-              widget.model.removeItem(item);
+              widget.model.deleteItem(context, id: item?.id);
               Navigator.pop(context);
             },
           ),
@@ -116,12 +116,13 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ContactItemEdit(item: item),
+                builder: (context) =>
+                    ContactItemEdit(item: item, model: _model),
                 fullscreenDialog: true),
           ).then((value) {
             if (value != null) {
-              ContactObject _item = value;
-              widget.model.editItem(_item);
+              ContactDetails _item = value;
+              widget.model.editItem(context, item: _item, id: item?.id);
               Navigator.pop(context);
             }
           });

@@ -10,6 +10,7 @@ import '../models/paging_model.dart';
 import '../models/search_model.dart';
 import '../web_client.dart';
 import '../models/contact/info.dart';
+import '../../utils/null_or_empty.dart';
 
 class ContactRepository {
   final WebClient webClient;
@@ -63,7 +64,8 @@ class ContactRepository {
     return result;
   }
 
-  Future deleteContact(AuthModel auth, String id) async {
+  Future<ContactDeleteResult> deleteContact(AuthModel auth,
+      {@required String id}) async {
     var url = kApiUrl + '/contacts/info/' + id.toString();
     var response;
     response = await webClient.delete(
@@ -71,21 +73,32 @@ class ContactRepository {
       token: auth?.currentUser?.token,
     );
     print(response);
+
+    return ContactDeleteResult.fromJson(response);
   }
 
-  // Future saveData(AuthModel auth, ContactEntity contact) async {
-  //   var data = serializers.serializeWith(ContactEntity.serializer, contact);
-  //   var response;
+  Future<bool> saveData(AuthModel auth,
+      {@required ContactDetails contact, String id}) async {
+    var data = contact.toJson();
+    var response;
 
-  //   if (contact.isNew) {
-  //     response =
-  //         await webClient.post(kApiUrl + '/contacts/new', json.encode(data));
-  //   } else {
-  //     var url = kApiUrl + '/contacts/info/' + contact.id.toString();
-  //     response =
-  //         await webClient.put(url, json.encode(data), token: auth?.token);
-  //   }
-
-  //   return serializers.deserializeWith(ContactEntity.serializer, response);
-  // }
+    if (isNullOrEmpty(id)) {
+      response = await webClient.post(
+        kApiUrl + '/contacts/add',
+        json.encode(data),
+        token: auth?.currentUser?.token,
+      );
+      if (response["Status"].toString().contains("Success")) return true;
+      return false;
+    } else {
+      var url = kApiUrl + '/contacts/info/' + id.toString();
+      response = await webClient.put(
+        url,
+        json.encode(data),
+        token: auth?.currentUser?.token,
+      );
+      if (response["Status"].toString().contains("Success")) return true;
+      return false;
+    }
+  }
 }

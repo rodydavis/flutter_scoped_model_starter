@@ -99,28 +99,48 @@ class ContactModel extends Model {
     return true;
   }
 
-  void addItem(ContactObject item) {
-    print("Adding Item => ${item?.id}");
-    _items.add(item);
+  Future<bool> addItem(BuildContext context,
+      {@required ContactDetails item}) async {
+    final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    _auth.confirmUserChange();
+    print("Adding Item => ${item?.firstName}");
+    var _result = await ContactRepository().saveData(_auth, contact: item);
     notifyListeners();
+    print("Status: $_result");
+    if (_result) {
+      refresh(context);
+      return true;
+    }
+    return false;
   }
 
-  void removeItem(ContactObject item) {
-    print("Removing Item => ${item?.id}");
-    _items.remove(item);
+  Future<bool> editItem(BuildContext context,
+      {@required ContactDetails item, @required String id}) async {
+    final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    _auth.confirmUserChange();
+    print("Editing Item => $id");
+    var _result =
+        await ContactRepository().saveData(_auth, contact: item, id: id);
     notifyListeners();
+    print("Status: $_result");
+    if (_result) {
+      refresh(context);
+      return true;
+    }
+    return false;
   }
 
-  void editItem(ContactObject item) {
-    print("Editing Item => ${item?.id}");
-    if (items.isNotEmpty)
-      for (var _item in items) {
-        if (_item.id == item.id) {
-          _items.remove(_item);
-          _items.add(item);
-        }
-      }
+  Future<bool> deleteItem(BuildContext context, {@required String id}) async {
+    final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    _auth.confirmUserChange();
+    print("Deleting Item => $id");
+    var _result = await ContactRepository().deleteContact(_auth, id: id);
     notifyListeners();
+    if (_result.status.contains("Success")) {
+      refresh(context);
+      return true;
+    }
+    return false;
   }
 
   void sort(String field, bool ascending) {

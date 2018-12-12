@@ -13,6 +13,7 @@ import '../../data/models/auth/model.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'list.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import '../../data/models/contact/info.dart';
 
 class ContactScreen extends StatelessWidget {
   final ContactModel model;
@@ -111,7 +112,7 @@ class __ContactScreenState extends State<_ContactScreen> {
           _model.sort(_sortField, _sortASC);
           return new SmartRefresher(
               enablePullDown: true,
-              enablePullUp: true,
+              enablePullUp: (_model?.items?.length ?? 0) > 10,
               controller: _refreshController,
               onRefresh: (up) {
                 if (up) {
@@ -206,12 +207,12 @@ class __ContactScreenState extends State<_ContactScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ContactItemEdit(),
+                builder: (context) => ContactItemEdit(model: _model),
                 fullscreenDialog: true),
           ).then((value) {
             if (value != null) {
-              ContactObject _item = value;
-              _model.addItem(_item);
+              ContactDetails _item = value;
+              _model.addItem(context, item: _item);
               _model.sort(_sortField, _sortASC);
             }
           });
