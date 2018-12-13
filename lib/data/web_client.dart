@@ -11,6 +11,7 @@ class WebClient {
   const WebClient();
 
   Future<dynamic> get(String url, {String token, AuthModel auth}) async {
+    if (token == null && auth == null) throw ('Auth Model or Token Required');
     final String _token = token ?? auth?.currentUser?.token ?? "";
     final http.Response response = await getHttpReponse(
       url,
@@ -40,6 +41,7 @@ class WebClient {
 
   Future<dynamic> post(String url, dynamic data,
       {String bodyContentType, String token, AuthModel auth}) async {
+    if (token == null && auth == null) throw ('Auth Model or Token Required');
     final String _token = token ?? auth?.currentUser?.token ?? "";
     final http.Response response = await getHttpReponse(
       url,

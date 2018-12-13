@@ -345,7 +345,7 @@ class _ContactDetailsScreen extends StatelessWidget {
             state: _item?.region,
             city: _item?.city,
             zip: _item?.postcode,
-          ).toString(),
+          ),
         ),
       );
     }

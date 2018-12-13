@@ -28,7 +28,6 @@ class ContactItemDetails extends StatefulWidget {
 class _ContactItemDetailsState extends State<ContactItemDetails> {
   ContactRow item;
   ContactDetails details;
-  bool _isLoaded = false;
 
   @override
   void initState() {
@@ -47,7 +46,6 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
     var _contact = await model.getDetails(context, id: widget?.item?.id);
     setState(() {
       details = _contact;
-      _isLoaded = true;
     });
   }
 
@@ -73,9 +71,9 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
     ];
 
     if (details != null) {
-      if (!isNullOrEmpty(details?.address?.raw()?.trim())) {
+      if (details?.address != null) {
         _widgets.add(AddressTile(
-          address: details.address.toString(),
+          address: details?.address,
           label: "Current Address",
           icon: Icons.map,
         ));
@@ -116,8 +114,8 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    ContactItemEdit(item: item, model: _model),
+                builder: (context) => ContactItemEdit(
+                    item: item, model: _model, details: details),
                 fullscreenDialog: true),
           ).then((value) {
             if (value != null) {

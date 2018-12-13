@@ -12,12 +12,16 @@ import '../general/phone_tile.dart';
 class ContactItemEdit extends StatefulWidget {
   final ContactRow item;
   final ContactModel model;
-  ContactItemEdit({this.item, @required this.model});
+  final ContactDetails details;
+  ContactItemEdit({this.item, @required this.model, this.details});
   @override
-  _ContactItemEditState createState() => _ContactItemEditState();
+  _ContactItemEditState createState() =>
+      _ContactItemEditState(details: details);
 }
 
 class _ContactItemEditState extends State<ContactItemEdit> {
+  _ContactItemEditState({this.details});
+
   TextEditingController _firstName, _middleName, _lastName, _email;
   bool _isNew = false;
 
@@ -28,6 +32,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
 
   @override
   void initState() {
+    // _updateView(contactDetails: widget.details);
     _loadItemDetails();
     super.initState();
   }
@@ -38,7 +43,8 @@ class _ContactItemEditState extends State<ContactItemEdit> {
         _isNew = true;
       });
     }
-    _updateView();
+    print("Address Passed => " + details?.toJson().toString());
+    _updateView(contactDetails: details);
   }
 
   void _getDetails(BuildContext context, {ContactModel model}) async {
@@ -244,7 +250,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                 children: <Widget>[
                   AddressInputTile(
                     label: "Current Address",
-                    address: _address,
+                    address: details?.address,
                     addressChanged: (Address value) {
                       setState(() {
                         _address = value;

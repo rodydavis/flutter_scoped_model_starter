@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-
+import '../../../utils/null_or_empty.dart';
 part 'address.g.dart';
 
 @JsonSerializable()
@@ -22,29 +22,27 @@ class Address {
     if (street == null && city == null && state == null && zip == null) {
       return "";
     }
-    return "$street $apartment $city $state $zip".toString();
+    return "$street $apartment $city $state $zip".trim().toString();
   }
 
   @override
   String toString() {
-    if (raw().trim().isEmpty) {
+    if (raw().isEmpty) {
       return "";
     }
     var _address = "";
     _address += "$street $apartment".trim();
 
-    bool _city = city != null && city.isNotEmpty;
-    bool _state = state != null && state.isNotEmpty;
-    bool _zip = zip != null && zip.isNotEmpty;
+    bool _city = !isNullOrEmpty(city);
+    bool _state = !isNullOrEmpty(state);
+    bool _zip = !isNullOrEmpty(zip);
 
     String _cityStateZip = "";
-    if (_city && _state && _zip) {
-      return "$city, $state $zip".trim();
-    } else {
-      if (_city || _state || _zip) {
-        if (!_city) _cityStateZip = "$state $zip".trim();
-        if (_city && !_state && !_zip) return "$city".trim();
+    if (_city || _state || _zip) {
+      if (_city) {
         _cityStateZip = "$city, $state $zip".trim();
+      } else {
+        _cityStateZip = "$state $zip".trim();
       }
     }
 
@@ -52,7 +50,6 @@ class Address {
       _address += "\n";
       _address += _cityStateZip;
     }
-
     return _address.trim().toString();
   }
 }

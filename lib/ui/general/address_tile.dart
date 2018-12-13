@@ -8,8 +8,9 @@ import '../../keys.dart';
 import '../../utils/openMaps.dart';
 
 class AddressTile extends StatelessWidget {
-  final String label, address;
+  final String label;
   final IconData icon;
+  final Address address;
 
   AddressTile({
     @required this.address,
@@ -19,7 +20,7 @@ class AddressTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (address == null || address.isEmpty) {
+    if (address == null || address.raw().isEmpty) {
       return ListTile(
           leading: Icon(icon ?? Icons.map),
           title: Text(
@@ -38,11 +39,13 @@ class AddressTile extends StatelessWidget {
         textScaleFactor: textScaleFactor,
       ),
       subtitle: Text(
-        address,
+        address.toString(),
         textScaleFactor: textScaleFactor,
       ),
-      onTap: () => openMaps(context,
-          address.toString().replaceAll('\n', ' ').replaceAll(',', '')),
+      onTap: () => openMaps(
+            context,
+            address.raw(),
+          ),
     );
   }
 }
@@ -56,31 +59,34 @@ class AddressInputTile extends StatefulWidget {
 
   AddressInputTile({
     this.addressChanged,
-    this.address,
+    @required this.address,
     this.label,
   });
 
   @override
-  _AddressInputTileState createState() => _AddressInputTileState();
+  _AddressInputTileState createState() =>
+      _AddressInputTileState(address: address);
 }
 
 class _AddressInputTileState extends State<AddressInputTile> {
   Mode _mode = Mode.fullscreen;
+  _AddressInputTileState({this.address});
+  Address address;
 
   TextEditingController _street, _apartment, _city, _state, _zip;
   final _formKey = GlobalKey<FormState>();
   bool _isEditing = false;
   @override
   void initState() {
-    _street = TextEditingController(text: widget?.address?.street ?? "");
-    _apartment = TextEditingController(text: widget?.address?.apartment ?? "");
-    _city = TextEditingController(text: widget?.address?.city ?? "");
-    _state = TextEditingController(text: widget?.address?.state ?? "");
-    _zip = TextEditingController(text: widget?.address?.zip ?? "");
+    _street = TextEditingController(text: address?.street ?? "");
+    _apartment = TextEditingController(text: address?.apartment ?? "");
+    _city = TextEditingController(text: address?.city ?? "");
+    _state = TextEditingController(text: address?.state ?? "");
+    _zip = TextEditingController(text: address?.zip ?? "");
     super.initState();
   }
 
-  Address get address {
+  Address getAddress() {
     var _address = Address(
       street: _street?.text ?? "",
       apartment: _apartment?.text ?? "",
@@ -129,7 +135,9 @@ class _AddressInputTileState extends State<AddressInputTile> {
         }
       }
 
-      setState(() {});
+      setState(() {
+        address = getAddress();
+      });
 
       widget.addressChanged(address);
     }
@@ -137,7 +145,25 @@ class _AddressInputTileState extends State<AddressInputTile> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_isEditing)
+    if (!_isEditing) {
+      if (address == null || address.raw().isEmpty) {
+        return ListTile(
+          leading: IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () => _handlePressButton(context)),
+          title: Text(
+            widget?.label ?? "Address",
+            style: Theme.of(context).textTheme?.body1,
+          ),
+          subtitle: Text("No Address Added"),
+          trailing: Icon(Icons.add),
+          onTap: () {
+            setState(() {
+              _isEditing = !_isEditing;
+            });
+          },
+        );
+      }
       return ListTile(
         leading: IconButton(
             icon: Icon(Icons.search),
@@ -146,18 +172,16 @@ class _AddressInputTileState extends State<AddressInputTile> {
           widget?.label ?? "Address",
           style: Theme.of(context).textTheme?.body1,
         ),
-        subtitle: address == null || address.raw().trim().isEmpty
-            ? Text("No Address Added")
-            : Text(address.toString()),
-        trailing: Icon(address == null || address.raw().trim().isEmpty
-            ? Icons.add
-            : Icons.edit),
+        subtitle: Text(address.toString()),
+        trailing: Icon(Icons.edit),
         onTap: () {
           setState(() {
             _isEditing = !_isEditing;
           });
         },
       );
+    }
+
     return ListTile(
       title: Form(
         autovalidate: true,
@@ -187,6 +211,9 @@ class _AddressInputTileState extends State<AddressInputTile> {
           ],
         ),
         onChanged: () {
+          setState(() {
+            address = getAddress();
+          });
           widget.addressChanged(address);
         },
       ),
