@@ -204,6 +204,12 @@ class ContactModel extends Model {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     _auth.confirmUserChange();
     var _result = await ContactRepository().getInfo(_auth, id: id);
-    return _result?.result;
+    try {
+      var _info = ContactDetails.fromJson(_result?.result);
+      return _info;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 }
