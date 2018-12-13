@@ -9,27 +9,27 @@ part of 'contact_row.dart';
 ContactRow _$ContactRowFromJson(Map<String, dynamic> json) {
   return ContactRow(
       id: json['id'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
-      cellPhone: json['cellPhone'] as String,
-      officePhone: json['officePhone'] as String,
-      homePhone: json['homePhone'] as String,
-      dateCreated: json['dateCreated'] as String,
-      dateModified: json['dateModified'] as String,
+      firstName: json['first_name'] as String,
+      lastName: json['last_name'] as String,
+      cellPhone: json['cell_phone'] as String,
+      officePhone: json['office_phone'] as String,
+      homePhone: json['home_phone'] as String,
+      dateCreated: json['date_created'] as String,
+      dateModified: json['date_modified'] as String,
       email: json['email'] as String,
-      lastActivity: json['lastActivity'] as String);
+      lastActivity: json['last_activity'] as String);
 }
 
 Map<String, dynamic> _$ContactRowToJson(ContactRow instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'cellPhone': instance.cellPhone,
-      'officePhone': instance.officePhone,
-      'homePhone': instance.homePhone,
-      'dateCreated': instance.dateCreated,
-      'dateModified': instance.dateModified,
+      'first_name': instance.firstName,
+      'last_name': instance.lastName,
+      'cell_phone': instance.cellPhone,
+      'office_phone': instance.officePhone,
+      'home_phone': instance.homePhone,
+      'date_created': instance.dateCreated,
+      'date_modified': instance.dateModified,
       'email': instance.email,
-      'lastActivity': instance.lastActivity
+      'last_activity': instance.lastActivity
     };

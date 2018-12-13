@@ -20,27 +20,37 @@ class ContactFields {
 
 @JsonSerializable()
 class ContactRow {
-  ContactRow(
-      {this.id,
-      this.firstName,
-      this.lastName,
-      this.cellPhone,
-      this.officePhone,
-      this.homePhone,
-      this.dateCreated,
-      this.dateModified,
-      this.email,
-      this.lastActivity});
+  ContactRow({
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.cellPhone,
+    this.officePhone,
+    this.homePhone,
+    this.dateCreated,
+    this.dateModified,
+    this.email,
+    this.lastActivity,
+  });
 
   String id;
+  @JsonKey(name: 'first_name')
   String firstName;
+  @JsonKey(name: 'last_name')
   String lastName;
+  @JsonKey(name: 'cell_phone')
   String cellPhone;
+  @JsonKey(name: 'office_phone')
   String officePhone;
+  @JsonKey(name: 'home_phone')
   String homePhone;
+  @JsonKey(name: 'date_created')
   String dateCreated;
+  @JsonKey(name: 'date_modified')
   String dateModified;
+  @JsonKey(name: 'email')
   String email;
+  @JsonKey(name: 'last_activity')
   String lastActivity;
 
   factory ContactRow.fromJson(Map<String, dynamic> json) =>

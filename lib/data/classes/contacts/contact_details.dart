@@ -23,15 +23,21 @@ class ContactDetails {
     this.contactGroups,
   });
 
+  @JsonKey(name: 'first_name')
   String firstName;
+  @JsonKey(name: 'middle_name')
   String middleName;
+  @JsonKey(name: 'last_name')
   String lastName;
   String email;
   Address address;
   List<Phone> phones;
   String birthdate;
+  @JsonKey(name: 'integration_id')
   String integrationId;
+  @JsonKey(name: 'company_category')
   CompanyCategory companyCategory;
+  @JsonKey(name: 'contact_groups')
   List<ContactGroup> contactGroups;
 
   factory ContactDetails.fromJson(Map<String, dynamic> json) =>
