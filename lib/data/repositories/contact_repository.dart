@@ -9,7 +9,7 @@ import '../classes/general/search.dart';
 import '../models/auth/model.dart';
 import '../classes/contacts/contact_details.dart';
 import '../models/contact/list.dart';
-import '../models/paging_model.dart';
+import '../classes/general/paging.dart';
 import '../web_client.dart';
 import '../classes/unify/response.dart';
 
@@ -21,7 +21,7 @@ class ContactRepository {
   });
 
   Future<ContactResult> loadList(AuthModel auth,
-      {@required PagingModel paging, Search search}) async {
+      {@required Paging paging, Search search}) async {
     dynamic _response;
 
     // search = SearchModel(search: "Prospect", filters: [5]);

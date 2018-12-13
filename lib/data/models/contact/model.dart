@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../../constants.dart';
+import '../../classes/contacts/contact_details.dart';
+import '../../classes/general/paging.dart';
 import '../../models/auth/model.dart';
-import '../../models/paging_model.dart';
 import '../../repositories/contact_repository.dart';
 import 'list.dart';
-import '../../classes/contacts/contact_details.dart';
 
 class ContactModel extends Model {
   // -- Paging --
-  PagingModel _paging = PagingModel(rows: 100, page: 1);
+  Paging _paging = Paging(rows: 100, page: 1);
   bool _lastPage = false;
 
   bool get lastPage => _lastPage;
 
   Future<bool> nextPage(BuildContext context) async {
-    _paging = PagingModel(
+    _paging = Paging(
       rows: _paging.rows,
       page: _paging.page + 1,
     );
@@ -24,7 +24,7 @@ class ContactModel extends Model {
     await loadItems(context, nextFetch: true);
 
     if (_lastPage) {
-      _paging = PagingModel(
+      _paging = Paging(
         rows: _paging.rows,
         page: _paging.page - 1,
       );
@@ -38,7 +38,7 @@ class ContactModel extends Model {
     // _loaded = false;
     // notifyListeners();
 
-    _paging = PagingModel(rows: 100, page: 1);
+    _paging = Paging(rows: 100, page: 1);
 
     await loadItems(context);
     notifyListeners();
