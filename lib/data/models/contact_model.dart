@@ -21,6 +21,7 @@ class ContactModel extends Model {
     sorting: Sort(
         defaultField: ContactFields.last_name,
         initialized: true,
+        ascending: true,
         field: ContactFields.last_name,
         fields: [
           ContactFields.first_name,

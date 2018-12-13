@@ -32,25 +32,22 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
     super.initState();
   }
 
-  void _loadContacts() async {
-    var contacts = await ContactsService.getContacts();
-    final _items = contacts
-        .map((Contact item) => ContactSelect(contact: item, selected: false))
-        .toList();
+  void _loadContacts({bool search = false, String query = ""}) async {
+    var contacts =
+        await ContactsService.getContacts(query: search ? query : null);
+    // final _items = contacts
+    //     .map((Contact item) => ContactSelect(contact: item, selected: false))
+    //     .toList();
+    var _items = <ContactSelect>[];
+    if (contacts != null && contacts.isNotEmpty)
+      for (var _item in contacts) {
+        if (!isNullOrEmpty(_item?.displayName)) {
+          _items.add(ContactSelect(contact: _item, selected: false));
+        }
+      }
+
     setState(() {
       _contacts = _items;
-      _filteredContacts = _items;
-    });
-    _updateCount();
-  }
-
-  void _searchContacts(String value) async {
-    var contacts = await ContactsService.getContacts(query: value);
-
-    final _items = contacts
-        .map((Contact item) => ContactSelect(contact: item, selected: false))
-        .toList();
-    setState(() {
       _filteredContacts = _items;
     });
     _updateCount();
@@ -126,7 +123,7 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
           isSearching: _isSearching,
           onSearchChanged: (String value) {
             if (!isNullOrEmpty(value)) {
-              _searchContacts(value);
+              _loadContacts(search: true, query: value);
             } else {
               setState(() {
                 _filteredContacts = _contacts;
@@ -231,6 +228,11 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
                 ? null
                 : () =>
                     _allSelected ? _selectAll(deselect: true) : _selectAll(),
+          ),
+          IconButton(
+            tooltip: "Refresh",
+            icon: Icon(Icons.refresh),
+            onPressed: () => _loadContacts(),
           ),
         ],
       ),
