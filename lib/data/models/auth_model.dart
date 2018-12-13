@@ -219,10 +219,10 @@ class AuthModel extends Model {
     AuthUser _user;
     try {
       var _result = await _auth.getInfo(token);
-      var _userInfo = User.fromJson(_result?.result);
+      var _info = User.fromJson(_result?.result);
       _user = AuthUser(
         token: token,
-        data: _userInfo,
+        data: _info,
         username: username,
         password: password,
       );
