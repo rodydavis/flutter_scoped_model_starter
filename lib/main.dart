@@ -5,7 +5,7 @@ import 'constants.dart';
 import 'data/models/auth_model.dart';
 import 'data/models/contact_model.dart';
 import 'data/models/task_model.dart';
-import 'data/models/theme.dart';
+import 'data/models/theme_model.dart';
 import 'ui/app/account/screen.dart';
 import 'ui/app/home/screen.dart';
 import 'ui/app/settings/screen.dart';
@@ -45,7 +45,7 @@ class AppTheme extends StatelessWidget {
       debugShowCheckedModeBanner: !devMode,
       title: 'Scoped Model Starter',
       theme: _model.theme,
-      home: SplashScreen(),
+      home: SplashScreen(duration: Duration(seconds: 3), auth: authModel),
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) =>
             LoginPage(username: authModel?.currentUser?.username),

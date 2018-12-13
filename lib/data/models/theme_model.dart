@@ -13,12 +13,12 @@ class ThemeModel extends Model {
   );
 
   ThemeData get theme => _currentTheme;
-  bool get isDarkMode => _module?.darkMode ?? false;
-  bool get isTrueBlack => _module?.trueBlack ?? false;
+  // bool get isDarkMode => _module?.darkMode ?? false;
+  // bool get isTrueBlack => _module?.trueBlack ?? false;
   bool get isLoaded => _module?.isLoaded ?? false;
 
   void darkMode({bool trueBlack = false}) {
-    if (trueBlack) {
+    if (trueBlack ?? false) {
       _currentTheme = ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.black,
         backgroundColor: Colors.black,
