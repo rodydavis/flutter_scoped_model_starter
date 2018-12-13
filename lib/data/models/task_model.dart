@@ -3,9 +3,9 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../constants.dart';
 import '../classes/tasks/task.dart';
+import '../classes/tasks/task_module.dart';
 import '../repositories/task_repository.dart';
 import 'auth_model.dart';
-import '../classes/tasks/task_module.dart';
 
 class TaskModel extends Model {
   TaskModule _module;

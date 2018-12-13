@@ -3,8 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'theme.g.dart';
 
 @JsonSerializable()
-class ThemeInfo {
-  ThemeInfo({
+class ThemeModule {
+  ThemeModule({
     this.darkMode = false,
     this.trueBlack = false,
     this.isLoaded = false,
@@ -14,8 +14,8 @@ class ThemeInfo {
   bool trueBlack;
   bool isLoaded;
 
-  factory ThemeInfo.fromJson(Map<String, dynamic> json) =>
-      _$ThemeInfoFromJson(json);
+  factory ThemeModule.fromJson(Map<String, dynamic> json) =>
+      _$ThemeModuleFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ThemeInfoToJson(this);
+  Map<String, dynamic> toJson() => _$ThemeModuleToJson(this);
 }

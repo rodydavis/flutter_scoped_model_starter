@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../classes/general/theme.dart';
 
 import '../../data/local_storage.dart';
+import '../classes/app/theme.dart';
 
 class ThemeModel extends Model {
   ThemeData _currentTheme = defaultTheme;
-  ThemeInfo _module;
+  ThemeModule _module;
 
   ThemeData get theme => _currentTheme;
   bool get isDarkMode => _module.darkMode;

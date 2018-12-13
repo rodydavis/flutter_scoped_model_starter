@@ -52,7 +52,7 @@ class Address {
       _address += "\n";
       _address += _cityStateZip;
     }
-    
+
     return _address.trim().toString();
   }
 }

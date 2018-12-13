@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../app/paging.dart';
+import '../app/sort.dart';
 import '../general/search.dart';
-import '../general/sort.dart';
 import 'contact_row.dart';
-import '../general/paging.dart';
 
 part 'contact_module.g.dart';
 

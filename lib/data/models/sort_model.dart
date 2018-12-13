@@ -1,5 +1,6 @@
 import 'package:scoped_model/scoped_model.dart';
-import '../classes/general/sort.dart';
+
+import '../classes/app/sort.dart';
 
 class SortModel extends Model {
   Sort _sort;

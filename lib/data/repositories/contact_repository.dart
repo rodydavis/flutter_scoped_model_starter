@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 
 import '../../constants.dart';
 import '../../utils/null_or_empty.dart';
+import '../classes/app/paging.dart';
 import '../classes/contacts/contact_details.dart';
-import '../classes/general/paging.dart';
 import '../classes/general/search.dart';
 import '../classes/unify/response.dart';
 import '../models/auth_model.dart';
