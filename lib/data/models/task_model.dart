@@ -17,7 +17,7 @@ class TaskModel extends Model {
 
   List<Task> get tasks => _module?.tasks;
   int get lastUpdated => _module?.lastUpdated;
-  DateTime get date => _module?.date = DateTime.now();
+  DateTime get date => _module?.date ?? DateTime.now();
 
   set date(DateTime value) {
     _module?.date = value;

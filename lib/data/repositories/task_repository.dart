@@ -16,7 +16,7 @@ class TaskRepository {
   });
 
   Future<ResponseMessage> loadList(AuthModel auth, DateTime date) async {
-    final _date = formatDateCustom(date == null ? DateTime.now() : date);
+    final _date = formatDateCustom(date);
     print("Date: $_date");
     final response = await webClient.get(
       kApiUrl + '/calendar/$_date',
