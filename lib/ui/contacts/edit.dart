@@ -28,7 +28,9 @@ class _ContactItemEditState extends State<ContactItemEdit> {
   ContactDetails details;
 
   Phone _cell, _home, _office;
-  Address _address;
+  // Address _address;
+
+  Address get address => details?.address;
 
   @override
   void initState() {
@@ -43,7 +45,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
         _isNew = true;
       });
     }
-    print("Address Passed => " + details?.toJson().toString());
+    print("Passed => " + details?.toJson().toString());
     _updateView(contactDetails: details);
   }
 
@@ -64,19 +66,20 @@ class _ContactItemEditState extends State<ContactItemEdit> {
       // setState(() {
       //   _address = details?.address;
       // });
-      print("Address => " + _address?.raw());
+      print("Address => " + address?.raw());
+
       ContactDetails _contact = ContactDetails(
         firstName: _firstName?.text ?? "",
         middleName: _middleName?.text ?? "",
         lastName: _lastName?.text ?? "",
         email: _email?.text ?? "",
-        address: _address,
+        address: address,
         phones: _phones,
       );
 
       print(_contact.toJson());
 
-      Navigator.pop(context, _contact);
+      // Navigator.pop(context, _contact);
     }
   }
 
@@ -137,10 +140,6 @@ class _ContactItemEditState extends State<ContactItemEdit> {
       }
 
       _middleName = TextEditingController(text: details?.middleName ?? "");
-
-      setState(() {
-        _address = details?.address;
-      });
     }
 
     // setState(() {
@@ -253,7 +252,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                     address: details?.address,
                     addressChanged: (Address value) {
                       setState(() {
-                        _address = value;
+                        details.address = value;
                       });
                     },
                   ),
