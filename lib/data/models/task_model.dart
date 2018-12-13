@@ -11,11 +11,9 @@ class TaskModel extends Model {
   TaskModule _module;
 
   List<Task> get tasks => _module?.tasks;
-
   int get lastUpdated => _module?.lastUpdated;
-
   DateTime get date => _module?.date = DateTime.now();
-  
+
   set date(DateTime value) {
     _module?.date = value;
     notifyListeners();
@@ -49,7 +47,7 @@ class TaskModel extends Model {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     _auth.confirmUserChange();
     // -- Load Items from API or Local --
-    var _tasks = await TaskRepository().loadList(_auth, _module?.date);
+    var _tasks = await TaskRepository().loadList(_auth, date);
 
     List<dynamic> _result = _tasks?.result;
     if (_result?.isNotEmpty ?? false) {
