@@ -6,8 +6,8 @@ import '../auth/auth_user.dart';
 part 'auth_module.g.dart';
 
 @JsonSerializable()
-class AuthInfo {
-  AuthInfo({
+class AuthModule {
+  AuthModule({
     this.currentUser,
     this.error,
     this.isLoading,
@@ -27,8 +27,8 @@ class AuthInfo {
   int savedUsersCount;
   int saveUsersAdded;
 
-  factory AuthInfo.fromJson(Map<String, dynamic> json) =>
-      _$AuthInfoFromJson(json);
+  factory AuthModule.fromJson(Map<String, dynamic> json) =>
+      _$AuthModuleFromJson(json);
 
-  Map<String, dynamic> toJson() => _$AuthInfoToJson(this);
+  Map<String, dynamic> toJson() => _$AuthModuleToJson(this);
 }

@@ -6,8 +6,8 @@ part of 'auth_module.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthInfo _$AuthInfoFromJson(Map<String, dynamic> json) {
-  return AuthInfo(
+AuthModule _$AuthModuleFromJson(Map<String, dynamic> json) {
+  return AuthModule(
       currentUser: json['currentUser'] == null
           ? null
           : User.fromJson(json['currentUser'] as Map<String, dynamic>),
@@ -23,7 +23,8 @@ AuthInfo _$AuthInfoFromJson(Map<String, dynamic> json) {
           ?.toList());
 }
 
-Map<String, dynamic> _$AuthInfoToJson(AuthInfo instance) => <String, dynamic>{
+Map<String, dynamic> _$AuthModuleToJson(AuthModule instance) =>
+    <String, dynamic>{
       'users': instance.users,
       'currentUser': instance.currentUser,
       'loggedIn': instance.loggedIn,
