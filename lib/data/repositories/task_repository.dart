@@ -1,20 +1,11 @@
 import 'dart:async';
-import 'dart:async';
-import 'dart:convert';
-import 'dart:convert';
 import 'dart:core';
 
-import 'package:built_collection/built_collection.dart';
-import 'package:flutter/foundation.dart';
-
 import '../../constants.dart';
-import '../models/auth/model.dart';
-import '../models/contact/list.dart';
-import '../models/paging_model.dart';
-import '../models/search_model.dart';
-import '../web_client.dart';
-import '../models/task/list.dart';
 import '../../utils/date_formatter.dart';
+import '../models/auth/model.dart';
+import '../models/task/list.dart';
+import '../web_client.dart';
 
 class TaskRepository {
   final WebClient webClient;

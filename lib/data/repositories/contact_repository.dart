@@ -4,13 +4,13 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import '../../constants.dart';
+import '../../utils/null_or_empty.dart';
+import '../classes/general/search.dart';
 import '../models/auth/model.dart';
+import '../models/contact/info.dart';
 import '../models/contact/list.dart';
 import '../models/paging_model.dart';
-import '../models/search_model.dart';
 import '../web_client.dart';
-import '../models/contact/info.dart';
-import '../../utils/null_or_empty.dart';
 
 class ContactRepository {
   final WebClient webClient;
@@ -20,7 +20,7 @@ class ContactRepository {
   });
 
   Future<ContactResult> loadList(AuthModel auth,
-      {@required PagingModel paging, SearchModel search}) async {
+      {@required PagingModel paging, Search search}) async {
     dynamic _response;
 
     // search = SearchModel(search: "Prospect", filters: [5]);
