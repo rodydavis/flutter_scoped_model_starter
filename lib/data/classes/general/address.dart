@@ -22,7 +22,8 @@ class Address {
     if (street == null && city == null && state == null && zip == null) {
       return "";
     }
-    return "$street $apartment $city $state $zip".trim().toString();
+    var _apartment = apartment ?? "";
+    return "$street $_apartment $city $state $zip".trim().toString();
   }
 
   @override
@@ -30,8 +31,9 @@ class Address {
     if (raw().isEmpty) {
       return "";
     }
+    var _apartment = apartment ?? "";
     var _address = "";
-    _address += "$street $apartment".trim();
+    _address += "$street $_apartment".trim();
 
     bool _city = !isNullOrEmpty(city);
     bool _state = !isNullOrEmpty(state);

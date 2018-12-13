@@ -79,7 +79,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
 
       print(_contact.toJson());
 
-      // Navigator.pop(context, _contact);
+      Navigator.pop(context, _contact);
     }
   }
 
@@ -106,9 +106,9 @@ class _ContactItemEditState extends State<ContactItemEdit> {
         setState(() {
           details = ContactDetails.fromPhoneContact(phoneContact);
           print(details.toJson().toString());
+          print(details.address.toJson().toString());
         });
-      }
-      if (contactDetails != null) {
+      } else if (contactDetails != null) {
         setState(() {
           details = contactDetails;
         });

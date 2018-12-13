@@ -21,11 +21,8 @@ class AuthRepository {
 
     var url = kApiUrl.replaceAll('api', 'token');
 
-    final response = await webClient.post(
-      url,
-      credentials,
-      bodyContentType: "application/x-www-form-urlencoded",
-    );
+    final response = await webClient.post(url, credentials,
+        bodyContentType: "application/x-www-form-urlencoded", token: "");
 
     return response['access_token'];
   }
