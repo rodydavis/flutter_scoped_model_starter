@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/classes/contacts/contact_details.dart';
-import '../../data/models/contact/list.dart';
+import '../../data/classes/contacts/contact_row.dart';
 import '../../data/models/contact/model.dart';
 import '../../ui/app/app_bottom_bar.dart';
 import '../../ui/general/address_tile.dart';
@@ -11,7 +11,7 @@ import '../../utils/null_or_empty.dart';
 import 'edit.dart';
 
 class ContactItemDetails extends StatefulWidget {
-  final ContactObject item;
+  final ContactRow item;
   final String name;
   final bool showNameInAppBar;
   final ContactModel model;
@@ -26,7 +26,7 @@ class ContactItemDetails extends StatefulWidget {
 }
 
 class _ContactItemDetailsState extends State<ContactItemDetails> {
-  ContactObject item;
+  ContactRow item;
   ContactDetails details;
   bool _isLoaded = false;
 

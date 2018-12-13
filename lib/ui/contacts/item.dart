@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/contact/list.dart';
+import '../../data/classes/contacts/contact_details.dart';
+import '../../data/classes/contacts/contact_row.dart';
 import '../../data/models/contact/model.dart';
 import '../../ui/general/three_row_tile.dart';
 import '../../utils/date_formatter.dart';
 import 'edit.dart';
 import 'view.dart';
-import '../../data/classes/contacts/contact_details.dart';
 
 class ContactItem extends StatelessWidget {
-  final ContactObject item;
+  final ContactRow item;
   final ContactModel model;
   final bool share, edit, delete;
   ContactItem({

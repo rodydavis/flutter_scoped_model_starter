@@ -5,13 +5,12 @@ import 'package:flutter/foundation.dart';
 
 import '../../constants.dart';
 import '../../utils/null_or_empty.dart';
-import '../classes/general/search.dart';
-import '../models/auth/model.dart';
 import '../classes/contacts/contact_details.dart';
-import '../models/contact/list.dart';
 import '../classes/general/paging.dart';
-import '../web_client.dart';
+import '../classes/general/search.dart';
 import '../classes/unify/response.dart';
+import '../models/auth/model.dart';
+import '../web_client.dart';
 
 class ContactRepository {
   final WebClient webClient;
@@ -20,7 +19,7 @@ class ContactRepository {
     this.webClient = const WebClient(),
   });
 
-  Future<ContactResult> loadList(AuthModel auth,
+  Future<ResponseMessage> loadList(AuthModel auth,
       {@required Paging paging, Search search}) async {
     dynamic _response;
 
@@ -44,7 +43,7 @@ class ContactRepository {
       _response = response;
     }
 
-    var result = ContactResult.fromJson(_response);
+    var result = ResponseMessage.fromJson(_response);
 
     return result;
   }

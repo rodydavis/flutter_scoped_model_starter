@@ -6,7 +6,7 @@ import '../../classes/contacts/contact_details.dart';
 import '../../classes/general/paging.dart';
 import '../../models/auth/model.dart';
 import '../../repositories/contact_repository.dart';
-import 'list.dart';
+import '../../classes/contacts/contact_row.dart';
 
 class ContactModel extends Model {
   // -- Paging --
@@ -47,8 +47,8 @@ class ContactModel extends Model {
   bool _loaded = false;
   int _lastUpdated = 0;
 
-  List<ContactObject> _items = [];
-  List<ContactObject> _filtered = [];
+  List<ContactRow> _items = [];
+  List<ContactRow> _filtered = [];
 
   int get lastUpdated => _lastUpdated;
 
@@ -75,8 +75,8 @@ class ContactModel extends Model {
     notifyListeners();
   }
 
-  List<ContactObject> get items => _items;
-  List<ContactObject> get filteredItems => _filtered;
+  List<ContactRow> get items => _items;
+  List<ContactRow> get filteredItems => _filtered;
 
   Future<bool> loadItems(BuildContext context, {bool nextFetch = false}) async {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
@@ -167,7 +167,7 @@ class ContactModel extends Model {
   void search(String value) {
     print("Searching... $value");
 
-    List<ContactObject> _results = [];
+    List<ContactRow> _results = [];
 
     for (var _item in items) {
       if (_item.matchesSearch(value)) {

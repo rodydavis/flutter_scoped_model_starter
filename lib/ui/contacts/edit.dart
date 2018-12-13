@@ -5,13 +5,12 @@ import '../../data/classes/contacts/contact_details.dart';
 import '../../data/classes/contacts/contact_row.dart';
 import '../../data/classes/general/address.dart';
 import '../../data/classes/general/phone.dart';
-import '../../data/models/contact/list.dart';
 import '../../data/models/contact/model.dart';
 import '../general/address_tile.dart';
 import '../general/phone_tile.dart';
 
 class ContactItemEdit extends StatefulWidget {
-  final ContactObject item;
+  final ContactRow item;
   final ContactModel model;
   ContactItemEdit({this.item, @required this.model});
   @override
