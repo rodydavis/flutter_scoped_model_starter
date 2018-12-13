@@ -58,11 +58,14 @@ class __ContactScreenState extends State<_ContactScreen> {
     final _sort = ScopedModel.of<SortModel>(context, rebuildOnChange: true);
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     if (!_sort.ready) {
-      _sort.setDefaults(field: ContactFields.last_name, fields: [
-        ContactFields.first_name,
-        ContactFields.last_name,
-        ContactFields.last_activity,
-      ]);
+      _sort.setDefaults(
+        field: ContactFields.last_name,
+        fields: [
+          ContactFields.first_name,
+          ContactFields.last_name,
+          ContactFields.last_activity,
+        ],
+      );
     }
     return Scaffold(
       key: _scaffoldKey,

@@ -7,6 +7,9 @@ import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
 import '../classes/auth/auth_module.dart';
+import '../classes/contacts/contact_module.dart';
+import '../classes/tasks/task_module.dart';
+import '../classes/app/theme.dart';
 import '../file_storage.dart';
 
 class PersistenceRepository {
@@ -26,25 +29,37 @@ class PersistenceRepository {
     return AuthModule.fromJson(json.decode(data));
   }
 
-  // Future<File> saveUIState(UIState state) async {
-  //   var data = serializers.serializeWith(UIState.serializer, state);
-  //   return await fileStorage.save(json.encode(data));
-  // }
+  Future<File> saveThemeState(ThemeModule state) async {
+    var data = state.toJson();
+    return await fileStorage.save(json.encode(data));
+  }
 
-  // Future<UIState> loadUIState() async {
-  //   String data = await fileStorage.load();
-  //   return serializers.deserializeWith(UIState.serializer, json.decode(data));
-  // }
+  Future<ThemeModule> loadThemeState() async {
+    String data = await fileStorage.load();
+    return ThemeModule.fromJson(json.decode(data));
+  }
 
-  // Future<File> saveDataState(DataState state) async {
-  //   var data = serializers.serializeWith(DataState.serializer, state);
-  //   return await fileStorage.save(json.encode(data));
-  // }
+  // STARTER: state - do not remove comment
 
-  // Future<DataState> loadDataState() async {
-  //   String data = await fileStorage.load();
-  //   return serializers.deserializeWith(DataState.serializer, json.decode(data));
-  // }
+  Future<File> saveContactsState(ContactModule state) async {
+    var data = state.toJson();
+    return await fileStorage.save(json.encode(data));
+  }
+
+  Future<ContactModule> loadContactsState() async {
+    String data = await fileStorage.load();
+    return ContactModule.fromJson(json.decode(data));
+  }
+
+  Future<File> saveTasksState(TaskModule state) async {
+    var data = state.toJson();
+    return await fileStorage.save(json.encode(data));
+  }
+
+  Future<TaskModule> loadTasksState() async {
+    String data = await fileStorage.load();
+    return TaskModule.fromJson(json.decode(data));
+  }
 
   Future<FileSystemEntity> delete() async {
     return await fileStorage
