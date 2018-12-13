@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../../constants.dart';
-import '../../classes/contacts/contact_details.dart';
-import '../../classes/general/paging.dart';
-import '../../models/auth/model.dart';
-import '../../repositories/contact_repository.dart';
-import '../../classes/contacts/contact_row.dart';
+import '../../constants.dart';
+import '../classes/contacts/contact_details.dart';
+import '../classes/general/paging.dart';
+import '../models/auth/model.dart';
+import '../repositories/contact_repository.dart';
+import '../classes/contacts/contact_row.dart';
 
 class ContactModel extends Model {
   // -- Paging --

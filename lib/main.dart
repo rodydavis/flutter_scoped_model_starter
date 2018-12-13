@@ -3,8 +3,8 @@ import 'package:scoped_model/scoped_model.dart';
 
 import 'constants.dart';
 import 'data/models/auth/model.dart';
-import 'data/models/contact/model.dart';
-import 'data/models/task/model.dart';
+import 'data/models/contact_model.dart';
+import 'data/models/task_model.dart';
 import 'data/models/theme.dart';
 import 'ui/app/account/screen.dart';
 import 'ui/app/home/screen.dart';

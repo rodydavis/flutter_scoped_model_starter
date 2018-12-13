@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/classes/contacts/contact_details.dart';
 import '../../data/classes/contacts/contact_row.dart';
-import '../../data/models/contact/model.dart';
+import '../../data/models/contact_model.dart';
 import '../../ui/app/app_bottom_bar.dart';
 import '../../ui/general/address_tile.dart';
 import '../../ui/general/email_tile.dart';

@@ -5,7 +5,7 @@ import '../../data/classes/contacts/contact_details.dart';
 import '../../data/classes/contacts/contact_row.dart';
 import '../../data/classes/general/address.dart';
 import '../../data/classes/general/phone.dart';
-import '../../data/models/contact/model.dart';
+import '../../data/models/contact_model.dart';
 import '../general/address_tile.dart';
 import '../general/phone_tile.dart';
 

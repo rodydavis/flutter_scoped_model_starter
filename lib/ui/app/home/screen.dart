@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../../data/models/task/model.dart';
+import '../../../data/models/task_model.dart';
 import '../../../ui/app/app_drawer.dart';
 import '../../../ui/general/date_view.dart';
 

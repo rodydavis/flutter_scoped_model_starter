@@ -6,7 +6,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../data/classes/contacts/contact_details.dart';
 import '../../data/classes/contacts/contact_row.dart';
 import '../../data/models/auth/model.dart';
-import '../../data/models/contact/model.dart';
+import '../../data/models/contact_model.dart';
 import '../../data/models/sort_model.dart';
 import '../../ui/app/app_bottom_bar.dart';
 import '../../ui/app/app_drawer.dart';
