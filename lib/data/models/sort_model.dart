@@ -1,38 +1,50 @@
 import 'package:scoped_model/scoped_model.dart';
+import '../classes/general/sort.dart';
 
 class SortModel extends Model {
-  final String defaultSortField;
-  List<String> sortFields;
-  SortModel({this.sortFields, this.defaultSortField});
+  Sort _sort;
 
-  bool _sortAscending = false;
-  String _sortField = "";
+  String get sortField => _sort?.field;
+  List<String> get sortFields => _sort?.fields;
 
-  String get sortField => _sortField;
-  bool get sortAscending => _sortAscending;
+  bool get sortAscending => _sort?.ascending;
 
   set sortField(String value) {
-    _sortField = value;
+    _sort?.field = value;
     notifyListeners();
   }
 
   sortASC() {
-    _sortAscending = true;
+    _sort?.ascending = true;
     notifyListeners();
   }
 
   sortDESC() {
-    _sortAscending = false;
+    _sort?.ascending = false;
     notifyListeners();
   }
 
   sortREVERSE() {
-    _sortAscending = !_sortAscending;
+    final _isAsc = _sort?.ascending ?? false;
+    _sort?.ascending = !_isAsc;
     notifyListeners();
   }
 
   set sortAscending(bool value) {
-    _sortAscending = value;
+    _sort?.ascending = value;
+    notifyListeners();
+  }
+
+  void setDefaults({String field, List<String> fields}) {
+    _sort.field = field;
+    _sort.fields = fields;
+    notifyListeners();
+  }
+
+  bool get ready => _sort.initialized;
+
+  void init() {
+    _sort.initialized = true;
     notifyListeners();
   }
 }

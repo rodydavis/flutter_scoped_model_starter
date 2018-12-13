@@ -23,17 +23,7 @@ class ContactScreen extends StatelessWidget {
     return ScopedModel<ContactModel>(
       model: model,
       child: new ScopedModel<SortModel>(
-        model: SortModel(
-          defaultSortField: ContactFields.last_name,
-          sortFields: [
-            // STARTER: sort - do not remove comment
-            ContactFields.first_name,
-
-            ContactFields.last_name,
-
-            ContactFields.last_activity,
-          ],
-        ),
+        model: SortModel(),
         child: _ContactScreen(),
       ),
     );
@@ -67,7 +57,13 @@ class __ContactScreenState extends State<_ContactScreen> {
     final _model = ScopedModel.of<ContactModel>(context, rebuildOnChange: true);
     final _sort = ScopedModel.of<SortModel>(context, rebuildOnChange: true);
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
-
+    if (!_sort.ready) {
+      _sort.setDefaults(field: ContactFields.last_name, fields: [
+        ContactFields.first_name,
+        ContactFields.last_name,
+        ContactFields.last_activity,
+      ]);
+    }
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -104,7 +100,7 @@ class __ContactScreenState extends State<_ContactScreen> {
             return Center(child: CircularProgressIndicator());
           }
           if (_sortField.isEmpty) {
-            _sortField = _sort.defaultSortField;
+            _sortField = _sort.sortField;
           }
           _sort.sortField = _sortField;
           _sort.sortAscending = _sortASC;
