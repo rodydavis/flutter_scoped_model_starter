@@ -1,14 +1,14 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/models/contact/fields.dart';
-import '../../data/models/contact/list.dart';
 import '../../data/classes/contacts/contact_details.dart';
+import '../../data/classes/contacts/contact_row.dart';
 import '../../data/classes/general/address.dart';
 import '../../data/classes/general/phone.dart';
+import '../../data/models/contact/list.dart';
 import '../../data/models/contact/model.dart';
-import 'package:contacts_service/contacts_service.dart';
-import '../general/phone_tile.dart';
 import '../general/address_tile.dart';
+import '../general/phone_tile.dart';
 
 class ContactItemEdit extends StatefulWidget {
   final ContactObject item;

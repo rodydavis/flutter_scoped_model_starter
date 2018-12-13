@@ -1,4 +1,4 @@
-import 'fields.dart';
+import '../../classes/contacts/contact_row.dart';
 
 class ContactResult {
   String status;
