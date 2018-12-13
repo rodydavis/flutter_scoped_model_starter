@@ -20,8 +20,8 @@ class ImportContactsScreen extends StatefulWidget {
 }
 
 class ImportContactsScreenState extends State<ImportContactsScreen> {
-  List<ContactSelect> _contacts;
-  List<ContactSelect> _filteredContacts;
+  List<ContactSelect> _contacts = [];
+  List<ContactSelect> _filteredContacts = [];
   bool _isSearching = false;
   int _selectedContacts = 0;
 
@@ -33,23 +33,27 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
   }
 
   void _loadContacts({bool search = false, String query = ""}) async {
-    var contacts =
-        await ContactsService.getContacts(query: search ? query : null);
-    // final _items = contacts
-    //     .map((Contact item) => ContactSelect(contact: item, selected: false))
-    //     .toList();
-    var _items = <ContactSelect>[];
-    if (contacts != null && contacts.isNotEmpty)
-      for (var _item in contacts) {
-        if (!isNullOrEmpty(_item?.displayName)) {
-          _items.add(ContactSelect(contact: _item, selected: false));
+    try {
+      var contacts =
+          await ContactsService.getContacts(query: search ? query : null);
+      // final _items = contacts
+      //     .map((Contact item) => ContactSelect(contact: item, selected: false))
+      //     .toList();
+      var _items = <ContactSelect>[];
+      if (contacts != null && contacts.isNotEmpty)
+        for (var _item in contacts) {
+          if (!isNullOrEmpty(_item?.displayName)) {
+            _items.add(ContactSelect(contact: _item, selected: false));
+          }
         }
-      }
 
-    setState(() {
-      _contacts = _items;
-      _filteredContacts = _items;
-    });
+      setState(() {
+        if (!search) _contacts = _items;
+        _filteredContacts = _items;
+      });
+    } catch (e) {
+      print(e);
+    }
     _updateCount();
   }
 
