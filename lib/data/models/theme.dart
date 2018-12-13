@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import '../classes/general/theme.dart';
 
 import '../../data/local_storage.dart';
 
 class ThemeModel extends Model {
   ThemeData _currentTheme = defaultTheme;
-  bool _darkMode = false;
-  bool _trueBlack = false;
-  bool _isLoaded = false;
+  ThemeInfo _module;
 
   ThemeData get theme => _currentTheme;
-  bool get isDarkMode => _darkMode;
-  bool get isTrueBlack => _trueBlack;
-  bool get isLoaded => _isLoaded;
+  bool get isDarkMode => _module.darkMode;
+  bool get isTrueBlack => _module.trueBlack;
+  bool get isLoaded => _module.isLoaded;
 
   void darkMode({bool trueBlack = false}) {
     if (trueBlack) {
@@ -26,8 +25,8 @@ class ThemeModel extends Model {
       _currentTheme = ThemeData.dark();
     }
     print("Dark Mode Activated");
-    _darkMode = true;
-    _trueBlack = trueBlack;
+    _module.darkMode = true;
+    _module.trueBlack = trueBlack;
     _saveThemeToDisk();
     notifyListeners();
   }
@@ -35,7 +34,7 @@ class ThemeModel extends Model {
   void lightMode() {
     _currentTheme = ThemeData.light();
     print("Light Mode Activated");
-    _darkMode = false;
+    _module.darkMode = false;
     _saveThemeToDisk();
     notifyListeners();
   }
@@ -43,29 +42,29 @@ class ThemeModel extends Model {
   void reset() {
     _currentTheme = defaultTheme;
     print("Default Theme Activated");
-    _darkMode = false;
+    _module.darkMode = false;
     _saveThemeToDisk();
     notifyListeners();
   }
 
   Future loadSavedTheme() async {
     var prefs = AppPreferences();
-    _darkMode = await prefs.getSetting(Settings.darkMode);
-    _trueBlack = await prefs.getSetting(Settings.trueBlack);
-    if (_darkMode) {
-      darkMode(trueBlack: _trueBlack);
+    _module.darkMode = await prefs.getSetting(Settings.darkMode);
+    _module.trueBlack = await prefs.getSetting(Settings.trueBlack);
+    if (_module.darkMode) {
+      darkMode(trueBlack: _module.trueBlack);
     } else {
       lightMode();
     }
-    _isLoaded = true;
+    _module.isLoaded = true;
     notifyListeners();
     return;
   }
 
   void _saveThemeToDisk() {
     var prefs = AppPreferences();
-    prefs.setSetting(Settings.darkMode, _darkMode);
-    prefs.setSetting(Settings.trueBlack, _trueBlack);
+    prefs.setSetting(Settings.darkMode, _module.darkMode);
+    prefs.setSetting(Settings.trueBlack, _module.trueBlack);
   }
 }
 

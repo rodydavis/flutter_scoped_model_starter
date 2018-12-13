@@ -4,12 +4,16 @@ part 'theme.g.dart';
 
 @JsonSerializable()
 class ThemeInfo {
-  ThemeInfo({this.darkMode, this.trueBlack, this.isLoaded});
+  ThemeInfo({
+    this.darkMode = false,
+    this.trueBlack = false,
+    this.isLoaded = false,
+  });
 
   bool darkMode;
   bool trueBlack;
   bool isLoaded;
-  
+
   factory ThemeInfo.fromJson(Map<String, dynamic> json) =>
       _$ThemeInfoFromJson(json);
 
