@@ -4,11 +4,17 @@ part 'response.g.dart';
 
 @JsonSerializable()
 class ResponseMessage {
-  ResponseMessage({this.status, this.message, this.result, this.id});
+  ResponseMessage({
+    this.status,
+    this.message,
+    this.result,
+  });
 
+  @JsonKey(name: 'Status')
   String status;
+  @JsonKey(name: 'Message')
   String message;
-  String id;
+  @JsonKey(name: 'Result')
   dynamic result;
 
   factory ResponseMessage.fromJson(Map<String, dynamic> json) =>

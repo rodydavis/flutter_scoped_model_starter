@@ -8,16 +8,14 @@ part of 'response.dart';
 
 ResponseMessage _$ResponseMessageFromJson(Map<String, dynamic> json) {
   return ResponseMessage(
-      status: json['status'] as String,
-      message: json['message'] as String,
-      result: json['result'],
-      id: json['id'] as String);
+      status: json['Status'] as String,
+      message: json['Message'] as String,
+      result: json['Result']);
 }
 
 Map<String, dynamic> _$ResponseMessageToJson(ResponseMessage instance) =>
     <String, dynamic>{
-      'status': instance.status,
-      'message': instance.message,
-      'id': instance.id,
-      'result': instance.result
+      'Status': instance.status,
+      'Message': instance.message,
+      'Result': instance.result
     };
