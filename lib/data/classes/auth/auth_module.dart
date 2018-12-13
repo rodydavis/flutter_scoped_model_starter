@@ -9,17 +9,17 @@ part 'auth_module.g.dart';
 class AuthModule {
   AuthModule({
     this.currentUser,
-    this.error,
-    this.isLoading,
-    this.loggedIn,
-    this.saveUsersAdded,
-    this.savedUsersCount,
-    this.userChanged,
+    this.error = "",
+    this.isLoading = false,
+    this.loggedIn = false,
+    this.saveUsersAdded = 0,
+    this.savedUsersCount = 0,
+    this.userChanged = false,
     this.users,
   });
 
   List<AuthUser> users = [];
-  User currentUser;
+  AuthUser currentUser;
   bool loggedIn;
   bool userChanged;
   String error;

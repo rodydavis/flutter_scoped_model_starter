@@ -10,7 +10,7 @@ AuthModule _$AuthModuleFromJson(Map<String, dynamic> json) {
   return AuthModule(
       currentUser: json['currentUser'] == null
           ? null
-          : User.fromJson(json['currentUser'] as Map<String, dynamic>),
+          : AuthUser.fromJson(json['currentUser'] as Map<String, dynamic>),
       error: json['error'] as String,
       isLoading: json['isLoading'] as bool,
       loggedIn: json['loggedIn'] as bool,
