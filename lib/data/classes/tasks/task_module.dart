@@ -7,8 +7,8 @@ part 'task_module.g.dart';
 @JsonSerializable()
 class TaskModule {
   TaskModule({
-    this.isLoaded,
-    this.lastUpdated,
+    this.isLoaded = false,
+    this.lastUpdated = 0,
     this.date,
     this.tasks,
   });

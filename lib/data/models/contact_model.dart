@@ -3,30 +3,29 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../constants.dart';
 import '../classes/contacts/contact_details.dart';
+import '../classes/contacts/contact_module.dart';
+import '../classes/contacts/contact_row.dart';
 import '../classes/general/paging.dart';
 import '../models/auth_model.dart';
 import '../repositories/contact_repository.dart';
-import '../classes/contacts/contact_row.dart';
 
 class ContactModel extends Model {
-  // -- Paging --
-  Paging _paging = Paging(rows: 100, page: 1);
-  bool _lastPage = false;
+  ContactModule _module;
 
-  bool get lastPage => _lastPage;
+  bool get lastPage => _module.lastPage;
 
   Future<bool> nextPage(BuildContext context) async {
-    _paging = Paging(
-      rows: _paging.rows,
-      page: _paging.page + 1,
+    _module.paging = Paging(
+      rows: _module.paging.rows,
+      page: _module.paging.page + 1,
     );
 
     await loadItems(context, nextFetch: true);
 
-    if (_lastPage) {
-      _paging = Paging(
-        rows: _paging.rows,
-        page: _paging.page - 1,
+    if (_module.lastPage) {
+      _module.paging = Paging(
+        rows: _module.paging.rows,
+        page: _module.paging.page - 1,
       );
     }
 
@@ -38,7 +37,7 @@ class ContactModel extends Model {
     // _loaded = false;
     // notifyListeners();
 
-    _paging = Paging(rows: 100, page: 1);
+    _module.paging = Paging(rows: 100, page: 1);
 
     await loadItems(context);
     notifyListeners();
@@ -82,12 +81,13 @@ class ContactModel extends Model {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     _auth.confirmUserChange();
     // -- Load Items from API or Local --
-    var _contacts = await ContactRepository().loadList(_auth, paging: _paging);
+    var _contacts =
+        await ContactRepository().loadList(_auth, paging: _module.paging);
     if (nextFetch) {
       if (_contacts?.result?.isEmpty ?? true) {
-        _lastPage = true;
+        _module.lastPage = true;
       } else {
-        _lastPage = false;
+        _module.lastPage = false;
       }
       _items.addAll(_contacts?.result);
     } else {

@@ -11,11 +11,11 @@ part 'contact_module.g.dart';
 class ContactModule {
   ContactModule({
     this.paging,
-    this.lastPage,
+    this.lastPage = false,
     this.contacts,
     this.filtered,
-    this.lastUpdated,
-    this.isLoaded,
+    this.lastUpdated = 0,
+    this.isLoaded = false,
     this.search,
     this.sorting,
   });
