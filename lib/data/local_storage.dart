@@ -19,10 +19,11 @@ class AppPreferences {
     try {
       final prefs = await SharedPreferences.getInstance();
       var _value = prefs.getBool(key.toString());
+      if (_value == null && key == Settings.autoSignin) return true;
       return _value;
     } catch (e) {
       print(e);
-      // if (key == Settings.autoSignin) return true;
+      if (key == Settings.autoSignin) return true;
       return false; // Default Value
     }
   }
