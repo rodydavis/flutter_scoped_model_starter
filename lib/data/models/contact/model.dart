@@ -6,7 +6,7 @@ import '../../models/auth/model.dart';
 import '../../models/paging_model.dart';
 import '../../repositories/contact_repository.dart';
 import 'list.dart';
-import 'info.dart';
+import '../../classes/contacts/contact_details.dart';
 
 class ContactModel extends Model {
   // -- Paging --

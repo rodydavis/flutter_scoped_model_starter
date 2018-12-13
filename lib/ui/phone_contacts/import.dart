@@ -1,16 +1,16 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 
+import '../../data/classes/general/address.dart';
 import '../../utils/null_or_empty.dart';
 import '../../utils/two_letter_name.dart';
 import '../app/app_bottom_bar.dart';
 import '../app/app_search_bar.dart';
+import '../general/address_tile.dart';
 import '../general/email_tile.dart';
 import '../general/list_widget.dart';
 import '../general/phone_tile.dart';
 import '../general/profile_avatar.dart';
-import '../general/address_tile.dart';
-import '../../data/models/general/address.dart';
 
 class ImportContactsScreen extends StatefulWidget {
   final bool selectSingle;

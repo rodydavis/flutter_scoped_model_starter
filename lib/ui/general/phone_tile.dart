@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
+import '../../data/classes/general/phone.dart';
 import '../../utils/null_or_empty.dart';
 import '../../utils/phoneCall.dart';
 import '../../utils/sendSMS.dart';
-import '../../data/models/general/phones.dart';
 
 class PhoneTile extends StatelessWidget {
   final String label, number;
@@ -41,9 +41,9 @@ class PhoneTile extends StatelessWidget {
         textScaleFactor: textScaleFactor,
       ),
       subtitle: Text(
-        Phones.fromString(_raw).toString().isEmpty
+        Phone.fromString(_raw).toString().isEmpty
             ? _raw
-            : Phones.fromString(_raw).toString(),
+            : Phone.fromString(_raw).toString(),
         textScaleFactor: textScaleFactor,
       ),
       trailing: IconButton(
@@ -57,8 +57,8 @@ class PhoneTile extends StatelessWidget {
 
 class PhoneInputTile extends StatefulWidget {
   final String label;
-  final Phones number;
-  final ValueChanged<Phones> numberChanged;
+  final Phone number;
+  final ValueChanged<Phone> numberChanged;
   final bool showExt;
 
   PhoneInputTile({
@@ -85,8 +85,8 @@ class _PhoneInputTileState extends State<PhoneInputTile> {
     super.initState();
   }
 
-  Phones get phone {
-    var _phone = Phones(
+  Phone get phone {
+    var _phone = Phone(
       label: widget?.label?.toLowerCase()?.replaceAll("number", "")?.trim() ??
           "number",
       areaCode: _areaCode?.text ?? "",

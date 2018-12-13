@@ -1,4 +1,4 @@
-import '../general/phones.dart';
+import '../../classes/general/phone.dart';
 
 class UserInfo {
   String status;
@@ -35,7 +35,7 @@ class User {
   String losLicenseInfo;
   String companyImageUrl;
   String profileImageUrl;
-  List<Phones> phones;
+  List<Phone> phones;
   String companyId;
   String kalturaId;
   List<String> kalturaTags;
@@ -68,9 +68,9 @@ class User {
     companyImageUrl = json['company_image_url'];
     profileImageUrl = json['profile_image_url'];
     if (json['phones'] != null) {
-      phones = new List<Phones>();
+      phones = new List<Phone>();
       json['phones'].forEach((v) {
-        phones.add(new Phones.fromJson(v));
+        phones.add(new Phone.fromJson(v));
       });
     }
     companyId = json['company_id'];

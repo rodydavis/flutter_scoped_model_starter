@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../data/models/contact/fields.dart';
 import '../../data/models/contact/list.dart';
-import '../../data/models/contact/info.dart';
-import '../../data/models/general/address.dart';
-import '../../data/models/general/phones.dart';
+import '../../data/classes/contacts/contact_details.dart';
+import '../../data/classes/general/address.dart';
+import '../../data/classes/general/phone.dart';
 import '../../data/models/contact/model.dart';
 import 'package:contacts_service/contacts_service.dart';
 import '../general/phone_tile.dart';
@@ -24,7 +24,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
 
   ContactDetails details;
 
-  Phones _cell, _home, _office;
+  Phone _cell, _home, _office;
   Address _address;
 
   @override
@@ -52,7 +52,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
 
   void _saveInfo(BuildContext context) async {
     if (_formKey.currentState.validate()) {
-      var _phones = <Phones>[];
+      var _phones = <Phone>[];
       if (_cell != null && _cell.raw().isNotEmpty) _phones.add(_cell);
       if (_home != null && _home.raw().isNotEmpty) _phones.add(_home);
       if (_office != null && _office.raw().isNotEmpty) _phones.add(_office);
@@ -89,9 +89,9 @@ class _ContactItemEditState extends State<ContactItemEdit> {
       _email = TextEditingController(text: widget?.item?.email ?? "");
 
       setState(() {
-        _cell = Phones.fromString(widget?.item?.cellPhone ?? "");
-        _home = Phones.fromString(widget?.item?.homePhone ?? "");
-        _office = Phones.fromString(widget?.item?.officePhone ?? "");
+        _cell = Phone.fromString(widget?.item?.cellPhone ?? "");
+        _home = Phone.fromString(widget?.item?.homePhone ?? "");
+        _office = Phone.fromString(widget?.item?.officePhone ?? "");
       });
     } else {
       if (phoneContact != null) {
@@ -207,12 +207,12 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                 ),
               ),
               ExpansionTile(
-                title: Text("Phones"),
+                title: Text("Phone"),
                 children: <Widget>[
                   PhoneInputTile(
                     label: "Cell Phone",
                     number: _cell,
-                    numberChanged: (Phones value) {
+                    numberChanged: (Phone value) {
                       setState(() {
                         _cell = value;
                       });
@@ -221,7 +221,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                   PhoneInputTile(
                     label: "Home Phone",
                     number: _home,
-                    numberChanged: (Phones value) {
+                    numberChanged: (Phone value) {
                       setState(() {
                         _home = value;
                       });
@@ -231,7 +231,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                     showExt: true,
                     label: "Office Phone",
                     number: _office,
-                    numberChanged: (Phones value) {
+                    numberChanged: (Phone value) {
                       setState(() {
                         _office = value;
                       });

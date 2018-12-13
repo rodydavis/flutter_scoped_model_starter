@@ -7,10 +7,11 @@ import '../../constants.dart';
 import '../../utils/null_or_empty.dart';
 import '../classes/general/search.dart';
 import '../models/auth/model.dart';
-import '../models/contact/info.dart';
+import '../classes/contacts/contact_details.dart';
 import '../models/contact/list.dart';
 import '../models/paging_model.dart';
 import '../web_client.dart';
+import '../classes/unify/response.dart';
 
 class ContactRepository {
   final WebClient webClient;
@@ -48,8 +49,7 @@ class ContactRepository {
     return result;
   }
 
-  Future<ContactDetailsResult> getInfo(AuthModel auth,
-      {@required String id}) async {
+  Future<ResponseMessage> getInfo(AuthModel auth, {@required String id}) async {
     dynamic _response;
 
     // -- Get List --
@@ -59,7 +59,7 @@ class ContactRepository {
     );
     _response = response;
 
-    var result = ContactDetailsResult.fromJson(_response);
+    var result = ResponseMessage.fromJson(_response);
 
     return result;
   }

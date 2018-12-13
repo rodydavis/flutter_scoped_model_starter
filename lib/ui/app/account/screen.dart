@@ -3,8 +3,8 @@ import 'package:flutter_list_drag_and_drop/drag_and_drop_list.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../../constants.dart';
+import '../../../data/classes/general/phone.dart';
 import '../../../data/models/auth/model.dart';
-import '../../../data/models/general/phones.dart';
 import '../../../ui/auth/login.dart';
 import '../../../ui/general/email_tile.dart';
 import '../../../ui/general/phone_tile.dart';
@@ -54,7 +54,7 @@ class AccountPage extends StatelessWidget {
 }
 
 class _AccountInfoScreen extends StatelessWidget {
-  Widget _buildPhone(BuildContext context, {Phones phone, String label = ""}) {
+  Widget _buildPhone(BuildContext context, {Phone phone, String label = ""}) {
     if (phone == null) return Container();
     return PhoneTile(label: label, number: phone.toString());
   }
