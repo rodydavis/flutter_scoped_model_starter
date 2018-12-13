@@ -12,7 +12,35 @@ import '../repositories/contact_repository.dart';
 class ContactModel extends Model {
   ContactModule _module;
 
-  bool get lastPage => _module.lastPage;
+  bool get lastPage => _module?.lastPage ?? false;
+
+  int get lastUpdated => _module?.lastUpdated ?? 0;
+
+  bool get isLoaded {
+    if (isStale) return false;
+    return _module?.isLoaded ?? false;
+  }
+
+  bool get isStale {
+    // if (!isLoaded) return true;
+    if (lastUpdated == 0) return true;
+    try {
+      return DateTime.now().millisecondsSinceEpoch - lastUpdated >
+          kMillisecondsToRefreshData;
+    } catch (e) {
+      print(e);
+      return true;
+    }
+    // return false;
+  }
+
+  set loaded(bool value) {
+    _module?.isLoaded = true;
+    notifyListeners();
+  }
+
+  List<ContactRow> get items => _module?.contacts ?? [];
+  List<ContactRow> get filteredItems => _module?.filtered ?? [];
 
   Future<bool> nextPage(BuildContext context) async {
     _module.paging = Paging(
@@ -43,40 +71,6 @@ class ContactModel extends Model {
     notifyListeners();
   }
 
-  bool _loaded = false;
-  int _lastUpdated = 0;
-
-  List<ContactRow> _items = [];
-  List<ContactRow> _filtered = [];
-
-  int get lastUpdated => _lastUpdated;
-
-  bool get isLoaded {
-    if (isStale) return false;
-    return _loaded;
-  }
-
-  bool get isStale {
-    // if (!isLoaded) return true;
-    if (lastUpdated == 0) return true;
-    try {
-      return DateTime.now().millisecondsSinceEpoch - lastUpdated >
-          kMillisecondsToRefreshData;
-    } catch (e) {
-      print(e);
-      return true;
-    }
-    // return false;
-  }
-
-  set loaded(bool value) {
-    _loaded = true;
-    notifyListeners();
-  }
-
-  List<ContactRow> get items => _items;
-  List<ContactRow> get filteredItems => _filtered;
-
   Future<bool> loadItems(BuildContext context, {bool nextFetch = false}) async {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     _auth.confirmUserChange();
@@ -98,13 +92,13 @@ class ContactModel extends Model {
 
     if (_results != null && _results.isNotEmpty) {
       if (nextFetch) {
-        _items.addAll(_results);
+        _module?.contacts?.addAll(_results);
       } else {
-        _items = _results;
+        _module?.contacts = _results;
       }
     }
 
-    _lastUpdated = DateTime.now().millisecondsSinceEpoch;
+    _module?.lastUpdated = DateTime.now().millisecondsSinceEpoch;
     notifyListeners();
     return true;
   }
@@ -170,7 +164,7 @@ class ContactModel extends Model {
   }
 
   void sort(String field, bool ascending) {
-    _items.sort((a, b) => a.compareTo(b, field, ascending));
+    _module?.contacts?.sort((a, b) => a.compareTo(b, field, ascending));
     notifyListeners();
   }
 
@@ -185,12 +179,12 @@ class ContactModel extends Model {
       }
     }
 
-    _filtered = _results;
+    _module?.filtered = _results;
     notifyListeners();
   }
 
   void startSearching() {
-    _filtered = _items;
+    _module?.filtered = _module?.contacts;
     notifyListeners();
   }
 

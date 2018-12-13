@@ -4,34 +4,34 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-import '../local_storage.dart';
-import '../repositories/auth_repository.dart';
-import '../classes/auth/auth_user.dart';
 import '../../constants.dart';
 import '../classes/auth/auth_module.dart';
+import '../classes/auth/auth_user.dart';
 import '../classes/user/user.dart';
+import '../local_storage.dart';
+import '../repositories/auth_repository.dart';
 
 class AuthModel extends Model {
   AuthModule _module;
 
-  bool get isLoading => _module.isLoading;
-  bool get loggedIn => _module.loggedIn;
-  List<AuthUser> get users => _module?.users;
+  bool get isLoading => _module?.isLoading ?? false;
+  bool get loggedIn => _module?.loggedIn ?? false;
+  List<AuthUser> get users => _module?.users ?? [];
   AuthUser get currentUser => _module?.currentUser;
-  bool get userChanged => _module.userChanged;
-  int get usersCount => _module.savedUsersCount;
-  int get usersAdded => _module.saveUsersAdded;
+  bool get userChanged => _module?.userChanged ?? false;
+  int get usersCount => _module?.savedUsersCount ?? 0;
+  int get usersAdded => _module?.saveUsersAdded ?? 0;
 
   double get progress {
-    if (_module.saveUsersAdded == 0) return 0.0;
-    return _module.saveUsersAdded / _module.savedUsersCount;
+    if (usersAdded == 0) return 0.0;
+    return usersAdded / usersCount;
   }
 
   Future<bool> login(
       {@required String username,
       @required String password,
       bool softLogin = false}) async {
-    _module.isLoading = true;
+    _module?.isLoading = true;
     notifyListeners();
     var _newToken = await _getToken(username: username, password: password);
     if (_newToken.isNotEmpty) {
@@ -42,24 +42,24 @@ class AuthModel extends Model {
       notifyListeners();
       return false;
     }
-    _module.isLoading = false;
+    _module?.isLoading = false;
     notifyListeners();
     return true;
   }
 
   Future logout({bool force = true, bool all = false}) async {
     // -- Logout --
-    _module.loggedIn = false;
+    _module?.loggedIn = false;
     if (all) {
       resetUsers();
     } else {
-      if (_module?.users != null) {
+      if (users != null) {
         if (force) {
-          _module.users.remove(_module.currentUser);
+          _module?.users?.remove(_module?.currentUser);
         }
-        if (_module.users.isNotEmpty && _module.users.length > 1) {
+        if (users.isNotEmpty && users.length > 1) {
           // Login As Next Avaliable User
-          switchToAccount(_module?.users?.first);
+          switchToAccount(users?.first);
         }
       }
     }
@@ -69,53 +69,53 @@ class AuthModel extends Model {
 
   void switchToAccount(AuthUser newUser, {bool softLogin = false}) {
     List<String> _usernames = [];
-    for (var _item in _module?.users) {
+    for (var _item in users) {
       _usernames.add(_item?.username);
     }
     print("User: ${newUser?.username} => Users: $_usernames");
-    if (!_usernames.contains(newUser?.username) && _module?.users != null) {
-      _module.users.add(newUser);
+    if (!_usernames.contains(newUser?.username) && users != null) {
+      _module?.users?.add(newUser);
     }
 
     if (!softLogin) {
-      _module.currentUser = newUser;
-      _module.loggedIn = true;
-      _module.userChanged = true;
+      _module?.currentUser = newUser;
+      _module?.loggedIn = true;
+      _module?.userChanged = true;
       _saveUsers();
     }
     notifyListeners();
   }
 
   void confirmUserChange() {
-    _module.userChanged = false;
+    _module?.userChanged = false;
     notifyListeners();
   }
 
   Future<bool> autoLogin() async {
     var _newUsers = await _loadUsers();
     if (_newUsers.isNotEmpty) {
-      _module?.users = _newUsers;
+      _module.users = _newUsers;
     } else {
-      _module.loggedIn = false;
+      _module?.loggedIn = false;
       notifyListeners();
       return false;
     }
-    switchToAccount(_module?.users?.first);
+    switchToAccount(users?.first);
     notifyListeners();
     return true;
   }
 
   Future refreshToken() async {
     await login(
-      username: _module.currentUser?.username,
-      password: _module.currentUser?.password,
+      username: _module?.currentUser?.username,
+      password: _module?.currentUser?.password,
     );
   }
 
   void changeUsersOrder(int before, int after) {
-    var data = _module?.users[before];
-    _module?.users.removeAt(before);
-    _module?.users.insert(after, data);
+    var data = users[before];
+    _module?.users?.removeAt(before);
+    _module?.users?.insert(after, data);
     notifyListeners();
     _saveUsers();
   }
@@ -128,7 +128,7 @@ class AuthModel extends Model {
       prefs.setList(Info.users, [_list[0], _list[1], _list[2], _list[3]]);
       _list = await prefs.getList(Info.users);
     }
-    _module.savedUsersCount = _list?.length;
+    _module?.savedUsersCount = _list?.length;
     notifyListeners();
     final storage = new FlutterSecureStorage();
     final sharedPrefs = await SharedPreferences.getInstance();
@@ -146,7 +146,7 @@ class AuthModel extends Model {
               username: _username, password: _password);
           if (_newUser != null && !_newUsers.contains(_newUser?.username)) {
             _newUsers.add(_newUser);
-            _module.saveUsersAdded += 1;
+            _module?.saveUsersAdded += 1;
             notifyListeners();
           }
         }
@@ -164,7 +164,7 @@ class AuthModel extends Model {
     final sharedPrefs = await SharedPreferences.getInstance();
 
     List<String> _list = [];
-    for (var _item in _module?.users) {
+    for (var _item in users) {
       var _id = uuid.v4();
       _list.add(_id);
       sharedPrefs.setString(_id, _item.username);
@@ -174,20 +174,19 @@ class AuthModel extends Model {
   }
 
   void removeUser(AuthUser user) {
-    if (_module?.users != null) {
-      _module.users.remove(user);
+    if (users != null) {
+      _module?.users?.remove(user);
     }
 
-    if (user == _module.currentUser &&
-        (_module?.users != null && _module.users.isNotEmpty)) {
-      switchToAccount(_module?.users?.first);
+    if (user == _module?.currentUser && (users != null && users.isNotEmpty)) {
+      switchToAccount(users?.first);
     }
     notifyListeners();
   }
 
   Future resetUsers() async {
-    _module.currentUser = null;
-    if (_module?.users != null) _module.users.clear();
+    _module?.currentUser = null;
+    if (users != null) users.clear();
     var prefs = AppPreferences();
     prefs.setList(Info.users, []);
   }

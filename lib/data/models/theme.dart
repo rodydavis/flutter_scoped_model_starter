@@ -9,9 +9,9 @@ class ThemeModel extends Model {
   ThemeModule _module;
 
   ThemeData get theme => _currentTheme;
-  bool get isDarkMode => _module.darkMode;
-  bool get isTrueBlack => _module.trueBlack;
-  bool get isLoaded => _module.isLoaded;
+  bool get isDarkMode => _module?.darkMode ?? false;
+  bool get isTrueBlack => _module?.trueBlack ?? false;
+  bool get isLoaded => _module?.isLoaded ?? false;
 
   void darkMode({bool trueBlack = false}) {
     if (trueBlack) {
