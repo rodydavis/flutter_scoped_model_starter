@@ -12,9 +12,10 @@ class TaskModel extends Model {
 
   List<Task> get tasks => _module?.tasks;
 
-  int get lastUpdated => _module.lastUpdated;
+  int get lastUpdated => _module?.lastUpdated;
 
-  DateTime get date => _module?.date;
+  DateTime get date => _module?.date = DateTime.now();
+  
   set date(DateTime value) {
     _module?.date = value;
     notifyListeners();
@@ -27,7 +28,7 @@ class TaskModel extends Model {
 
   bool get isLoaded {
     if (isStale) return false;
-    return _module.isLoaded;
+    return _module?.isLoaded;
   }
 
   bool get isStale {
@@ -62,15 +63,15 @@ class TaskModel extends Model {
     }
     print("Tasks: ${_result?.length}");
 
-    _module.lastUpdated = DateTime.now().millisecondsSinceEpoch;
-    _module.isLoaded = true;
+    _module?.lastUpdated = DateTime.now().millisecondsSinceEpoch;
+    _module?.isLoaded = true;
 
     notifyListeners();
     return true;
   }
 
   Future changeDate(BuildContext context, {DateTime newDate}) async {
-    _module.isLoaded = false;
+    _module?.isLoaded = false;
     notifyListeners();
 
     _module?.date = newDate;

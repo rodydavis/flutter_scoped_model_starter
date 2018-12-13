@@ -23,7 +23,7 @@ class WebClient {
     print("Response Body: " + response.body.toString());
 
     if (response.statusCode >= 400) {
-      if (response.statusCode == 404) return response.body; // Not Found Message
+      // if (response.statusCode == 404) return response.body; // Not Found Message
       throw ('An error occurred: ' + response.body);
     }
 
@@ -44,7 +44,7 @@ class WebClient {
     print("Response Body: " + response.body.toString());
 
     if (response.statusCode >= 400) {
-      if (response.statusCode == 404) return response.body; // Not Found Message
+      // if (response.statusCode == 404) return response.body; // Not Found Message
       throw ('An error occurred: ' + response.body);
     }
 
@@ -73,7 +73,7 @@ class WebClient {
     print("Response Body: " + response.body.toString());
 
     if (response.statusCode >= 400) {
-      if (response.statusCode == 404) return response.body; // Not Found Message
+      // if (response.statusCode == 404) return response.body; // Not Found Message
       throw ('An error occurred: ' + response.body);
     }
 

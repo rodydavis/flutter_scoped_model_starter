@@ -25,8 +25,8 @@ class ThemeModel extends Model {
       _currentTheme = ThemeData.dark();
     }
     print("Dark Mode Activated");
-    _module.darkMode = true;
-    _module.trueBlack = trueBlack;
+    _module?.darkMode = true;
+    _module?.trueBlack = trueBlack;
     _saveThemeToDisk();
     notifyListeners();
   }
@@ -34,7 +34,7 @@ class ThemeModel extends Model {
   void lightMode() {
     _currentTheme = ThemeData.light();
     print("Light Mode Activated");
-    _module.darkMode = false;
+    _module?.darkMode = false;
     _saveThemeToDisk();
     notifyListeners();
   }
@@ -42,29 +42,29 @@ class ThemeModel extends Model {
   void reset() {
     _currentTheme = defaultTheme;
     print("Default Theme Activated");
-    _module.darkMode = false;
+    _module?.darkMode = false;
     _saveThemeToDisk();
     notifyListeners();
   }
 
   Future loadSavedTheme() async {
     var prefs = AppPreferences();
-    _module.darkMode = await prefs.getSetting(Settings.darkMode);
-    _module.trueBlack = await prefs.getSetting(Settings.trueBlack);
-    if (_module.darkMode) {
-      darkMode(trueBlack: _module.trueBlack);
+    _module?.darkMode = await prefs.getSetting(Settings.darkMode);
+    _module?.trueBlack = await prefs.getSetting(Settings.trueBlack);
+    if (_module?.darkMode ?? false) {
+      darkMode(trueBlack: _module?.trueBlack);
     } else {
       lightMode();
     }
-    _module.isLoaded = true;
+    _module?.isLoaded = true;
     notifyListeners();
     return;
   }
 
   void _saveThemeToDisk() {
     var prefs = AppPreferences();
-    prefs.setSetting(Settings.darkMode, _module.darkMode);
-    prefs.setSetting(Settings.trueBlack, _module.trueBlack);
+    prefs.setSetting(Settings.darkMode, _module?.darkMode);
+    prefs.setSetting(Settings.trueBlack, _module?.trueBlack);
   }
 }
 
