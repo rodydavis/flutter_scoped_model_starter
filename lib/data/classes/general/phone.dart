@@ -40,9 +40,9 @@ class Phone {
       areaCode = _number.substring(0, 3);
       prefix = _number.substring(3, 6);
       number = _number.substring(6, 10);
-      // if (_number.length > 10) {
-      //   ext = value.substring(10, _number.length);
-      // }
+      if (_number.length > 10) {
+        ext = value.substring(10, _number.length);
+      }
     }
     // print("Convert Number => $value | $_number");
   }
@@ -63,9 +63,9 @@ class Phone {
   @override
   String toString() {
     if (raw().isEmpty) return "";
-    // if (ext != null) {
-    //   return "($areaCode) $prefix-$number ;$ext".toString();
-    // }
+    if (ext != null) {
+      return "($areaCode) $prefix-$number :$ext".toString();
+    }
     return "($areaCode) $prefix-$number".toString();
   }
 }
