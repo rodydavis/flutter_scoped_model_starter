@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
-import '../file_storage.dart';
-import '../models/auth_model.dart';
 import 'package:meta/meta.dart';
+
+import '../classes/auth/auth_module.dart';
+import '../file_storage.dart';
 
 class PersistenceRepository {
   final FileStorage fileStorage;
@@ -14,15 +16,15 @@ class PersistenceRepository {
     @required this.fileStorage,
   });
 
-  // Future<File> saveAuthState(AuthModel state) async {
-  //   var data = serializers.serializeWith(AuthModel.serializer, state);
-  //   return await fileStorage.save(json.encode(data));
-  // }
+  Future<File> saveAuthState(AuthModule state) async {
+    var data = state.toJson();
+    return await fileStorage.save(json.encode(data));
+  }
 
-  // Future<AuthModel> loadAuthState() async {
-  //   String data = await fileStorage.load();
-  //   return serializers.deserializeWith(AuthState.serializer, json.decode(data));
-  // }
+  Future<AuthModule> loadAuthState() async {
+    String data = await fileStorage.load();
+    return AuthModule.fromJson(json.decode(data));
+  }
 
   // Future<File> saveUIState(UIState state) async {
   //   var data = serializers.serializeWith(UIState.serializer, state);
