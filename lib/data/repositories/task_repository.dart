@@ -4,7 +4,8 @@ import 'dart:core';
 import '../../constants.dart';
 import '../../utils/date_formatter.dart';
 import '../models/auth/model.dart';
-import '../models/task/list.dart';
+import '../classes/tasks/task.dart';
+import '../classes/unify/response.dart';
 import '../web_client.dart';
 
 class TaskRepository {
@@ -14,7 +15,7 @@ class TaskRepository {
     this.webClient = const WebClient(),
   });
 
-  Future<TaskResult> loadList(AuthModel auth, DateTime date) async {
+  Future<ResponseMessage> loadList(AuthModel auth, DateTime date) async {
     final _date = formatDateCustom(date);
     print("Date: $_date");
     final response = await webClient.get(
@@ -35,7 +36,7 @@ class TaskRepository {
     //   }),
     // );
 
-    var list = TaskResult.fromJson(response);
+    var list = ResponseMessage.fromJson(response);
 
     return list;
   }

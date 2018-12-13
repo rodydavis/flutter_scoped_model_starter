@@ -1,9 +1,10 @@
-import 'package:scoped_model/scoped_model.dart';
-import '../../repositories/task_repository.dart';
-import 'list.dart';
 import 'package:flutter/material.dart';
-import '../auth/model.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 import '../../../constants.dart';
+import '../../classes/tasks/task.dart';
+import '../../repositories/task_repository.dart';
+import '../auth/model.dart';
 
 class TaskModel extends Model {
   List<Task> _tasks = [];
