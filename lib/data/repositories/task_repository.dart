@@ -18,10 +18,8 @@ class TaskRepository {
   Future<ResponseMessage> loadList(AuthModel auth, DateTime date) async {
     final _date = formatDateCustom(date);
     print("Date: $_date");
-    final response = await webClient.get(
-      kApiUrl + '/calendar/$_date',
-      token: auth?.currentUser?.token,
-    );
+    final response =
+        await webClient.get(kApiUrl + '/calendar/$_date', auth: auth);
     print("Loaded Tasks $date => $response");
 
     // if (response.toString().contains("No Tasks Found")) {

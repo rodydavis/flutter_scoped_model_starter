@@ -28,18 +28,15 @@ class ContactRepository {
     // -- Search By Filters --
     if (search != null && search.search.toString().isNotEmpty) {
       final response = await webClient.post(
-        kApiUrl + '/search/contacts/${paging.rows}/${paging.page}',
-        json.encode(search),
-        token: auth?.currentUser?.token,
-      );
+          kApiUrl + '/search/contacts/${paging.rows}/${paging.page}',
+          json.encode(search),
+          auth: auth);
 
       _response = response;
     } else {
       // -- Get List --
-      final response = await webClient.get(
-        kApiUrl + '/contacts/${paging.rows}/${paging.page}',
-        token: auth?.currentUser?.token,
-      );
+      final response = await webClient
+          .get(kApiUrl + '/contacts/${paging.rows}/${paging.page}', auth: auth);
       _response = response;
     }
 
@@ -52,10 +49,8 @@ class ContactRepository {
     dynamic _response;
 
     // -- Get List --
-    final response = await webClient.get(
-      kApiUrl + '/contacts/info/$id',
-      token: auth?.currentUser?.token,
-    );
+    final response =
+        await webClient.get(kApiUrl + '/contacts/info/$id', auth: auth);
     _response = response;
 
     var result = ResponseMessage.fromJson(_response);
@@ -66,10 +61,7 @@ class ContactRepository {
   Future<bool> deleteContact(AuthModel auth, {@required String id}) async {
     var url = kApiUrl + '/contacts/info/' + id.toString();
     var response;
-    response = await webClient.delete(
-      url,
-      token: auth?.currentUser?.token,
-    );
+    response = await webClient.delete(url, auth: auth);
     print(response);
     if (response["Status"].toString().contains("Success")) return true;
     return false;
@@ -83,22 +75,15 @@ class ContactRepository {
 
     if (isNullOrEmpty(id)) {
       print("Creating Contact...");
-      response = await webClient.post(
-        kApiUrl + '/contacts/add',
-        json.encode(data),
-        token: auth?.currentUser?.token,
-      );
+      response = await webClient
+          .post(kApiUrl + '/contacts/add', json.encode(data), auth: auth);
       print(response);
       if (response["Status"].toString().contains("Success")) return true;
       return false;
     } else {
       print("Editing Contact... $id");
       var url = kApiUrl + '/contacts/info/' + id.toString();
-      response = await webClient.put(
-        url,
-        json.encode(data),
-        token: auth?.currentUser?.token,
-      );
+      response = await webClient.put(url, json.encode(data), auth: auth);
       print(response);
       if (response["Status"].toString().contains("Success")) return true;
       return false;
@@ -111,11 +96,8 @@ class ContactRepository {
     print(data);
     var response;
 
-    response = await webClient.post(
-      kApiUrl + '/contacts/import',
-      data,
-      token: auth?.currentUser?.token,
-    );
+    response =
+        await webClient.post(kApiUrl + '/contacts/import', data, auth: auth);
     print(response);
     if (response["Status"].toString().contains("Success")) return true;
     return false;
