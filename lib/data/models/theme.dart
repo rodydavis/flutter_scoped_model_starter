@@ -6,7 +6,11 @@ import '../classes/app/theme.dart';
 
 class ThemeModel extends Model {
   ThemeData _currentTheme = defaultTheme;
-  ThemeModule _module;
+  ThemeModule _module = ThemeModule(
+    darkMode: false,
+    trueBlack: false,
+    isLoaded: false,
+  );
 
   ThemeData get theme => _currentTheme;
   bool get isDarkMode => _module?.darkMode ?? false;

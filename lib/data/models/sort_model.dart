@@ -3,7 +3,12 @@ import 'package:scoped_model/scoped_model.dart';
 import '../classes/app/sort.dart';
 
 class SortModel extends Model {
-  Sort _sort;
+  Sort _sort = Sort(
+    defaultField: "",
+    initialized: false,
+    field: "",
+    fields: [],
+  );
 
   String get sortField => _sort?.field;
   List<String> get sortFields => _sort?.fields;

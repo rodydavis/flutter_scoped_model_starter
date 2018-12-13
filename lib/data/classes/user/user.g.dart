@@ -8,38 +8,38 @@ part of 'user.dart';
 
 User _$UserFromJson(Map<String, dynamic> json) {
   return User(
-      json['userId'] as String,
-      json['fullName'] as String,
-      json['firstName'] as String,
-      json['lastName'] as String,
+      json['user_id'] as String,
+      json['full_name'] as String,
+      json['first_name'] as String,
+      json['last_name'] as String,
       json['email'] as String,
       json['title'] as String,
-      json['licenseNumber'] as String,
-      json['losLicenseInfo'] as String,
-      json['companyImageUrl'] as String,
-      json['profileImageUrl'] as String,
+      json['license_number'] as String,
+      json['los_license_number'] as String,
+      json['company_image_url'] as String,
+      json['profile_image_url'] as String,
       (json['phones'] as List)
           ?.map((e) =>
               e == null ? null : Phone.fromJson(e as Map<String, dynamic>))
           ?.toList(),
-      json['companyId'] as String,
-      json['kalturaId'] as String,
-      (json['kalturaTags'] as List)?.map((e) => e as String)?.toList());
+      json['company_id'] as String,
+      json['kaltura_id'] as String,
+      (json['kaltura_tags'] as List)?.map((e) => e as String)?.toList());
 }
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'userId': instance.userId,
-      'fullName': instance.fullName,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
+      'user_id': instance.userId,
+      'full_name': instance.fullName,
+      'first_name': instance.firstName,
+      'last_name': instance.lastName,
       'email': instance.email,
       'title': instance.title,
-      'licenseNumber': instance.licenseNumber,
-      'losLicenseInfo': instance.losLicenseInfo,
-      'companyImageUrl': instance.companyImageUrl,
-      'profileImageUrl': instance.profileImageUrl,
+      'license_number': instance.licenseNumber,
+      'los_license_number': instance.losLicenseInfo,
+      'company_image_url': instance.companyImageUrl,
+      'profile_image_url': instance.profileImageUrl,
       'phones': instance.phones,
-      'companyId': instance.companyId,
-      'kalturaId': instance.kalturaId,
-      'kalturaTags': instance.kalturaTags
+      'company_id': instance.companyId,
+      'kaltura_id': instance.kalturaId,
+      'kaltura_tags': instance.kalturaTags
     };

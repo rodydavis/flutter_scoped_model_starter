@@ -12,7 +12,14 @@ import '../local_storage.dart';
 import '../repositories/auth_repository.dart';
 
 class AuthModel extends Model {
-  AuthModule _module;
+  AuthModule _module = AuthModule(
+    users: [],
+    isLoading: false,
+    userChanged: false,
+    savedUsersCount: 0,
+    saveUsersAdded: 0,
+    loggedIn: false,
+  );
 
   bool get isLoading => _module?.isLoading ?? false;
   bool get loggedIn => _module?.loggedIn ?? false;

@@ -7,10 +7,27 @@ import '../classes/contacts/contact_details.dart';
 import '../classes/contacts/contact_module.dart';
 import '../classes/contacts/contact_row.dart';
 import '../models/auth_model.dart';
+import '../classes/app/sort.dart';
 import '../repositories/contact_repository.dart';
 
 class ContactModel extends Model {
-  ContactModule _module;
+  ContactModule _module = ContactModule(
+    contacts: [],
+    filtered: [],
+    lastPage: false,
+    isLoaded: false,
+    lastUpdated: 0,
+    paging: Paging(rows: 100, page: 1),
+    sorting: Sort(
+        defaultField: ContactFields.last_name,
+        initialized: true,
+        field: ContactFields.last_name,
+        fields: [
+          ContactFields.first_name,
+          ContactFields.last_name,
+          ContactFields.last_activity,
+        ]),
+  );
 
   bool get lastPage => _module?.lastPage ?? false;
 

@@ -8,7 +8,12 @@ import '../repositories/task_repository.dart';
 import 'auth_model.dart';
 
 class TaskModel extends Model {
-  TaskModule _module;
+  TaskModule _module = TaskModule(
+    tasks: [],
+    isLoaded: false,
+    lastUpdated: 0,
+    date: DateTime.now(),
+  );
 
   List<Task> get tasks => _module?.tasks;
   int get lastUpdated => _module?.lastUpdated;

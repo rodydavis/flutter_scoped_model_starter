@@ -5,6 +5,7 @@ import '../../constants.dart';
 import '../../utils/date_formatter.dart';
 import '../classes/unify/response.dart';
 import '../models/auth_model.dart';
+import '../../utils/null_or_empty.dart';
 import '../web_client.dart';
 
 class TaskRepository {
@@ -15,7 +16,7 @@ class TaskRepository {
   });
 
   Future<ResponseMessage> loadList(AuthModel auth, DateTime date) async {
-    final _date = formatDateCustom(date);
+    final _date = formatDateCustom(date == null ? DateTime.now() : date);
     print("Date: $_date");
     final response = await webClient.get(
       kApiUrl + '/calendar/$_date',
