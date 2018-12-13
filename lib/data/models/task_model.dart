@@ -48,11 +48,23 @@ class TaskModel extends Model {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     _auth.confirmUserChange();
     // -- Load Items from API or Local --
-    var _result = await TaskRepository().loadList(_auth, _module?.date);
-    _module?.tasks = _result?.result;
+    var _tasks = await TaskRepository().loadList(_auth, _module?.date);
+
+    List<dynamic> _result = _tasks?.result;
+    if (_result?.isNotEmpty ?? false) {
+      var _results = _result
+          ?.map((e) =>
+              e == null ? null : Task.fromJson(e as Map<String, dynamic>))
+          ?.toList();
+      if (_results != null && _results.isNotEmpty) {
+        _module?.tasks = _results;
+      }
+    }
+    print("Tasks: ${_result?.length}");
+
     _module.lastUpdated = DateTime.now().millisecondsSinceEpoch;
     _module.isLoaded = true;
-    print("Tasks: ${_module?.tasks?.length}");
+
     notifyListeners();
     return true;
   }

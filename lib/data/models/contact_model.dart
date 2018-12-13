@@ -83,15 +83,25 @@ class ContactModel extends Model {
     // -- Load Items from API or Local --
     var _contacts =
         await ContactRepository().loadList(_auth, paging: _module.paging);
-    if (nextFetch) {
-      if (_contacts?.result?.isEmpty ?? true) {
-        _module.lastPage = true;
-      } else {
-        _module.lastPage = false;
-      }
-      _items.addAll(_contacts?.result);
+
+    List<dynamic> _result = _contacts?.result;
+    if (_result?.isEmpty ?? true) {
+      _module.lastPage = true;
     } else {
-      _items = _contacts?.result;
+      _module.lastPage = false;
+    }
+
+    var _results = _result
+        ?.map((e) =>
+            e == null ? null : ContactRow.fromJson(e as Map<String, dynamic>))
+        ?.toList();
+
+    if (_results != null && _results.isNotEmpty) {
+      if (nextFetch) {
+        _items.addAll(_results);
+      } else {
+        _items = _results;
+      }
     }
 
     _lastUpdated = DateTime.now().millisecondsSinceEpoch;

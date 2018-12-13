@@ -9,6 +9,7 @@ import '../repositories/auth_repository.dart';
 import '../classes/auth/auth_user.dart';
 import '../../constants.dart';
 import '../classes/auth/auth_module.dart';
+import '../classes/user/user.dart';
 
 class AuthModel extends Model {
   AuthModule _module;
@@ -52,14 +53,14 @@ class AuthModel extends Model {
     if (all) {
       resetUsers();
     } else {
-      if (force) {
-        _module?.users.remove(_module.currentUser);
-      }
-      if (_module?.users != null &&
-          _module?.users.isNotEmpty &&
-          _module?.users.length > 1) {
-        // Login As Next Avaliable User
-        switchToAccount(_module?.users?.first);
+      if (_module?.users != null) {
+        if (force) {
+          _module.users.remove(_module.currentUser);
+        }
+        if (_module.users.isNotEmpty && _module.users.length > 1) {
+          // Login As Next Avaliable User
+          switchToAccount(_module?.users?.first);
+        }
       }
     }
 
@@ -186,7 +187,7 @@ class AuthModel extends Model {
 
   Future resetUsers() async {
     _module.currentUser = null;
-    _module?.users.clear();
+    if (_module?.users != null) _module.users.clear();
     var prefs = AppPreferences();
     prefs.setList(Info.users, []);
   }
@@ -218,9 +219,10 @@ class AuthModel extends Model {
     AuthUser _user;
     try {
       var _result = await _auth.getInfo(token);
+      var _userInfo = User.fromJson(_result?.result);
       _user = AuthUser(
         token: token,
-        data: _result?.result,
+        data: _userInfo,
         username: username,
         password: password,
       );
