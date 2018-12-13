@@ -8,20 +8,36 @@ part of 'contact_module.dart';
 
 ContactModule _$ContactModuleFromJson(Map<String, dynamic> json) {
   return ContactModule(
-      street: json['street'] as String,
-      apartment: json['apartment'] as String,
-      state: json['state'] as String,
-      city: json['city'] as String,
-      zip: json['zip'] as String)
-    ..county = json['county'] as String;
+      paging: json['paging'] == null
+          ? null
+          : Paging.fromJson(json['paging'] as Map<String, dynamic>),
+      lastPage: json['lastPage'] as bool,
+      contacts: (json['contacts'] as List)
+          ?.map((e) =>
+              e == null ? null : ContactRow.fromJson(e as Map<String, dynamic>))
+          ?.toList(),
+      filtered: (json['filtered'] as List)
+          ?.map((e) =>
+              e == null ? null : ContactRow.fromJson(e as Map<String, dynamic>))
+          ?.toList(),
+      lastUpdated: json['lastUpdated'] as int,
+      isLoaded: json['isLoaded'] as bool,
+      search: json['search'] == null
+          ? null
+          : Search.fromJson(json['search'] as Map<String, dynamic>),
+      sorting: json['sorting'] == null
+          ? null
+          : Sort.fromJson(json['sorting'] as Map<String, dynamic>));
 }
 
 Map<String, dynamic> _$ContactModuleToJson(ContactModule instance) =>
     <String, dynamic>{
-      'street': instance.street,
-      'apartment': instance.apartment,
-      'state': instance.state,
-      'city': instance.city,
-      'zip': instance.zip,
-      'county': instance.county
+      'paging': instance.paging,
+      'lastPage': instance.lastPage,
+      'contacts': instance.contacts,
+      'filtered': instance.filtered,
+      'isLoaded': instance.isLoaded,
+      'lastUpdated': instance.lastUpdated,
+      'sorting': instance.sorting,
+      'search': instance.search
     };
