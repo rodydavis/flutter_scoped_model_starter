@@ -4,7 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../constants.dart';
 import '../classes/tasks/task.dart';
 import '../repositories/task_repository.dart';
-import 'auth/model.dart';
+import 'auth_model.dart';
 
 class TaskModel extends Model {
   List<Task> _tasks = [];

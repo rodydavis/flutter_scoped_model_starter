@@ -4,7 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../constants.dart';
 import '../classes/contacts/contact_details.dart';
 import '../classes/general/paging.dart';
-import '../models/auth/model.dart';
+import '../models/auth_model.dart';
 import '../repositories/contact_repository.dart';
 import '../classes/contacts/contact_row.dart';
 

@@ -3,7 +3,7 @@ import 'dart:core';
 
 import '../../constants.dart';
 import '../../utils/date_formatter.dart';
-import '../models/auth/model.dart';
+import '../models/auth_model.dart';
 import '../classes/tasks/task.dart';
 import '../classes/unify/response.dart';
 import '../web_client.dart';

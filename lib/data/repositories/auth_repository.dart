@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import '../../constants.dart';
-import '../models/auth/info.dart';
+import '../classes/user/user.dart';
 import '../web_client.dart';
+import '../classes/unify/response.dart';
 
 class AuthRepository {
   final WebClient webClient;
@@ -29,14 +30,14 @@ class AuthRepository {
     return response['access_token'];
   }
 
-  Future<UserInfo> getInfo(String token) async {
+  Future<ResponseMessage> getInfo(String token) async {
     dynamic _response;
     final response = await webClient.get(
       kApiUrl + '/account/info',
       token: token,
     );
     _response = response;
-    var _user = UserInfo.fromJson(_response);
+    var _user = ResponseMessage.fromJson(_response);
     return _user;
   }
 }

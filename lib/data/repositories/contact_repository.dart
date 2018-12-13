@@ -9,7 +9,7 @@ import '../classes/contacts/contact_details.dart';
 import '../classes/general/paging.dart';
 import '../classes/general/search.dart';
 import '../classes/unify/response.dart';
-import '../models/auth/model.dart';
+import '../models/auth_model.dart';
 import '../web_client.dart';
 
 class ContactRepository {

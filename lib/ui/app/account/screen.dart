@@ -3,8 +3,9 @@ import 'package:flutter_list_drag_and_drop/drag_and_drop_list.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../../constants.dart';
+import '../../../data/classes/auth/auth_user.dart';
 import '../../../data/classes/general/phone.dart';
-import '../../../data/models/auth/model.dart';
+import '../../../data/models/auth_model.dart';
 import '../../../ui/auth/login.dart';
 import '../../../ui/general/email_tile.dart';
 import '../../../ui/general/phone_tile.dart';
@@ -101,7 +102,7 @@ class _AccountsScreen extends StatelessWidget {
     final _model = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     return Container(
       padding: EdgeInsets.only(top: 10.0),
-      child: new DragAndDropList<UserObject>(
+      child: new DragAndDropList<AuthUser>(
         _model?.users,
         itemBuilder: (BuildContext context, item) {
           final _item = item;

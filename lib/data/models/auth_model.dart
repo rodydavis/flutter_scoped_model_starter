@@ -4,40 +4,14 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../local_storage.dart';
-import '../../repositories/auth_repository.dart';
-import 'info.dart';
-import '../../../constants.dart';
-
-class UserObject {
-  String username, password, token;
-  User data;
-
-  UserObject({
-    this.token = "",
-    this.data,
-    this.username,
-    this.password,
-  });
-
-  UserObject.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
-    data = json['users'] != null ? new User.fromJson(json['data']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['token'] = this.token;
-    if (this.data != null) {
-      data['data'] = this.data.toJson();
-    }
-    return data;
-  }
-}
+import '../local_storage.dart';
+import '../repositories/auth_repository.dart';
+import '../classes/auth/auth_user.dart';
+import '../../constants.dart';
 
 class AuthModel extends Model {
-  List<UserObject> _users = [];
-  UserObject _currentUser;
+  List<AuthUser> _users = [];
+  AuthUser _currentUser;
   bool _loggedIn = false;
   bool _userChanged = false;
   String _error = "";
@@ -48,8 +22,8 @@ class AuthModel extends Model {
   bool get isLoading => _isLoading;
 
   bool get loggedIn => _loggedIn;
-  List<UserObject> get users => _users;
-  UserObject get currentUser => _currentUser;
+  List<AuthUser> get users => _users;
+  AuthUser get currentUser => _currentUser;
   bool get userChanged => _userChanged;
 
   int get usersCount => _savedUsersCount;
@@ -98,7 +72,7 @@ class AuthModel extends Model {
     notifyListeners();
   }
 
-  void switchToAccount(UserObject newUser, {bool softLogin = false}) {
+  void switchToAccount(AuthUser newUser, {bool softLogin = false}) {
     List<String> _usernames = [];
     for (var _item in _users) {
       _usernames.add(_item?.username);
@@ -151,9 +125,9 @@ class AuthModel extends Model {
     _saveUsers();
   }
 
-  Future<List<UserObject>> _loadUsers() async {
+  Future<List<AuthUser>> _loadUsers() async {
     var prefs = AppPreferences();
-    List<UserObject> _newUsers = [];
+    List<AuthUser> _newUsers = [];
     var _list = await prefs.getList(Info.users);
     if (_list != null && _list.length > kMultipleAccounts) {
       prefs.setList(Info.users, [_list[0], _list[1], _list[2], _list[3]]);
@@ -204,7 +178,7 @@ class AuthModel extends Model {
     prefs.setList(Info.users, _list);
   }
 
-  void removeUser(UserObject user) {
+  void removeUser(AuthUser user) {
     _users.remove(user);
     if (user == _currentUser && (_users != null && _users.isNotEmpty)) {
       switchToAccount(_users?.first);
@@ -237,16 +211,16 @@ class AuthModel extends Model {
     return _newToken;
   }
 
-  Future<UserObject> _getUser(
+  Future<AuthUser> _getUser(
     String token, {
     @required String username,
     @required String password,
   }) async {
     var _auth = AuthRepository();
-    UserObject _user;
+    AuthUser _user;
     try {
       var _result = await _auth.getInfo(token);
-      _user = UserObject(
+      _user = AuthUser(
         token: token,
         data: _result?.result,
         username: username,
