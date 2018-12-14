@@ -58,6 +58,12 @@ class AppTheme extends StatelessWidget {
         '/import': (BuildContext context) => ImportContactsScreen(),
         '/import_single': (BuildContext context) =>
             ImportContactsScreen(selectSingle: true),
+        '/contact_tasks': (BuildContext context) =>
+            HomePage(model: taskModel, type: TasksType.contact),
+        '/lead_tasks': (BuildContext context) =>
+            HomePage(model: taskModel, type: TasksType.lead),
+        '/core_lead_tasks': (BuildContext context) =>
+            HomePage(model: taskModel, type: TasksType.core_lead),
       },
     );
   }

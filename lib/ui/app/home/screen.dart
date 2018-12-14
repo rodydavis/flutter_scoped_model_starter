@@ -5,16 +5,23 @@ import '../../../data/models/task_model.dart';
 import '../../../ui/app/app_drawer.dart';
 import '../../../ui/general/date_view.dart';
 
+enum TasksType { contact, lead, core_lead, all }
+
 class HomePage extends StatelessWidget {
   final TaskModel model;
-  HomePage({this.model});
+  final TasksType type;
+  HomePage({this.model, this.type = TasksType.all});
   @override
   Widget build(BuildContext context) {
+    String _title = "Home";
+    if (type == TasksType.contact) _title = "Contact Tasks";
+    if (type == TasksType.core_lead) _title = "Core Leads Tasks";
+    if (type == TasksType.lead) _title = "Lead Tasks";
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home"),
+        title: Text(_title),
       ),
-      drawer: AppDrawer(),
+      drawer: type == TasksType.all ? AppDrawer() : null,
       body: ScopedModel<TaskModel>(
         model: model,
         child: _DateView(),

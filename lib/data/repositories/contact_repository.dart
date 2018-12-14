@@ -36,7 +36,7 @@ class ContactRepository {
     } else {
       // -- Get List --
       final response = await webClient
-          .get(kApiUrl + '/contacts/${paging.rows}/${paging.page}', auth: auth);
+          .get(kApiUrl + '/contacts/mobile/${paging.rows}/${paging.page}', auth: auth);
       _response = response;
     }
 

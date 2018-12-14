@@ -143,6 +143,7 @@ class __ContactScreenState extends State<_ContactScreen> {
       bottomNavigationBar: AppBottomBar(
         buttons: [
           IconButton(
+            tooltip: "Refresh",
             icon: Icon(Icons.refresh),
             onPressed: () {
               _refreshController.requestRefresh(true);
@@ -174,6 +175,13 @@ class __ContactScreenState extends State<_ContactScreen> {
                     _model?.importItems(context, items: _list);
                   }
                 }),
+          ),
+          IconButton(
+            tooltip: "Tasks",
+            icon: Icon(Icons.event),
+            onPressed: () {
+              Navigator.pushNamed(context, "/contact_tasks");
+            },
           ),
         ],
         onChangeSortOrder: (bool value) {
