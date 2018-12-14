@@ -13,6 +13,7 @@ import 'ui/app/splash_screen.dart';
 import 'ui/auth/login.dart';
 import 'ui/contacts/screen.dart';
 import 'ui/phone_contacts/import.dart';
+import 'ui/contacts/groups/list.dart';
 
 // STARTER: import - do not remove comment
 
@@ -64,6 +65,7 @@ class AppTheme extends StatelessWidget {
             HomePage(model: taskModel, type: TasksType.lead),
         '/core_lead_tasks': (BuildContext context) =>
             HomePage(model: taskModel, type: TasksType.core_lead),
+        '/contact_groups': (BuildContext context) => ContactGroupsScreen(),
       },
     );
   }

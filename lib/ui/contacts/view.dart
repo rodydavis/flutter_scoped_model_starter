@@ -63,17 +63,10 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
         // subtitle: Text(item?.lastActivity ?? ""),
       ),
       PhoneTile(
-          label: "Cell Phone",
-          number: item?.cellPhone,
-          icon: Icons.phone),
+          label: "Cell Phone", number: item?.cellPhone, icon: Icons.phone),
+      PhoneTile(label: "Home Phone", number: item?.homePhone, icon: Icons.home),
       PhoneTile(
-          label: "Home Phone",
-          number: item?.homePhone,
-          icon: Icons.home),
-      PhoneTile(
-          label: "Office Phone",
-          number: item?.officePhone,
-          icon: Icons.work),
+          label: "Office Phone", number: item?.officePhone, icon: Icons.work),
       EmailTile(label: "Email Address", email: item?.email),
     ];
 
@@ -101,15 +94,32 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
         showSort: false,
         buttons: [
           IconButton(
+            tooltip: "Share Contact",
             icon: Icon(Icons.share),
             onPressed: null,
           ),
           IconButton(
+            tooltip: "Delete Contact",
             icon: Icon(Icons.delete),
             onPressed: () {
               widget.model.deleteItem(context, id: item?.id);
               Navigator.pop(context);
             },
+          ),
+          IconButton(
+            tooltip: "Add Follow Up",
+            icon: Icon(Icons.event_available),
+            onPressed: null,
+          ),
+          IconButton(
+            tooltip: "Add Note",
+            icon: Icon(Icons.note_add),
+            onPressed: null,
+          ),
+          IconButton(
+            tooltip: "Add Log Response",
+            icon: Icon(Icons.timer),
+            onPressed: null,
           ),
         ],
       ),

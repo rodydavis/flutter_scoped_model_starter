@@ -183,6 +183,13 @@ class __ContactScreenState extends State<_ContactScreen> {
               Navigator.pushNamed(context, "/contact_tasks");
             },
           ),
+          IconButton(
+            tooltip: "Contact Groups",
+            icon: Icon(Icons.group),
+            onPressed: () {
+              Navigator.pushNamed(context, "/contact_groups");
+            },
+          ),
         ],
         onChangeSortOrder: (bool value) {
           setState(() {

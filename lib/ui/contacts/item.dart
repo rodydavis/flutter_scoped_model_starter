@@ -65,7 +65,7 @@ class ContactItem extends StatelessWidget {
     return ThreeRowTile(
       icon: Icon(Icons.person),
       title: Text(item?.displayName),
-      // subtitle: Text(item?.lastActivity),
+      // subtitle: Text(item?.id),
       onTap: () => _viewItem(context),
       onLongPress: () => _editItem(context),
       cell: item?.cellPhone,
