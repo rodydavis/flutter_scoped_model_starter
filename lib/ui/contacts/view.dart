@@ -142,10 +142,7 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
             }
           });
         },
-        child: Icon(
-          Icons.edit,
-          color: Colors.white,
-        ),
+        child: Icon(Icons.edit, color: Colors.white),
         tooltip: 'Edit Item',
       ),
     );
