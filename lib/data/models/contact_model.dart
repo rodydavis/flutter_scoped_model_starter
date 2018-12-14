@@ -26,7 +26,7 @@ class ContactModel extends Model {
         fields: [
           ContactFields.first_name,
           ContactFields.last_name,
-          ContactFields.last_activity,
+          // ContactFields.last_activity,
         ]),
   );
 

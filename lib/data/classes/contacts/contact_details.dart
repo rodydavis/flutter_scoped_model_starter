@@ -15,9 +15,13 @@ class ContactDetails {
     this.lastName,
     this.email,
     this.address,
-    // this.phones,
-    // this.companyCategory,
-    // this.contactGroups,
+    this.homePhone,
+    this.cellPhone,
+    this.officePhone,
+    this.companyCategory,
+    this.contactGroups,
+    this.faxPhone,
+    this.secondCellPhone,
   });
 
   @JsonKey(name: 'First_Name')
@@ -28,11 +32,20 @@ class ContactDetails {
   String email;
   @JsonKey(name: 'Address')
   Address address;
-  // List<Phone> phones;
-  // @JsonKey(name: 'company_category')
-  // CompanyCategory companyCategory;
-  // @JsonKey(name: 'contact_groups')
-  // List<ContactGroup> contactGroups;
+  @JsonKey(name: 'Cell_Phone')
+  Phone cellPhone;
+  @JsonKey(name: 'Office_Phone')
+  Phone officePhone;
+  @JsonKey(name: 'Home_Phone')
+  Phone homePhone;
+  @JsonKey(name: 'Fax_Phone')
+  Phone faxPhone;
+  @JsonKey(name: 'Secondary_Cell_Phone')
+  Phone secondCellPhone;
+  @JsonKey(name: 'Company_Category')
+  CompanyCategory companyCategory;
+  @JsonKey(name: 'Contact_Groups')
+  List<ContactGroup> contactGroups;
 
   factory ContactDetails.fromJson(Map<String, dynamic> json) =>
       _$ContactDetailsFromJson(json);

@@ -60,13 +60,20 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
         title: Text(
           ((item?.firstName ?? "") + " " + (item?.lastName ?? "")),
         ),
-        subtitle: Text(item?.lastActivity ?? ""),
+        // subtitle: Text(item?.lastActivity ?? ""),
       ),
       PhoneTile(
-          label: "Cell Phone", number: item?.cellPhone, icon: Icons.phone),
-      PhoneTile(label: "Home Phone", number: item?.homePhone, icon: Icons.home),
+          label: "Cell Phone",
+          number: item?.cellPhone.toString(),
+          icon: Icons.phone),
       PhoneTile(
-          label: "Office Phone", number: item?.officePhone, icon: Icons.work),
+          label: "Home Phone",
+          number: item?.homePhone.toString(),
+          icon: Icons.home),
+      PhoneTile(
+          label: "Office Phone",
+          number: item?.officePhone.toString(),
+          icon: Icons.work),
       EmailTile(label: "Email Address", email: item?.email),
     ];
 

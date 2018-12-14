@@ -60,15 +60,23 @@ class ContactItem extends StatelessWidget {
     //   onLongPress: () => _editItem(context),
     // );
 
+    // print(item?.homePhone?.toJson());
+
     return ThreeRowTile(
       icon: Icon(Icons.person),
       title: Text(item?.displayName),
-      subtitle: Text(item?.lastActivity),
+      // subtitle: Text(item?.lastActivity),
       onTap: () => _viewItem(context),
       onLongPress: () => _editItem(context),
-      cell: item?.cellPhone,
-      home: item?.homePhone,
-      office: item?.officePhone,
+      cell: item?.cellPhone?.toString()?.contains("null") ?? true
+          ? ""
+          : item?.cellPhone?.toString(),
+      home: item?.homePhone?.toString()?.contains("null") ?? true
+          ? ""
+          : item?.homePhone?.toString(),
+      office: item?.officePhone?.toString()?.contains("null") ?? true
+          ? ""
+          : item?.officePhone?.toString(),
       email: item?.email,
       box1: Utility(
         value: formatDate(item?.dateCreated),

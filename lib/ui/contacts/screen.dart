@@ -63,7 +63,7 @@ class __ContactScreenState extends State<_ContactScreen> {
         fields: [
           ContactFields.first_name,
           ContactFields.last_name,
-          ContactFields.last_activity,
+          // ContactFields.last_activity,
         ],
       );
     }
