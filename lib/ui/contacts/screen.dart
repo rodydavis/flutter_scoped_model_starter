@@ -177,7 +177,7 @@ class __ContactScreenState extends State<_ContactScreen> {
                 }),
           ),
           IconButton(
-            tooltip: "Tasks",
+            tooltip: "Contact Tasks",
             icon: Icon(Icons.event),
             onPressed: () {
               Navigator.pushNamed(context, "/contact_tasks");

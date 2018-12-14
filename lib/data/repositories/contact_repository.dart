@@ -50,7 +50,7 @@ class ContactRepository {
 
     // -- Get List --
     final response =
-        await webClient.get(kApiUrl + '/contacts/info/$id', auth: auth);
+        await webClient.get(kApiUrl + '/contacts/details/$id', auth: auth);
     _response = response;
 
     var result = ResponseMessage.fromJson(_response);

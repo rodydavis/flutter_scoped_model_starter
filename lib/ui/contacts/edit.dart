@@ -22,7 +22,7 @@ class ContactItemEdit extends StatefulWidget {
 class _ContactItemEditState extends State<ContactItemEdit> {
   _ContactItemEditState({this.details});
 
-  TextEditingController _firstName, _middleName, _lastName, _email;
+  TextEditingController _firstName, _lastName, _email;
   bool _isNew = false;
 
   ContactDetails details;
@@ -70,11 +70,10 @@ class _ContactItemEditState extends State<ContactItemEdit> {
 
       ContactDetails _contact = ContactDetails(
         firstName: _firstName?.text ?? "",
-        middleName: _middleName?.text ?? "",
         lastName: _lastName?.text ?? "",
         email: _email?.text ?? "",
         address: address,
-        phones: _phones,
+        // phones: _phones,
       );
 
       print(_contact.toJson());
@@ -116,30 +115,27 @@ class _ContactItemEditState extends State<ContactItemEdit> {
 
       // -- Load Info from Phone Contact --
       _firstName = TextEditingController(text: details?.firstName ?? "");
-      _middleName = TextEditingController(text: details?.middleName ?? "");
       _lastName = TextEditingController(text: details?.lastName ?? "");
       _email = TextEditingController(text: details?.email ?? "");
 
-      var _phones = details?.phones ?? [];
-      for (var _phone in _phones) {
-        if (_phone.label.contains("home")) {
-          setState(() {
-            _home = _phone;
-          });
-        }
-        if (_phone.label.contains("office")) {
-          setState(() {
-            _office = _phone;
-          });
-        }
-        if (_phone.label.contains("cell") || _phone.label.contains("mobile")) {
-          setState(() {
-            _cell = _phone;
-          });
-        }
-      }
-
-      _middleName = TextEditingController(text: details?.middleName ?? "");
+      // var _phones = details?.phones ?? [];
+      // for (var _phone in _phones) {
+      //   if (_phone.label.contains("home")) {
+      //     setState(() {
+      //       _home = _phone;
+      //     });
+      //   }
+      //   if (_phone.label.contains("office")) {
+      //     setState(() {
+      //       _office = _phone;
+      //     });
+      //   }
+      //   if (_phone.label.contains("cell") || _phone.label.contains("mobile")) {
+      //     setState(() {
+      //       _cell = _phone;
+      //     });
+      //   }
+      // }
     }
 
     // setState(() {
@@ -183,13 +179,6 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                   validator: (val) => val.isEmpty
                       ? 'Please enter a ${ContactFields.first_name}'
                       : null,
-                ),
-              ),
-              ListTile(
-                title: TextFormField(
-                  decoration: InputDecoration(labelText: "Middle Name"),
-                  controller: _middleName,
-                  keyboardType: TextInputType.text,
                 ),
               ),
               ListTile(

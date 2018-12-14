@@ -8,40 +8,18 @@ part of 'contact_details.dart';
 
 ContactDetails _$ContactDetailsFromJson(Map<String, dynamic> json) {
   return ContactDetails(
-      firstName: json['first_name'] as String,
-      middleName: json['middle_name'] as String,
-      lastName: json['last_name'] as String,
-      email: json['email'] as String,
-      address: json['address'] == null
+      firstName: json['First_Name'] as String,
+      lastName: json['Last_Name'] as String,
+      email: json['Email_Address'] as String,
+      address: json['Address'] == null
           ? null
-          : Address.fromJson(json['address'] as Map<String, dynamic>),
-      phones: (json['phones'] as List)
-          ?.map((e) =>
-              e == null ? null : Phone.fromJson(e as Map<String, dynamic>))
-          ?.toList(),
-      birthdate: json['birthdate'] as String,
-      integrationId: json['integration_id'] as String,
-      companyCategory: json['company_category'] == null
-          ? null
-          : CompanyCategory.fromJson(
-              json['company_category'] as Map<String, dynamic>),
-      contactGroups: (json['contact_groups'] as List)
-          ?.map((e) => e == null
-              ? null
-              : ContactGroup.fromJson(e as Map<String, dynamic>))
-          ?.toList());
+          : Address.fromJson(json['Address'] as Map<String, dynamic>));
 }
 
 Map<String, dynamic> _$ContactDetailsToJson(ContactDetails instance) =>
     <String, dynamic>{
-      'first_name': instance.firstName,
-      'middle_name': instance.middleName,
-      'last_name': instance.lastName,
-      'email': instance.email,
-      'address': instance.address,
-      'phones': instance.phones,
-      'birthdate': instance.birthdate,
-      'integration_id': instance.integrationId,
-      'company_category': instance.companyCategory,
-      'contact_groups': instance.contactGroups
+      'First_Name': instance.firstName,
+      'Last_Name': instance.lastName,
+      'Email_Address': instance.email,
+      'Address': instance.address
     };
