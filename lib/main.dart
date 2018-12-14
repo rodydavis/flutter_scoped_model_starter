@@ -13,7 +13,7 @@ import 'ui/app/splash_screen.dart';
 import 'ui/auth/login.dart';
 import 'ui/contacts/screen.dart';
 import 'ui/phone_contacts/import.dart';
-import 'ui/contacts/groups/list.dart';
+import 'ui/contacts/groups/screen.dart';
 
 // STARTER: import - do not remove comment
 

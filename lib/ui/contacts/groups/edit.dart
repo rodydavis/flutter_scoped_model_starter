@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class EditContactGroup extends StatelessWidget {
   final bool isNew;
-  EditContactGroup({this.isNew});
+  final String groupName, id;
+  EditContactGroup({this.isNew, this.id, this.groupName});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'edit.dart';
+import 'view.dart';
 
 class ContactGroupsScreen extends StatelessWidget {
-  void _editGroup(BuildContext context, {bool isNew = true}) {
+  void _editGroup(BuildContext context,
+      {bool isNew = true, String id = "", String name = ""}) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -17,6 +20,15 @@ class ContactGroupsScreen extends StatelessWidget {
     });
   }
 
+  void _viewList(BuildContext context, {String id = "", String name = ""}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ContactGroupList(groupName: name),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +38,7 @@ class ContactGroupsScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () => _editGroup(context, isNew: true),
-          )
+          ),
         ],
       ),
       body: GridView.count(
@@ -36,7 +48,10 @@ class ContactGroupsScreen extends StatelessWidget {
         // Generate 100 Widgets that display their index in the List
         children: List.generate(100, (index) {
           return InkWell(
-            onLongPress: () => _editGroup(context, isNew: false),
+            onTap: () =>
+                _viewList(context, name: 'Item $index', id: index.toString()),
+            onLongPress: () => _editGroup(context,
+                isNew: false, name: 'Item $index', id: index.toString()),
             child: Center(
               child: Text(
                 'Item $index',
