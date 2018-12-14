@@ -86,6 +86,13 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
         title: widget.showNameInAppBar
             ? Text(widget?.name ?? item?.firstName ?? "Details")
             : Text("Details"),
+        actions: <Widget>[
+          IconButton(
+            tooltip: "Share Contact",
+            icon: Icon(Icons.share),
+            onPressed: null,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(children: _widgets),
@@ -93,11 +100,6 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
       bottomNavigationBar: AppBottomBar(
         showSort: false,
         buttons: [
-          IconButton(
-            tooltip: "Share Contact",
-            icon: Icon(Icons.share),
-            onPressed: null,
-          ),
           IconButton(
             tooltip: "Delete Contact",
             icon: Icon(Icons.delete),
@@ -119,6 +121,11 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
           IconButton(
             tooltip: "Add Log Response",
             icon: Icon(Icons.timer),
+            onPressed: null,
+          ),
+          IconButton(
+            tooltip: "Create Lead",
+            icon: Icon(Icons.person_add),
             onPressed: null,
           ),
         ],

@@ -36,7 +36,7 @@ class ContactGroupsScreen extends StatelessWidget {
         title: Text("Contact Groups"),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.group_add),
             onPressed: () => _editGroup(context, isNew: true),
           ),
         ],
