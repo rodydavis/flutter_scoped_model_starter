@@ -37,8 +37,8 @@ class _ContactScreen extends StatefulWidget {
 
 class __ContactScreenState extends State<_ContactScreen> {
   bool _isSearching = false;
-  bool _sortASC = false;
-  String _sortField = "";
+  bool _sortASC = true;
+  String _sortField = ContactFields.last_name;
   RefreshController _refreshController;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -58,6 +58,7 @@ class __ContactScreenState extends State<_ContactScreen> {
     final _sort = ScopedModel.of<SortModel>(context, rebuildOnChange: true);
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     if (!_sort.ready) {
+      _sort.sortAscending = true;
       _sort.setDefaults(
         field: ContactFields.last_name,
         fields: [
