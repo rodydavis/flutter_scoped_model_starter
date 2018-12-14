@@ -59,7 +59,7 @@ class ContactRepository {
   }
 
   Future<bool> deleteContact(AuthModel auth, {@required String id}) async {
-    var url = kApiUrl + '/contacts/info/' + id.toString();
+    var url = kApiUrl + '/contacts/details/' + id.toString();
     var response;
     response = await webClient.delete(url, auth: auth);
     print(response);
@@ -82,7 +82,7 @@ class ContactRepository {
       return false;
     } else {
       print("Editing Contact... $id");
-      var url = kApiUrl + '/contacts/info/' + id.toString();
+      var url = kApiUrl + '/contacts/details/' + id.toString();
       response = await webClient.put(url, json.encode(data), auth: auth);
       print(response);
       if (response["Status"].toString().contains("Success")) return true;
@@ -97,7 +97,7 @@ class ContactRepository {
     var response;
 
     response =
-        await webClient.post(kApiUrl + '/contacts/import', data, auth: auth);
+        await webClient.post(kApiUrl + '/contacts/batch/import', data, auth: auth);
     print(response);
     if (response["Status"].toString().contains("Success")) return true;
     return false;
