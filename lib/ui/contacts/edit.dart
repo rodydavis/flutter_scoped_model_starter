@@ -96,9 +96,9 @@ class _ContactItemEditState extends State<ContactItemEdit> {
       _email = TextEditingController(text: widget?.item?.email ?? "");
 
       setState(() {
-        _cell = Phone.fromString(widget?.item?.cellPhone ?? "");
-        _home = Phone.fromString(widget?.item?.homePhone ?? "");
-        _office = Phone.fromString(widget?.item?.officePhone ?? "");
+        _cell = widget?.item?.cellPhone;
+        _home = widget?.item?.homePhone;
+        _office = widget?.item?.officePhone;
       });
     } else {
       if (phoneContact != null) {

@@ -9,7 +9,7 @@ part of 'phone.dart';
 Phone _$PhoneFromJson(Map<String, dynamic> json) {
   return Phone(
       label: json['label'] as String,
-      areaCode: json['areaCode'] as String,
+      areaCode: json['area_code'] as String,
       ext: json['ext'] as String,
       number: json['number'] as String,
       prefix: json['prefix'] as String);
@@ -17,7 +17,7 @@ Phone _$PhoneFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PhoneToJson(Phone instance) => <String, dynamic>{
       'label': instance.label,
-      'areaCode': instance.areaCode,
+      'area_code': instance.areaCode,
       'prefix': instance.prefix,
       'number': instance.number,
       'ext': instance.ext

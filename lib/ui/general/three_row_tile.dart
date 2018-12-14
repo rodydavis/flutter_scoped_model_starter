@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../constants.dart';
+import '../../data/classes/general/phone.dart';
 import 'email_tile.dart';
 import 'phone_tile.dart';
 
@@ -9,7 +10,8 @@ class ThreeRowTile extends StatelessWidget {
   final Widget title, subtitle;
   final Utility box1, box2;
   final Icon icon;
-  final String cell, home, office, email;
+  final Phone cell, home, office;
+  final String email;
   final VoidCallback onTap, onLongPress, iconTap, onShare, onDelete, onEdit;
 
   ThreeRowTile({
@@ -32,13 +34,13 @@ class ThreeRowTile extends StatelessWidget {
 
   List<Widget> getActions(BuildContext context) {
     List<Widget> builder = [];
-    if (cell.isNotEmpty && !cell.toString().contains("--")) {
+    if (cell != null && cell.raw().isNotEmpty) {
       builder.add(PhoneTile(label: "Cell", number: cell, icon: Icons.phone));
     }
-    if (office.isNotEmpty && !office.toString().contains("--")) {
+    if (office != null && office.raw().isNotEmpty) {
       builder.add(PhoneTile(label: "Office", number: office, icon: Icons.work));
     }
-    if (home.isNotEmpty && !home.toString().contains("--")) {
+    if (home != null && home.raw().isNotEmpty) {
       builder.add(PhoneTile(label: "Home", number: home, icon: Icons.home));
     }
     if (email.isNotEmpty && !email.contains('No Email Address')) {

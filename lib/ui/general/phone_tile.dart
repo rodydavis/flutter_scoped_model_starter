@@ -7,19 +7,21 @@ import '../../utils/phoneCall.dart';
 import '../../utils/sendSMS.dart';
 
 class PhoneTile extends StatelessWidget {
-  final String label, number;
+  final String label;
   final IconData icon;
+  final Phone number;
 
   PhoneTile({this.label, this.number, this.icon});
 
   @override
   Widget build(BuildContext context) {
-    var _raw = (number ?? "")
-        .replaceAll("(", "")
-        .replaceAll(")", "")
-        .replaceAll("-", "")
-        .replaceAll(" ", "")
-        .trim();
+    // var _raw = (number ?? "")
+    //     .replaceAll("(", "")
+    //     .replaceAll(")", "")
+    //     .replaceAll("-", "")
+    //     .replaceAll(" ", "")
+    //     .trim();
+    var _raw = number?.raw();
     if (isNullOrEmpty(_raw)) {
       return ListTile(
         leading: Icon(icon ?? Icons.phone),
@@ -41,9 +43,7 @@ class PhoneTile extends StatelessWidget {
         textScaleFactor: textScaleFactor,
       ),
       subtitle: Text(
-        Phone.fromString(_raw).toString().isEmpty
-            ? _raw
-            : Phone.fromString(_raw).toString(),
+        number?.toString(),
         textScaleFactor: textScaleFactor,
       ),
       trailing: IconButton(

@@ -64,15 +64,15 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
       ),
       PhoneTile(
           label: "Cell Phone",
-          number: item?.cellPhone.toString(),
+          number: item?.cellPhone,
           icon: Icons.phone),
       PhoneTile(
           label: "Home Phone",
-          number: item?.homePhone.toString(),
+          number: item?.homePhone,
           icon: Icons.home),
       PhoneTile(
           label: "Office Phone",
-          number: item?.officePhone.toString(),
+          number: item?.officePhone,
           icon: Icons.work),
       EmailTile(label: "Email Address", email: item?.email),
     ];

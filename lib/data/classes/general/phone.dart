@@ -7,6 +7,7 @@ class Phone {
   Phone({this.label, this.areaCode, this.ext, this.number, this.prefix});
 
   String label;
+  @JsonKey(name: "area_code")
   String areaCode;
   String prefix;
   String number;

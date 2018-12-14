@@ -68,15 +68,9 @@ class ContactItem extends StatelessWidget {
       // subtitle: Text(item?.lastActivity),
       onTap: () => _viewItem(context),
       onLongPress: () => _editItem(context),
-      cell: item?.cellPhone?.toString()?.contains("null") ?? true
-          ? ""
-          : item?.cellPhone?.toString(),
-      home: item?.homePhone?.toString()?.contains("null") ?? true
-          ? ""
-          : item?.homePhone?.toString(),
-      office: item?.officePhone?.toString()?.contains("null") ?? true
-          ? ""
-          : item?.officePhone?.toString(),
+      cell: item?.cellPhone,
+      home: item?.homePhone,
+      office: item?.officePhone,
       email: item?.email,
       box1: Utility(
         value: formatDate(item?.dateCreated),

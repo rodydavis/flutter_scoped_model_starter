@@ -11,6 +11,7 @@ import '../general/email_tile.dart';
 import '../general/list_widget.dart';
 import '../general/phone_tile.dart';
 import '../general/profile_avatar.dart';
+import '../../data/classes/general/phone.dart';
 
 class ImportContactsScreen extends StatefulWidget {
   final bool selectSingle;
@@ -319,7 +320,9 @@ class _ContactDetailsScreen extends StatelessWidget {
     for (var _item in items) {
       _widgets.add(PhoneTile(
         label: _item?.label,
-        number: _item?.value,
+        number: _item?.value != null && _item.value.isNotEmpty
+            ? Phone.fromString(_item?.value)
+            : null,
         icon: getIcon(_item?.label ?? ""),
       ));
     }
