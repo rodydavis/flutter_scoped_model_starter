@@ -72,8 +72,7 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
         builder: (context) => ContactGroupList(
               auth: widget.auth,
               model: widget.model,
-              groupName: group?.name,
-              id: group?.id,
+              group: group,
               groupDeleted: () {
                 widget.model.deleteContactGroup(
                   context,

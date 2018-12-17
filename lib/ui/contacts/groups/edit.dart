@@ -3,12 +3,11 @@ import '../../../data/classes/unify/contact_group.dart';
 
 class EditContactGroup extends StatefulWidget {
   final bool isNew;
-  final String groupName, id;
+  final ContactGroup group;
   final VoidCallback groupDeleted;
   EditContactGroup({
     this.isNew,
-    this.id,
-    this.groupName,
+    this.group,
     this.groupDeleted,
   });
 
@@ -25,14 +24,14 @@ class EditContactGroupState extends State<EditContactGroup> {
     _isDisposed = true;
     super.dispose();
   }
-  
+
   TextEditingController _nameController;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     _nameController = TextEditingController(
-      text: widget?.groupName ?? "",
+      text: widget?.group?.name ?? "",
     );
     // setState(() {});
     super.initState();
@@ -43,7 +42,7 @@ class EditContactGroupState extends State<EditContactGroup> {
       // -- Save Info --
       final _name = _nameController?.text ?? "";
       final ContactGroup _group =
-          ContactGroup(id: widget?.id ?? "", name: _name);
+          ContactGroup(id: widget?.group?.id ?? "", name: _name);
       Navigator.pop(context, _group);
     }
   }
@@ -58,10 +57,12 @@ class EditContactGroupState extends State<EditContactGroup> {
             : <Widget>[
                 IconButton(
                   icon: Icon(Icons.delete),
-                  onPressed: () {
-                    widget.groupDeleted();
-                    Navigator.pop(context);
-                  },
+                  onPressed: widget.group?.count == 0
+                      ? null
+                      : () {
+                          widget.groupDeleted();
+                          Navigator.pop(context);
+                        },
                 ),
               ],
       ),

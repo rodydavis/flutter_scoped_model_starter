@@ -24,7 +24,7 @@ class ContactGroupsScreen extends StatefulWidget {
 
 class ContactGroupsScreenState extends State<ContactGroupsScreen> {
   List<ContactGroup> _groups;
-  
+
   bool _isDisposed = false;
   @override
   void dispose() {
@@ -49,8 +49,7 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
       MaterialPageRoute(
           builder: (context) => EditContactGroup(
                 isNew: isNew,
-                groupName: item?.name,
-                id: item?.id,
+                group: item,
                 groupDeleted: () {
                   if (!_isDisposed)
                     setState(() {
@@ -89,8 +88,7 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
         builder: (context) => ContactGroupList(
               auth: widget.auth,
               model: widget.model,
-              groupName: item?.name,
-              id: item?.id,
+              group: item,
               groupDeleted: () {
                 if (!_isDisposed)
                   setState(() {

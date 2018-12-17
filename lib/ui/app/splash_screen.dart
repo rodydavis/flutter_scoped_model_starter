@@ -95,6 +95,15 @@ class SplashScreenState extends State<SplashScreen>
           Text(_message.contains("Signing In")
               ? _message + " ($_users/$_count)"
               : _message),
+          RaisedButton(
+            child: Text("Cancel"),
+            onPressed: () {
+              setState(() {
+                autoLogin = false;
+                Navigator.pushReplacementNamed(context, '/login');
+              });
+            },
+          )
         ],
       )),
     );

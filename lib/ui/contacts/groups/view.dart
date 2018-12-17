@@ -6,16 +6,16 @@ import '../../../data/models/auth_model.dart';
 import '../../../data/models/contact_model.dart';
 import '../item.dart';
 import 'edit.dart';
+import '../../../data/classes/unify/contact_group.dart';
 
 class ContactGroupList extends StatefulWidget {
-  final String groupName, id;
+  final ContactGroup group;
   final VoidCallback groupDeleted;
   final ContactModel model;
   final AuthModel auth;
 
   ContactGroupList({
-    this.groupName,
-    this.id,
+    this.group,
     this.groupDeleted,
     @required this.model,
     @required this.auth,
@@ -39,14 +39,13 @@ class ContactGroupListState extends State<ContactGroupList> {
   Paging _paging = Paging(rows: 100, page: 1);
 
   void _editGroup(BuildContext context,
-      {bool isNew = true, String id = "", String name = ""}) {
+      {bool isNew = true, ContactGroup item}) {
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => EditContactGroup(
                 isNew: isNew,
-                groupName: name,
-                id: id,
+                group: item,
                 groupDeleted: () {
                   Navigator.pop(context);
                   widget.groupDeleted();
@@ -70,7 +69,7 @@ class ContactGroupListState extends State<ContactGroupList> {
       context,
       auth: widget.auth,
       paging: _paging,
-      id: widget?.id ?? "",
+      id: widget.group?.id ?? "",
     )
         .then((items) {
       final List<ContactRow> _items = items;
@@ -84,7 +83,7 @@ class ContactGroupListState extends State<ContactGroupList> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text(widget.groupName ?? "Contact Group"),
+      title: Text(widget.group?.name ?? "Contact Group"),
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.refresh),
@@ -92,8 +91,8 @@ class ContactGroupListState extends State<ContactGroupList> {
         ),
         IconButton(
           icon: Icon(Icons.edit),
-          onPressed: () => _editGroup(context,
-              isNew: false, name: widget.groupName, id: widget.id),
+          onPressed: () =>
+              _editGroup(context, isNew: false, item: widget.group),
         ),
       ],
     );
