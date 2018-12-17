@@ -113,17 +113,21 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
       ).then((value) {
         if (value != null) {
           final List<ContactGroup> _items = value;
-          details.contactGroups = _items;
-          // -- Update Contact --
-          ContactDetails _item = details;
-          print(_item.toJson());
-          widget.model.editItem(context, item: _item, id: item?.id);
-          setState(() {
-            details = _item;
-          });
+          _updateGroups(_items);
         }
       });
     }
+  }
+
+  _updateGroups(List<ContactGroup> items) {
+    details.contactGroups = items;
+    // -- Update Contact --
+    ContactDetails _item = details;
+    print(_item.toJson());
+    widget.model.editItem(context, item: _item, id: item?.id);
+    setState(() {
+      details = _item;
+    });
   }
 
   @override
@@ -174,6 +178,15 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
             ListTile(
               title: Text(_group?.name ?? "No Name Found"),
               onTap: () => _viewList(context, group: _group),
+              leading: IconButton(
+                tooltip: "Remove From Group",
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  List<ContactGroup> _items = details.contactGroups;
+                  _items.remove(_group);
+                  _updateGroups(_items);
+                },
+              ),
             ),
           );
         }
@@ -249,7 +262,11 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
             context,
             MaterialPageRoute(
                 builder: (context) => ContactItemEdit(
-                    item: item, model: _model, details: details),
+                      item: item,
+                      model: _model,
+                      details: details,
+                      auth: widget.auth,
+                    ),
                 fullscreenDialog: true),
           ).then((value) {
             if (value != null) {

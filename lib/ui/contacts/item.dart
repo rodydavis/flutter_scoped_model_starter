@@ -29,7 +29,11 @@ class ContactItem extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ContactItemEdit(item: item, model: model),
+          builder: (context) => ContactItemEdit(
+                item: item,
+                model: model,
+                auth: auth,
+              ),
           fullscreenDialog: true),
     ).then((value) {
       if (value != null) {

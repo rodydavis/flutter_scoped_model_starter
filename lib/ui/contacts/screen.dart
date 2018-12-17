@@ -226,7 +226,10 @@ class __ContactScreenState extends State<_ContactScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ContactItemEdit(model: _model),
+                builder: (context) => ContactItemEdit(
+                      model: _model,
+                      auth: _auth,
+                    ),
                 fullscreenDialog: true),
           ).then((value) {
             if (value != null) {

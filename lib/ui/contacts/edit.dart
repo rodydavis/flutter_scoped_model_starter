@@ -5,15 +5,25 @@ import '../../data/classes/contacts/contact_details.dart';
 import '../../data/classes/contacts/contact_row.dart';
 import '../../data/classes/general/address.dart';
 import '../../data/classes/general/phone.dart';
+import '../../data/classes/unify/contact_group.dart';
+import '../../data/models/auth_model.dart';
 import '../../data/models/contact_model.dart';
+import '../../ui/contacts/groups/manage.dart';
 import '../general/address_tile.dart';
 import '../general/phone_tile.dart';
 
 class ContactItemEdit extends StatefulWidget {
   final ContactRow item;
   final ContactModel model;
+  final AuthModel auth;
   final ContactDetails details;
-  ContactItemEdit({this.item, @required this.model, this.details});
+
+  ContactItemEdit({
+    this.item,
+    @required this.model,
+    this.details,
+    @required this.auth,
+  });
   @override
   _ContactItemEditState createState() =>
       _ContactItemEditState(details: details);
@@ -31,6 +41,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
   // Address _address;
 
   Address get address => details?.address;
+  List<ContactGroup> _groups;
 
   @override
   void initState() {
@@ -143,6 +154,41 @@ class _ContactItemEditState extends State<ContactItemEdit> {
     // });
   }
 
+  void _manageContactGroups(BuildContext context, {ContactModel model}) async {
+    if (model.groups == null || model.groups.isEmpty) {
+      await model.loadContactGroups(context, auth: widget.auth);
+    }
+
+    var _source = model.groups;
+    var _inital = _groups;
+
+    if (_inital != null && _source != null) {
+      for (var _item in _inital) {
+        if (_source.contains(_item)) {
+          _source.remove(_item);
+        }
+      }
+    }
+
+    // Navigator.pushNamed(context, "manage_groups");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ContactGroupManageContact(
+              source: _source,
+              inital: _inital,
+            ),
+      ),
+    ).then((value) {
+      if (value != null) {
+        final List<ContactGroup> _items = value;
+        setState(() {
+          _groups = _items;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // final _model = ScopedModel.of<ContactModel>(context, rebuildOnChange: true);
@@ -165,7 +211,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
           IconButton(
             tooltip: "Contact Groups",
             icon: Icon(Icons.group),
-            onPressed: null,
+            onPressed: () => _manageContactGroups(context, model: widget.model),
           ),
         ],
       ),
