@@ -139,7 +139,7 @@ class ContactRepository {
   }
 
   Future<bool> addContactGroup(AuthModel auth, {@required String name}) async {
-    var url = kApiUrl + '/contacts/contact_groups';
+    var url = kApiUrl + '/contacts/contact_groups?totals=true';
     var data = json.encode(ContactGroup(name: name));
     var response;
     response = await webClient.post(url, data, auth: auth);
@@ -147,14 +147,24 @@ class ContactRepository {
     if (response["Status"].toString().contains("Success")) return true;
     return false;
   }
-}
 
-class StringBody {
-  final String name, jsonKey;
-  StringBody({this.name, this.jsonKey});
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data[jsonKey ?? 'name'] = this.name;
-    return data;
+  // -- Contact Groups --
+  Future<ResponseMessage> getContactsFromGroup(AuthModel auth,
+      {@required String name, @required Paging paging}) async {
+    dynamic _response;
+    var _name = Uri.encodeComponent(name);
+
+    // -- Get List --
+    final response = await webClient.get(
+        kApiUrl +
+            '/contacts/contact_groups/list?group_name=' +
+            _name +
+            "&rows=${paging.rows}&page=${paging.page}",
+        auth: auth);
+    _response = response;
+
+    var result = ResponseMessage.fromJson(_response);
+
+    return result;
   }
 }

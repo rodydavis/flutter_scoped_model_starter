@@ -128,6 +128,31 @@ class ContactModel extends Model {
     return true;
   }
 
+  Future<List<ContactRow>> getContactsForContactGroup(BuildContext context,
+      {@required String name,
+      @required AuthModel auth,
+      @required Paging paging}) async {
+    // final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    auth.confirmUserChange();
+
+    var _contacts = await ContactRepository()
+        .getContactsFromGroup(auth, paging: paging, name: name);
+
+    List<dynamic> _result = _contacts?.result;
+    if (_result?.isEmpty ?? true) {
+      _module.lastPage = true;
+    } else {
+      _module.lastPage = false;
+    }
+
+    var _results = _result
+        ?.map((e) =>
+            e == null ? null : ContactRow.fromJson(e as Map<String, dynamic>))
+        ?.toList();
+
+    return _results;
+  }
+
   Future<bool> nextPage(BuildContext context) async {
     _module.paging = Paging(
       rows: _module.paging.rows,

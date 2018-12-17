@@ -24,7 +24,7 @@ class ContactGroupsScreen extends StatefulWidget {
 }
 
 class ContactGroupsScreenState extends State<ContactGroupsScreen> {
-  List<ContactGroup> _groups = [];
+  List<ContactGroup> _groups;
 
   void _editGroup(BuildContext context,
       {bool isNew = true, ContactGroup item}) {
@@ -36,14 +36,6 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
                 groupName: item?.name,
                 id: item?.id,
                 groupDeleted: () {
-                  // var _list = _groups;
-                  // for (var _group in _list) {
-                  //   if (_group.id == item.id) {
-                  //     setState(() {
-                  //       _groups.remove(_group);
-                  //     });
-                  //   }
-                  // }
                   setState(() {
                     _groups.clear();
                   });
@@ -80,6 +72,8 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => ContactGroupList(
+              auth: widget.auth,
+              model: widget.model,
               groupName: item?.name,
               id: item?.id,
               groupDeleted: () {
@@ -114,6 +108,22 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
     });
   }
 
+  void _loadInfo() {
+    setState(() {
+      _groups = null;
+    });
+    widget.model
+        .loadContactGroups(
+      context,
+      auth: widget.auth,
+    )
+        .then((_) {
+      setState(() {
+        _groups = widget.model?.groups ?? [];
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
@@ -121,10 +131,7 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.refresh),
-          onPressed: () => widget.model.loadContactGroups(
-                context,
-                auth: widget.auth,
-              ),
+          onPressed: () => _loadInfo(),
         ),
         IconButton(
           icon: Icon(Icons.group_add),
@@ -133,20 +140,19 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
       ],
     );
     if (_groups == null || _groups.isEmpty) {
-      widget.model
-          .loadContactGroups(
-        context,
-        auth: widget.auth,
-      )
-          .then((_) {
-        setState(() {
-          _groups = widget.model?.groups ?? [];
-        });
-      });
+      if (_groups == null) {
+        _loadInfo();
+        return Scaffold(
+          appBar: appBar,
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
       return Scaffold(
         appBar: appBar,
         body: Center(
-          child: CircularProgressIndicator(),
+          child: Text("No Groups Found"),
         ),
       );
     }
