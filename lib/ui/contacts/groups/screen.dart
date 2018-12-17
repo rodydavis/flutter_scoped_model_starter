@@ -36,7 +36,7 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
   void initState() {
     if (!_isDisposed)
       setState(() {
-        _groups = widget.model?.groups ?? [];
+        _groups = widget.model?.groups;
       });
     _loadInfo();
     super.initState();
