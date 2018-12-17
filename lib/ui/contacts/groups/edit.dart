@@ -4,10 +4,12 @@ import '../../../data/classes/unify/contact_group.dart';
 class EditContactGroup extends StatefulWidget {
   final bool isNew;
   final String groupName, id;
+  final VoidCallback groupDeleted;
   EditContactGroup({
     this.isNew,
     this.id,
     this.groupName,
+    this.groupDeleted,
   });
 
   @override
@@ -44,6 +46,17 @@ class EditContactGroupState extends State<EditContactGroup> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.isNew ? "Add Contact Group" : "Edit Contact Group"),
+        actions: widget.isNew
+            ? null
+            : <Widget>[
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    widget.groupDeleted();
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

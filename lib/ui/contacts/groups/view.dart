@@ -4,7 +4,8 @@ import 'edit.dart';
 
 class ContactGroupList extends StatelessWidget {
   final String groupName, id;
-  ContactGroupList({this.groupName, this.id});
+  final VoidCallback groupDeleted;
+  ContactGroupList({this.groupName, this.id, this.groupDeleted});
 
   void _editGroup(BuildContext context,
       {bool isNew = true, String id = "", String name = ""}) {
@@ -15,6 +16,10 @@ class ContactGroupList extends StatelessWidget {
                 isNew: isNew,
                 groupName: name,
                 id: id,
+                groupDeleted: () {
+                  Navigator.pop(context);
+                  groupDeleted();
+                },
               ),
           fullscreenDialog: true),
     ).then((value) {

@@ -64,11 +64,11 @@ class ContactModel extends Model {
   List<ContactRow> get filteredItems => _module?.filtered ?? [];
 
   Future<bool> loadContactGroups(BuildContext context,
-      {bool force = false}) async {
-    final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
-    _auth.confirmUserChange();
+      {bool force = false, @required AuthModel auth}) async {
+    // final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    auth.confirmUserChange();
 
-    var _groups = await ContactRepository().getContactGroups(_auth);
+    var _groups = await ContactRepository().getContactGroups(auth);
     if (force) {
       _module.groups.clear();
       notifyListeners();
@@ -88,20 +88,41 @@ class ContactModel extends Model {
   }
 
   Future<bool> editContactGroup(BuildContext context,
-      {@required ContactGroup model, bool isNew = true}) async {
-    final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
-    _auth.confirmUserChange();
+      {@required ContactGroup model,
+      bool isNew = true,
+      @required AuthModel auth}) async {
+    // final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    auth.confirmUserChange();
 
     bool _valid = true;
     if (isNew) {
       _valid =
-          await ContactRepository().addContactGroup(_auth, name: model?.name);
+          await ContactRepository().addContactGroup(auth, name: model?.name);
     } else {
       _valid = await ContactRepository()
-          .editContactGroup(_auth, name: model?.name, id: model?.id);
+          .editContactGroup(auth, name: model?.name, id: model?.id);
     }
 
-    loadContactGroups(context, force: true);
+    _module.groups.clear();
+    notifyListeners();
+
+    loadContactGroups(context, force: true, auth: auth);
+
+    notifyListeners();
+    return true;
+  }
+
+  Future<bool> deleteContactGroup(BuildContext context,
+      {@required String id, @required AuthModel auth}) async {
+    // final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    auth.confirmUserChange();
+
+    _module.groups.clear();
+    notifyListeners();
+
+    bool _valid = await ContactRepository().deleteContactGroup(auth, id: id);
+
+    loadContactGroups(context, force: true, auth: auth);
 
     notifyListeners();
     return true;
