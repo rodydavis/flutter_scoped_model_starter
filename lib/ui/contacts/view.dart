@@ -33,6 +33,13 @@ class ContactItemDetails extends StatefulWidget {
 }
 
 class _ContactItemDetailsState extends State<ContactItemDetails> {
+  bool _isDisposed = false;
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
+
   ContactRow item;
   ContactDetails details;
 
@@ -43,17 +50,19 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
   }
 
   void _loadInfo() async {
-    setState(() {
-      item = widget.item;
-    });
+    if (!_isDisposed)
+      setState(() {
+        item = widget.item;
+      });
     // -- Load Info From API --
   }
 
   void _getDetails(BuildContext context, {ContactModel model}) async {
     var _contact = await model.getDetails(context, id: widget?.item?.id);
-    setState(() {
-      details = _contact;
-    });
+    if (!_isDisposed)
+      setState(() {
+        details = _contact;
+      });
   }
 
   void _viewList(BuildContext context, {ContactGroup group}) {
@@ -125,9 +134,10 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
     ContactDetails _item = details;
     print(_item.toJson());
     widget.model.editItem(context, item: _item, id: item?.id);
-    setState(() {
-      details = _item;
-    });
+    if (!_isDisposed)
+      setState(() {
+        details = _item;
+      });
   }
 
   @override
@@ -206,9 +216,9 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
             : Text("Details"),
         actions: <Widget>[
           IconButton(
-            tooltip: "Contact Groups",
-            icon: Icon(Icons.people),
-            onPressed: () => _manageContactGroups(context, model: _model),
+            tooltip: "Create Lead",
+            icon: Icon(Icons.person_add),
+            onPressed: null,
           ),
           IconButton(
             tooltip: "Share Contact",
@@ -232,6 +242,11 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
             },
           ),
           IconButton(
+            tooltip: "Contact Groups",
+            icon: Icon(Icons.people),
+            onPressed: () => _manageContactGroups(context, model: _model),
+          ),
+          IconButton(
             tooltip: "Add Follow Up",
             icon: Icon(Icons.event_available),
             onPressed: null,
@@ -244,11 +259,6 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
           IconButton(
             tooltip: "Add Log Response",
             icon: Icon(Icons.timer),
-            onPressed: null,
-          ),
-          IconButton(
-            tooltip: "Create Lead",
-            icon: Icon(Icons.person_add),
             onPressed: null,
           ),
         ],
@@ -272,9 +282,10 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
             if (value != null) {
               ContactDetails _item = value;
               widget.model.editItem(context, item: _item, id: item?.id);
-              setState(() {
-                details = _item;
-              });
+              if (!_isDisposed)
+                setState(() {
+                  details = _item;
+                });
               // Navigator.pop(context);
             }
           });

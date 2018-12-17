@@ -8,8 +8,6 @@ class ContactGroupManageContact extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var _namesInital = inital?.map((e) => e == null ? null : e.name)?.toList();
-    // var _namesSource = groups?.map((e) => e == null ? null : e.name)?.toList();
     // The SidekickTeamBuilder takes in charge the animations and
     // the state management.
     return SidekickTeamBuilder<ContactGroup>(
@@ -113,7 +111,7 @@ class ContactGroupManageContact extends StatelessWidget {
                           // Here we will move all the children for the target container,
                           // to the source container.
                           onPressed: () =>
-                              SidekickTeamBuilder.of<String>(context)
+                              SidekickTeamBuilder.of<ContactGroup>(context)
                                   .moveAll(SidekickFlightDirection.toSource),
                         ),
                         SizedBox(width: 60.0, height: 60.0),
@@ -124,7 +122,7 @@ class ContactGroupManageContact extends StatelessWidget {
                           // Here we will move all the children for the source container,
                           // to the target container.
                           onPressed: () =>
-                              SidekickTeamBuilder.of<String>(context)
+                              SidekickTeamBuilder.of<ContactGroup>(context)
                                   .moveAll(SidekickFlightDirection.toTarget),
                         ),
                       ],

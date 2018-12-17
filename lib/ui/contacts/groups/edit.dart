@@ -19,6 +19,13 @@ class EditContactGroup extends StatefulWidget {
 }
 
 class EditContactGroupState extends State<EditContactGroup> {
+  bool _isDisposed = false;
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
+  
   TextEditingController _nameController;
   final _formKey = GlobalKey<FormState>();
 

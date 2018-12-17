@@ -36,6 +36,13 @@ class _ContactScreen extends StatefulWidget {
 }
 
 class __ContactScreenState extends State<_ContactScreen> {
+  bool _isDisposed = false;
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
+
   bool _isSearching = false;
   bool _sortASC = true;
   String _sortField = ContactFields.last_name;
@@ -82,9 +89,10 @@ class __ContactScreenState extends State<_ContactScreen> {
           AppSearchButton(
             isSearching: _isSearching,
             onSearchPressed: () {
-              setState(() {
-                _isSearching = !_isSearching;
-              });
+              if (!_isDisposed)
+                setState(() {
+                  _isSearching = !_isSearching;
+                });
               if (_isSearching) {
                 _model.startSearching();
               } else {
@@ -118,7 +126,7 @@ class __ContactScreenState extends State<_ContactScreen> {
                   if (up) {
                     _model.refresh(context).then((_) {
                       _refreshController.sendBack(true, RefreshStatus.idle);
-                      setState(() {});
+                      if (!_isDisposed) setState(() {});
                     });
                   } else {
                     _model.nextPage(context).then((_) {
@@ -130,7 +138,7 @@ class __ContactScreenState extends State<_ContactScreen> {
                             _refreshController.scrollController.offset + 100.0);
                       }
                       _refreshController.sendBack(false, RefreshStatus.idle);
-                      setState(() {});
+                      if (!_isDisposed) setState(() {});
                     });
                   }
                 },
@@ -153,7 +161,7 @@ class __ContactScreenState extends State<_ContactScreen> {
               _refreshController.requestRefresh(true);
               _model.refresh(context).then((_) {
                 _refreshController.sendBack(true, RefreshStatus.idle);
-                setState(() {});
+                if (!_isDisposed) setState(() {});
               });
             },
           ),
@@ -196,25 +204,28 @@ class __ContactScreenState extends State<_ContactScreen> {
           ),
         ],
         onChangeSortOrder: (bool value) {
-          setState(() {
-            _sort.sortAscending = value;
-            _sortASC = value;
-            _model.sort(_sortField, _sortASC);
-          });
+          if (!_isDisposed)
+            setState(() {
+              _sort.sortAscending = value;
+              _sortASC = value;
+              _model.sort(_sortField, _sortASC);
+            });
         },
         onSelectedSortField: (String value) {
           if (_sortField.contains(value)) {
-            setState(() {
-              _sortASC = !_sortASC;
-              _sort.sortAscending = _sortASC;
-              _model.sort(_sortField, _sortASC);
-            });
+            if (!_isDisposed)
+              setState(() {
+                _sortASC = !_sortASC;
+                _sort.sortAscending = _sortASC;
+                _model.sort(_sortField, _sortASC);
+              });
           } else {
-            setState(() {
-              _sort.sortField = value;
-              _sortField = value;
-              _model.sort(_sortField, _sortASC);
-            });
+            if (!_isDisposed)
+              setState(() {
+                _sort.sortField = value;
+                _sortField = value;
+                _model.sort(_sortField, _sortASC);
+              });
           }
         },
       ),

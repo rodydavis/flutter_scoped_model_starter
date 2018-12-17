@@ -31,6 +31,12 @@ class ContactItemEdit extends StatefulWidget {
 
 class _ContactItemEditState extends State<ContactItemEdit> {
   _ContactItemEditState({this.details});
+  bool _isDisposed = false;
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
 
   TextEditingController _firstName, _lastName, _email;
   bool _isNew = false;
@@ -52,9 +58,10 @@ class _ContactItemEditState extends State<ContactItemEdit> {
 
   void _loadItemDetails() async {
     if ((widget?.item?.id ?? "").toString().isEmpty) {
-      setState(() {
-        _isNew = true;
-      });
+      if (!_isDisposed)
+        setState(() {
+          _isNew = true;
+        });
     }
     print("Passed => " + details?.toJson().toString());
     _updateView(contactDetails: details);
@@ -62,9 +69,10 @@ class _ContactItemEditState extends State<ContactItemEdit> {
 
   void _getDetails(BuildContext context, {ContactModel model}) async {
     var _contact = await model.getDetails(context, id: widget?.item?.id);
-    setState(() {
-      details = _contact;
-    });
+    if (!_isDisposed)
+      setState(() {
+        details = _contact;
+      });
     _updateView(contactDetails: _contact);
   }
 
@@ -74,7 +82,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
       if (_cell != null && _cell.raw().isNotEmpty) _phones.add(_cell);
       if (_home != null && _home.raw().isNotEmpty) _phones.add(_home);
       if (_office != null && _office.raw().isNotEmpty) _phones.add(_office);
-      // setState(() {
+      //if (!_isDisposed) setState(() {
       //   _address = details?.address;
       // });
       print("Address => " + address?.raw());
@@ -106,22 +114,25 @@ class _ContactItemEditState extends State<ContactItemEdit> {
       _lastName = TextEditingController(text: widget?.item?.lastName ?? "");
       _email = TextEditingController(text: widget?.item?.email ?? "");
 
-      setState(() {
-        _cell = widget?.item?.cellPhone;
-        _home = widget?.item?.homePhone;
-        _office = widget?.item?.officePhone;
-      });
+      if (!_isDisposed)
+        setState(() {
+          _cell = widget?.item?.cellPhone;
+          _home = widget?.item?.homePhone;
+          _office = widget?.item?.officePhone;
+        });
     } else {
       if (phoneContact != null) {
-        setState(() {
-          details = ContactDetails.fromPhoneContact(phoneContact);
-          print(details.toJson().toString());
-          print(details.address.toJson().toString());
-        });
+        if (!_isDisposed)
+          setState(() {
+            details = ContactDetails.fromPhoneContact(phoneContact);
+            print(details.toJson().toString());
+            print(details.address.toJson().toString());
+          });
       } else if (contactDetails != null) {
-        setState(() {
-          details = contactDetails;
-        });
+        if (!_isDisposed)
+          setState(() {
+            details = contactDetails;
+          });
       }
 
       // -- Load Info from Phone Contact --
@@ -132,24 +143,24 @@ class _ContactItemEditState extends State<ContactItemEdit> {
       // var _phones = details?.phones ?? [];
       // for (var _phone in _phones) {
       //   if (_phone.label.contains("home")) {
-      //     setState(() {
+      //    if (!_isDisposed) setState(() {
       //       _home = _phone;
       //     });
       //   }
       //   if (_phone.label.contains("office")) {
-      //     setState(() {
+      //    if (!_isDisposed) setState(() {
       //       _office = _phone;
       //     });
       //   }
       //   if (_phone.label.contains("cell") || _phone.label.contains("mobile")) {
-      //     setState(() {
+      //    if (!_isDisposed) setState(() {
       //       _cell = _phone;
       //     });
       //   }
       // }
     }
 
-    // setState(() {
+    //if (!_isDisposed) setState(() {
     //   _formKey.currentState.validate();
     // });
   }
@@ -182,9 +193,10 @@ class _ContactItemEditState extends State<ContactItemEdit> {
     ).then((value) {
       if (value != null) {
         final List<ContactGroup> _items = value;
-        setState(() {
-          _groups = _items;
-        });
+        if (!_isDisposed)
+          setState(() {
+            _groups = _items;
+          });
       }
     });
   }
@@ -257,18 +269,20 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                     label: "Cell Phone",
                     number: _cell,
                     numberChanged: (Phone value) {
-                      setState(() {
-                        _cell = value;
-                      });
+                      if (!_isDisposed)
+                        setState(() {
+                          _cell = value;
+                        });
                     },
                   ),
                   PhoneInputTile(
                     label: "Home Phone",
                     number: _home,
                     numberChanged: (Phone value) {
-                      setState(() {
-                        _home = value;
-                      });
+                      if (!_isDisposed)
+                        setState(() {
+                          _home = value;
+                        });
                     },
                   ),
                   PhoneInputTile(
@@ -276,9 +290,10 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                     label: "Office Phone",
                     number: _office,
                     numberChanged: (Phone value) {
-                      setState(() {
-                        _office = value;
-                      });
+                      if (!_isDisposed)
+                        setState(() {
+                          _office = value;
+                        });
                     },
                   ),
                   Container(height: 5.0),
@@ -291,9 +306,10 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                     label: "Current Address",
                     address: details?.address,
                     addressChanged: (Address value) {
-                      setState(() {
-                        details.address = value;
-                      });
+                      if (!_isDisposed)
+                        setState(() {
+                          details.address = value;
+                        });
                     },
                   ),
                   Container(height: 5.0),

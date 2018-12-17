@@ -24,12 +24,21 @@ class ContactGroupsScreen extends StatefulWidget {
 
 class ContactGroupsScreenState extends State<ContactGroupsScreen> {
   List<ContactGroup> _groups;
+  
+  bool _isDisposed = false;
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
 
   @override
   void initState() {
-    setState(() {
-      _groups = widget.model?.groups;
-    });
+    if (!_isDisposed)
+      setState(() {
+        _groups = widget.model?.groups ?? [];
+      });
+    _loadInfo();
     super.initState();
   }
 
@@ -43,9 +52,10 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
                 groupName: item?.name,
                 id: item?.id,
                 groupDeleted: () {
-                  setState(() {
-                    _groups.clear();
-                  });
+                  if (!_isDisposed)
+                    setState(() {
+                      _groups.clear();
+                    });
                   widget.model.deleteContactGroup(
                     context,
                     id: item?.id,
@@ -82,9 +92,10 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
               groupName: item?.name,
               id: item?.id,
               groupDeleted: () {
-                setState(() {
-                  _groups.clear();
-                });
+                if (!_isDisposed)
+                  setState(() {
+                    _groups.clear();
+                  });
                 widget.model.deleteContactGroup(
                   context,
                   id: item?.id,
@@ -111,20 +122,25 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
     });
   }
 
-  void _loadInfo() {
-    setState(() {
-      _groups = null;
-    });
+  void _loadInfo({bool force = false}) {
+    if (force) {
+      if (!_isDisposed)
+        setState(() {
+          _groups = null;
+        });
+    }
+
     widget.model
         .loadContactGroups(
       context,
       auth: widget.auth,
     )
         .then((_) {
-      setState(() {
-        _groups = widget.model?.groups ?? [];
-        // _groups.sort((a, b) => b.count.compareTo(a.count));
-      });
+      if (!_isDisposed)
+        setState(() {
+          _groups = widget.model?.groups ?? [];
+          // _groups.sort((a, b) => b.count.compareTo(a.count));
+        });
     });
   }
 

@@ -28,6 +28,13 @@ class ContactGroupList extends StatefulWidget {
 }
 
 class ContactGroupListState extends State<ContactGroupList> {
+  bool _isDisposed = false;
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
+
   List<ContactRow> _contacts;
   Paging _paging = Paging(rows: 100, page: 1);
 
@@ -54,9 +61,10 @@ class ContactGroupListState extends State<ContactGroupList> {
   }
 
   void _loadData() {
-    setState(() {
-      _contacts = null;
-    });
+    if (!_isDisposed)
+      setState(() {
+        _contacts = null;
+      });
     widget.model
         .getContactsForContactGroup(
       context,
@@ -66,9 +74,10 @@ class ContactGroupListState extends State<ContactGroupList> {
     )
         .then((items) {
       final List<ContactRow> _items = items;
-      setState(() {
-        _contacts = _items ?? [];
-      });
+      if (!_isDisposed)
+        setState(() {
+          _contacts = _items ?? [];
+        });
     });
   }
 
