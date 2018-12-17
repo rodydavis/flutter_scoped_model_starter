@@ -102,4 +102,18 @@ class ContactRepository {
     if (response["Status"].toString().contains("Success")) return true;
     return false;
   }
+
+  // -- Contact Groups --
+  Future<ResponseMessage> getContactGroups(AuthModel auth) async {
+    dynamic _response;
+
+    // -- Get List --
+    final response =
+        await webClient.get(kApiUrl + '/contacts/info/contact_groups', auth: auth);
+    _response = response;
+
+    var result = ResponseMessage.fromJson(_response);
+
+    return result;
+  }
 }

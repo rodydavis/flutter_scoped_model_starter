@@ -9,6 +9,7 @@ import '../classes/contacts/contact_row.dart';
 import '../models/auth_model.dart';
 import '../classes/app/sort.dart';
 import '../repositories/contact_repository.dart';
+import '../classes/unify/contact_group.dart';
 
 class ContactModel extends Model {
   ContactModule _module = ContactModule(
@@ -28,6 +29,7 @@ class ContactModel extends Model {
           ContactFields.last_name,
           // ContactFields.last_activity,
         ]),
+    groups: [],
   );
 
   bool get lastPage => _module?.lastPage ?? false;
@@ -57,8 +59,28 @@ class ContactModel extends Model {
     notifyListeners();
   }
 
+  List<ContactGroup> get groups => _module?.groups ?? [];
   List<ContactRow> get items => _module?.contacts ?? [];
   List<ContactRow> get filteredItems => _module?.filtered ?? [];
+
+  Future<bool> loadContactGroups(BuildContext context) async {
+    final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    _auth.confirmUserChange();
+
+    var _groups = await ContactRepository().getContactGroups(_auth);
+
+    List<dynamic> _result = _groups?.result;
+
+    var _results = _result
+        ?.map((e) =>
+            e == null ? null : ContactGroup.fromJson(e as Map<String, dynamic>))
+        ?.toList();
+
+    _module?.groups = _results;
+
+    notifyListeners();
+    return true;
+  }
 
   Future<bool> nextPage(BuildContext context) async {
     _module.paging = Paging(

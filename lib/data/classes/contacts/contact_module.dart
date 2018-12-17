@@ -4,6 +4,7 @@ import '../app/paging.dart';
 import '../app/sort.dart';
 import '../general/search.dart';
 import 'contact_row.dart';
+import '../unify/contact_group.dart';
 
 part 'contact_module.g.dart';
 
@@ -18,6 +19,7 @@ class ContactModule {
     this.isLoaded = false,
     this.search,
     this.sorting,
+    this.groups,
   });
 
   Paging paging;
@@ -28,6 +30,7 @@ class ContactModule {
   int lastUpdated;
   Sort sorting;
   Search search;
+  List<ContactGroup> groups;
 
   factory ContactModule.fromJson(Map<String, dynamic> json) =>
       _$ContactModuleFromJson(json);

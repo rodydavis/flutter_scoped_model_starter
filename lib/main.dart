@@ -65,7 +65,8 @@ class AppTheme extends StatelessWidget {
             HomePage(model: taskModel, type: TasksType.lead),
         '/core_lead_tasks': (BuildContext context) =>
             HomePage(model: taskModel, type: TasksType.core_lead),
-        '/contact_groups': (BuildContext context) => ContactGroupsScreen(),
+        '/contact_groups': (BuildContext context) =>
+            ContactGroupsScreen(model: contactModel),
       },
     );
   }

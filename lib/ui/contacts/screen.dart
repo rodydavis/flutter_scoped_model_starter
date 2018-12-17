@@ -95,50 +95,52 @@ class __ContactScreenState extends State<_ContactScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: FutureBuilder(
-        // future: _model.loadItems(context),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (_model.isLoaded == false || _auth.userChanged) {
-            _model.loadItems(context);
-            _model.loaded = true;
-            return Center(child: CircularProgressIndicator());
-          }
-          if (_sortField.isEmpty) {
-            _sortField = _sort.sortField;
-          }
-          _sort.sortField = _sortField;
-          _sort.sortAscending = _sortASC;
-          _model.sort(_sortField, _sortASC);
-          return new SmartRefresher(
-              enablePullDown: true,
-              enablePullUp: (_model?.items?.length ?? 0) > 10,
-              controller: _refreshController,
-              onRefresh: (up) {
-                if (up) {
-                  _model.refresh(context).then((_) {
-                    _refreshController.sendBack(true, RefreshStatus.idle);
-                    setState(() {});
-                  });
-                } else {
-                  _model.nextPage(context).then((_) {
-                    if (_model?.lastPage == true) {
-                      print("No Items Found on Next Page");
-                      showInSnackBar(Text("No More Items"));
-                    } else {
-                      _refreshController.scrollTo(
-                          _refreshController.scrollController.offset + 100.0);
-                    }
-                    _refreshController.sendBack(false, RefreshStatus.idle);
-                    setState(() {});
-                  });
-                }
-              },
-              // onOffsetChange: _onOffsetCallback,
-              child: buildList(
-                model: _model,
-                isSearching: _isSearching,
-              ));
-        },
+      body: SafeArea(
+        child: FutureBuilder(
+          // future: _model.loadItems(context),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (_model.isLoaded == false || _auth.userChanged) {
+              _model.loadItems(context);
+              _model.loaded = true;
+              return Center(child: CircularProgressIndicator());
+            }
+            if (_sortField.isEmpty) {
+              _sortField = _sort.sortField;
+            }
+            _sort.sortField = _sortField;
+            _sort.sortAscending = _sortASC;
+            _model.sort(_sortField, _sortASC);
+            return new SmartRefresher(
+                enablePullDown: true,
+                enablePullUp: (_model?.items?.length ?? 0) > 10,
+                controller: _refreshController,
+                onRefresh: (up) {
+                  if (up) {
+                    _model.refresh(context).then((_) {
+                      _refreshController.sendBack(true, RefreshStatus.idle);
+                      setState(() {});
+                    });
+                  } else {
+                    _model.nextPage(context).then((_) {
+                      if (_model?.lastPage == true) {
+                        print("No Items Found on Next Page");
+                        showInSnackBar(Text("No More Items"));
+                      } else {
+                        _refreshController.scrollTo(
+                            _refreshController.scrollController.offset + 100.0);
+                      }
+                      _refreshController.sendBack(false, RefreshStatus.idle);
+                      setState(() {});
+                    });
+                  }
+                },
+                // onOffsetChange: _onOffsetCallback,
+                child: buildList(
+                  model: _model,
+                  isSearching: _isSearching,
+                ));
+          },
+        ),
       ),
       // body: ContactList(model: _model, isSearching: _isSearching),
       bottomNavigationBar: AppBottomBar(

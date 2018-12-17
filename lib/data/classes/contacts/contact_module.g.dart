@@ -27,7 +27,12 @@ ContactModule _$ContactModuleFromJson(Map<String, dynamic> json) {
           : Search.fromJson(json['search'] as Map<String, dynamic>),
       sorting: json['sorting'] == null
           ? null
-          : Sort.fromJson(json['sorting'] as Map<String, dynamic>));
+          : Sort.fromJson(json['sorting'] as Map<String, dynamic>),
+      groups: (json['groups'] as List)
+          ?.map((e) => e == null
+              ? null
+              : ContactGroup.fromJson(e as Map<String, dynamic>))
+          ?.toList());
 }
 
 Map<String, dynamic> _$ContactModuleToJson(ContactModule instance) =>
@@ -39,5 +44,6 @@ Map<String, dynamic> _$ContactModuleToJson(ContactModule instance) =>
       'isLoaded': instance.isLoaded,
       'lastUpdated': instance.lastUpdated,
       'sorting': instance.sorting,
-      'search': instance.search
+      'search': instance.search,
+      'groups': instance.groups
     };
