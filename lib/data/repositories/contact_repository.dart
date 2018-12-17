@@ -109,8 +109,8 @@ class ContactRepository {
     dynamic _response;
 
     // -- Get List --
-    final response =
-        await webClient.get(kApiUrl + '/contacts/contact_groups', auth: auth);
+    final response = await webClient
+        .get(kApiUrl + '/contacts/contact_groups?totals=true', auth: auth);
     _response = response;
 
     var result = ResponseMessage.fromJson(_response);
@@ -139,7 +139,7 @@ class ContactRepository {
   }
 
   Future<bool> addContactGroup(AuthModel auth, {@required String name}) async {
-    var url = kApiUrl + '/contacts/contact_groups?totals=true';
+    var url = kApiUrl + '/contacts/contact_groups';
     var data = json.encode(ContactGroup(name: name));
     var response;
     response = await webClient.post(url, data, auth: auth);
@@ -150,16 +150,13 @@ class ContactRepository {
 
   // -- Contact Groups --
   Future<ResponseMessage> getContactsFromGroup(AuthModel auth,
-      {@required String name, @required Paging paging}) async {
+      {@required String id, @required Paging paging}) async {
     dynamic _response;
-    var _name = Uri.encodeComponent(name);
 
     // -- Get List --
     final response = await webClient.get(
         kApiUrl +
-            '/contacts/contact_groups/list?group_name=' +
-            _name +
-            "&rows=${paging.rows}&page=${paging.page}",
+            "/contacts/contact_groups/$id/list?rows=${paging.rows}&page=${paging.page}",
         auth: auth);
     _response = response;
 

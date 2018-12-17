@@ -58,9 +58,7 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
           model: ContactGroup(name: _group?.name, id: _group?.id),
         )
             .then((_) {
-          setState(() {
-            _groups.clear();
-          });
+          _loadInfo();
           // Navigator.pop(context, true);
         });
       }
@@ -99,9 +97,7 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
           model: ContactGroup(name: _group?.name, id: _group?.id),
         )
             .then((_) {
-          setState(() {
-            _groups.clear();
-          });
+          _loadInfo();
           // Navigator.pop(context, true);
         });
       }
@@ -120,6 +116,7 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
         .then((_) {
       setState(() {
         _groups = widget.model?.groups ?? [];
+        // _groups.sort((a, b) => b.count.compareTo(a.count));
       });
     });
   }
@@ -206,32 +203,45 @@ class WrapItem extends StatelessWidget {
           height: size - 4,
           width: size - 4,
           decoration: new BoxDecoration(
-              color: _getColor(index),
+              color: item?.count == 0
+                  ? Colors.grey
+                  : Theme.of(context).primaryColor,
               borderRadius: new BorderRadius.all(const Radius.circular(60.0))),
-          child: Center(
-            child: Text(item?.name ?? "No Name Found",
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .title
-                    .copyWith(color: Colors.white)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(item?.name ?? "No Name Found",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .title
+                      .copyWith(color: Colors.white)),
+              Text(item?.count.toString(),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .title
+                      .copyWith(color: Colors.white)),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Color _getColor(int index) {
-    switch (index % 4) {
-      // case 0:
-      //   return Colors.blueGrey;
-      // case 1:
-      //   return Colors.red;
-      // case 2:
-      //   return Colors.purple;
-      // case 3:
-      //   return Colors.green;
-    }
-    return Colors.blueGrey;
-  }
+  // Color _getColor(int index) {
+  //   switch (index % 4) {
+  //     // case 0:
+  //     //   return Colors.blueGrey;
+  //     // case 1:
+  //     //   return Colors.red;
+  //     // case 2:
+  //     //   return Colors.purple;
+  //     // case 3:
+  //     //   return Colors.green;
+  //   }
+  //   return Colors.blueGrey;
+  // }
 }

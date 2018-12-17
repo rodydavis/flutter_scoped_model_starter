@@ -62,7 +62,7 @@ class ContactGroupListState extends State<ContactGroupList> {
       context,
       auth: widget.auth,
       paging: _paging,
-      name: widget?.groupName ?? "",
+      id: widget?.id ?? "",
     )
         .then((items) {
       final List<ContactRow> _items = items;

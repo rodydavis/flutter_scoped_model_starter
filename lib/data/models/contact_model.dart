@@ -129,14 +129,14 @@ class ContactModel extends Model {
   }
 
   Future<List<ContactRow>> getContactsForContactGroup(BuildContext context,
-      {@required String name,
+      {@required String id,
       @required AuthModel auth,
       @required Paging paging}) async {
     // final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     auth.confirmUserChange();
 
     var _contacts = await ContactRepository()
-        .getContactsFromGroup(auth, paging: paging, name: name);
+        .getContactsFromGroup(auth, paging: paging, id: id);
 
     List<dynamic> _result = _contacts?.result;
     if (_result?.isEmpty ?? true) {
