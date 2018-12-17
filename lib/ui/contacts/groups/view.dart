@@ -11,7 +11,11 @@ class ContactGroupList extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => EditContactGroup(isNew: isNew),
+          builder: (context) => EditContactGroup(
+                isNew: isNew,
+                groupName: name,
+                id: id,
+              ),
           fullscreenDialog: true),
     ).then((value) {
       if (value != null) {
