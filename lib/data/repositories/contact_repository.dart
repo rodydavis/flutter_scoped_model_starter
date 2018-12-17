@@ -11,6 +11,7 @@ import '../classes/general/search.dart';
 import '../classes/unify/response.dart';
 import '../models/auth_model.dart';
 import '../web_client.dart';
+import '../classes/unify/contact_group.dart';
 
 class ContactRepository {
   final WebClient webClient;
@@ -96,8 +97,8 @@ class ContactRepository {
     print(data);
     var response;
 
-    response =
-        await webClient.post(kApiUrl + '/contacts/batch/import', data, auth: auth);
+    response = await webClient.post(kApiUrl + '/contacts/batch/import', data,
+        auth: auth);
     print(response);
     if (response["Status"].toString().contains("Success")) return true;
     return false;
@@ -109,11 +110,51 @@ class ContactRepository {
 
     // -- Get List --
     final response =
-        await webClient.get(kApiUrl + '/contacts/info/contact_groups', auth: auth);
+        await webClient.get(kApiUrl + '/contacts/contact_groups', auth: auth);
     _response = response;
 
     var result = ResponseMessage.fromJson(_response);
 
     return result;
+  }
+
+  Future<bool> deleteContactGroup(AuthModel auth, {@required String id}) async {
+    var url = kApiUrl + '/contacts/contact_groups/' + id.toString();
+    var response;
+    response = await webClient.delete(url, auth: auth);
+    print(response);
+    if (response["Status"].toString().contains("Success")) return true;
+    return false;
+  }
+
+  Future<bool> editContactGroup(AuthModel auth,
+      {@required String id, @required String name}) async {
+    var url = kApiUrl + '/contacts/contact_groups/' + id.toString();
+    var data = json.encode(ContactGroup(name: name));
+    var response;
+    response = await webClient.put(url, data, auth: auth);
+    print(response);
+    if (response["Status"].toString().contains("Success")) return true;
+    return false;
+  }
+
+  Future<bool> addContactGroup(AuthModel auth, {@required String name}) async {
+    var url = kApiUrl + '/contacts/contact_groups';
+    var data = json.encode(ContactGroup(name: name));
+    var response;
+    response = await webClient.post(url, data, auth: auth);
+    print(response);
+    if (response["Status"].toString().contains("Success")) return true;
+    return false;
+  }
+}
+
+class StringBody {
+  final String name, jsonKey;
+  StringBody({this.name, this.jsonKey});
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data[jsonKey ?? 'name'] = this.name;
+    return data;
   }
 }

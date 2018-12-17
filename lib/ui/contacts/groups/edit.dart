@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../data/classes/unify/contact_group.dart';
 
 class EditContactGroup extends StatefulWidget {
   final bool isNew;
@@ -32,8 +33,9 @@ class EditContactGroupState extends State<EditContactGroup> {
     if (_formKey.currentState.validate()) {
       // -- Save Info --
       final _name = _nameController?.text ?? "";
-
-      Navigator.pop(context, _name);
+      final ContactGroup _group =
+          ContactGroup(id: widget?.id ?? "", name: _name);
+      Navigator.pop(context, _group);
     }
   }
 

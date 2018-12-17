@@ -7,107 +7,122 @@ import 'edit.dart';
 import 'view.dart';
 import '../../../data/classes/unify/contact_group.dart';
 
-class ContactGroupsScreen extends StatelessWidget {
+class ContactGroupsScreen extends StatefulWidget {
   final ContactModel model;
 
   ContactGroupsScreen({
     this.model,
   });
 
+  @override
+  ContactGroupsScreenState createState() {
+    return new ContactGroupsScreenState();
+  }
+}
+
+class ContactGroupsScreenState extends State<ContactGroupsScreen> {
+  List<ContactGroup> _groups = [];
+
   void _editGroup(BuildContext context,
-      {bool isNew = true, String id = "", String name = ""}) {
+      {bool isNew = true, ContactGroup item}) {
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => EditContactGroup(
                 isNew: isNew,
-                groupName: name,
-                id: id,
+                groupName: item?.name,
+                id: item?.id,
               ),
           fullscreenDialog: true),
     ).then((value) {
       if (value != null) {
-        model.loadContactGroups(context);
+        final ContactGroup _group = value;
+        widget.model
+            .editContactGroup(
+          context,
+          isNew: isNew,
+          model: ContactGroup(name: _group?.name, id: _group?.id),
+        )
+            .then((_) {
+          setState(() {
+            _groups.clear();
+          });
+          // Navigator.pop(context, true);
+        });
       }
     });
   }
 
-  void _viewList(BuildContext context, {String id = "", String name = ""}) {
+  void _viewList(BuildContext context, {ContactGroup item}) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ContactGroupList(groupName: name),
+        builder: (context) =>
+            ContactGroupList(groupName: item?.name, id: item?.id),
       ),
     ).then((value) {
       if (value != null) {
-        model.loadContactGroups(context);
+        final ContactGroup _group = value;
+        widget.model
+            .editContactGroup(
+          context,
+          isNew: false,
+          model: ContactGroup(name: _group?.name, id: _group?.id),
+        )
+            .then((_) {
+          setState(() {
+            _groups.clear();
+          });
+          // Navigator.pop(context, true);
+        });
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (model?.groups == null || model.groups.isEmpty) {
-      model.loadContactGroups(context);
+    final appBar = AppBar(
+      title: Text("Contact Groups"),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.refresh),
+          onPressed: () => widget.model.loadContactGroups(context),
+        ),
+        IconButton(
+          icon: Icon(Icons.group_add),
+          onPressed: () => _editGroup(context, isNew: true),
+        ),
+      ],
+    );
+    if (_groups == null || _groups.isEmpty) {
+      widget.model.loadContactGroups(context).then((_) {
+        setState(() {
+          _groups = widget.model?.groups ?? [];
+        });
+      });
+      return Scaffold(
+        appBar: appBar,
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
     }
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Contact Groups"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () => model.loadContactGroups(context),
-          ),
-          IconButton(
-            icon: Icon(Icons.group_add),
-            onPressed: () => _editGroup(context, isNew: true),
-          ),
-        ],
-      ),
+      appBar: appBar,
       body: GridView.builder(
         gridDelegate:
             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemCount: model?.groups?.length,
+        itemCount: widget.model?.groups?.length,
         itemBuilder: (BuildContext context, int index) {
-          final _group = model?.groups[index];
-          // return InkWell(
-          //   onTap: () => _viewList(
-          //         context,
-          //         name: _group?.name,
-          //         id: _group?.id,
-          //       ),
-          //   onLongPress: () => _editGroup(
-          //         context,
-          //         isNew: false,
-          //         name: _group?.name,
-          //         id: _group?.id,
-          //       ),
-          //   child: SafeArea(
-          //     child: Center(
-          //       child: Text(
-          //         _group?.name ?? "No Name Found",
-          //         textAlign: TextAlign.center,
-          //         style: Theme.of(context).textTheme.title,
-          //       ),
-          //     ),
-          //   ),
-          // );
+          final _group = widget.model?.groups[index];
           return SafeArea(
             child: WrapItem(
               _group,
               true,
               index: index,
-              onTap: () => _viewList(
-                    context,
-                    name: _group?.name,
-                    id: _group?.id,
-                  ),
-              onLongPressed: () => _editGroup(
-                    context,
-                    isNew: false,
-                    name: _group?.name,
-                    id: _group?.id,
-                  ),
+              onTap: () => _viewList(context, item: _group),
+              onLongPressed: () =>
+                  _editGroup(context, isNew: false, item: _group),
             ),
           );
         },

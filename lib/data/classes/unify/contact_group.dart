@@ -6,6 +6,7 @@ part 'contact_group.g.dart';
 class ContactGroup {
   ContactGroup({this.id, this.name});
 
+  @JsonKey(nullable: true)
   String id;
   String name;
 

@@ -19,7 +19,7 @@ class ContactGroupList extends StatelessWidget {
           fullscreenDialog: true),
     ).then((value) {
       if (value != null) {
-        Navigator.pop(context, true);
+        Navigator.pop(context, value);
       }
     });
   }

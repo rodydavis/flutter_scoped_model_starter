@@ -63,11 +63,16 @@ class ContactModel extends Model {
   List<ContactRow> get items => _module?.contacts ?? [];
   List<ContactRow> get filteredItems => _module?.filtered ?? [];
 
-  Future<bool> loadContactGroups(BuildContext context) async {
+  Future<bool> loadContactGroups(BuildContext context,
+      {bool force = false}) async {
     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     _auth.confirmUserChange();
 
     var _groups = await ContactRepository().getContactGroups(_auth);
+    if (force) {
+      _module.groups.clear();
+      notifyListeners();
+    }
 
     List<dynamic> _result = _groups?.result;
 
@@ -76,7 +81,27 @@ class ContactModel extends Model {
             e == null ? null : ContactGroup.fromJson(e as Map<String, dynamic>))
         ?.toList();
 
-    _module?.groups = _results;
+    _module.groups = _results;
+
+    notifyListeners();
+    return true;
+  }
+
+  Future<bool> editContactGroup(BuildContext context,
+      {@required ContactGroup model, bool isNew = true}) async {
+    final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
+    _auth.confirmUserChange();
+
+    bool _valid = true;
+    if (isNew) {
+      _valid =
+          await ContactRepository().addContactGroup(_auth, name: model?.name);
+    } else {
+      _valid = await ContactRepository()
+          .editContactGroup(_auth, name: model?.name, id: model?.id);
+    }
+
+    loadContactGroups(context, force: true);
 
     notifyListeners();
     return true;
