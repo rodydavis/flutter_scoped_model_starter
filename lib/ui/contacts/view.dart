@@ -236,6 +236,7 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
             tooltip: "Delete Contact",
             icon: Icon(Icons.delete),
             onPressed: () {
+              //Todo: Ask for Confirmation
               widget.model.deleteItem(context, id: item?.id);
               Navigator.pop(context);
             },
