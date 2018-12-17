@@ -138,6 +138,7 @@ class __ContactScreenState extends State<_ContactScreen> {
                 child: buildList(
                   model: _model,
                   isSearching: _isSearching,
+                  auth: _auth,
                 ));
           },
         ),

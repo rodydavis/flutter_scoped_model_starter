@@ -116,6 +116,7 @@ class ContactGroupListState extends State<ContactGroupList> {
         itemBuilder: (BuildContext context, int index) {
           final _item = _contacts[index];
           return ContactItem(
+            auth: widget.auth,
             item: _item,
             model: widget.model,
           );

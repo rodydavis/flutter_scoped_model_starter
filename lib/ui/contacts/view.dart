@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../data/classes/contacts/contact_details.dart';
 import '../../data/classes/contacts/contact_row.dart';
+import '../../data/classes/unify/contact_group.dart';
+import '../../data/models/auth_model.dart';
 import '../../data/models/contact_model.dart';
 import '../../ui/app/app_bottom_bar.dart';
 import '../../ui/general/address_tile.dart';
@@ -9,9 +11,11 @@ import '../../ui/general/email_tile.dart';
 import '../../ui/general/phone_tile.dart';
 import '../../utils/null_or_empty.dart';
 import 'edit.dart';
+import 'groups/view.dart';
 
 class ContactItemDetails extends StatefulWidget {
   final ContactRow item;
+  final AuthModel auth;
   final String name;
   final bool showNameInAppBar;
   final ContactModel model;
@@ -20,6 +24,7 @@ class ContactItemDetails extends StatefulWidget {
     this.showNameInAppBar = true,
     @required this.model,
     this.name,
+    @required this.auth,
   });
   @override
   _ContactItemDetailsState createState() => _ContactItemDetailsState();
@@ -49,6 +54,37 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
     });
   }
 
+  void _viewList(BuildContext context, {ContactGroup group}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ContactGroupList(
+              auth: widget.auth,
+              model: widget.model,
+              groupName: group?.name,
+              id: group?.id,
+              groupDeleted: () {
+                widget.model.deleteContactGroup(
+                  context,
+                  id: group?.id,
+                  auth: widget.auth,
+                );
+              },
+            ),
+      ),
+    ).then((value) {
+      if (value != null) {
+        final ContactGroup _group = value;
+        widget.model.editContactGroup(
+          context,
+          auth: widget.auth,
+          isNew: false,
+          model: ContactGroup(name: _group?.name, id: _group?.id),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final _model = widget.model;
@@ -71,11 +107,39 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
     ];
 
     if (details != null) {
+      // -- Add Details from API Call --
       if (details?.address != null) {
         _widgets.add(AddressTile(
           address: details?.address,
           label: "Current Address",
           icon: Icons.map,
+        ));
+      }
+
+      if (details?.companyCategory != null) {
+        _widgets.add(
+          ListTile(
+            leading: Icon(Icons.category),
+            title: Text(details.companyCategory.name ?? "No Name Found"),
+          ),
+        );
+      }
+
+      if (details?.contactGroups != null) {
+        var _groups = <Widget>[];
+        for (var _group in details.contactGroups) {
+          //   print("Name: ${_group?.name} => ID: ${_group?.id}");
+          _groups.add(
+            ListTile(
+              title: Text(_group?.name ?? "No Name Found"),
+              onTap: () => _viewList(context, group: _group),
+            ),
+          );
+        }
+        _widgets.add(ExpansionTile(
+          leading: Icon(Icons.people),
+          title: Text("Contact Groups"),
+          children: _groups,
         ));
       }
     } else {

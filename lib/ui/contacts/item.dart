@@ -7,10 +7,12 @@ import '../../ui/general/three_row_tile.dart';
 import '../../utils/date_formatter.dart';
 import 'edit.dart';
 import 'view.dart';
+import '../../data/models/auth_model.dart';
 
 class ContactItem extends StatelessWidget {
   final ContactRow item;
   final ContactModel model;
+  final AuthModel auth;
   final bool share, edit, delete;
   ContactItem({
     @required this.item,
@@ -18,6 +20,7 @@ class ContactItem extends StatelessWidget {
     this.share = true,
     this.edit = true,
     this.delete = true,
+    @required this.auth,
   });
 
   void _shareItem(BuildContext context) {}
@@ -45,7 +48,11 @@ class ContactItem extends StatelessWidget {
       context,
       MaterialPageRoute(
           builder: (context) => ContactItemDetails(
-              item: item, model: model, showNameInAppBar: false)),
+                auth: auth,
+                item: item,
+                model: model,
+                showNameInAppBar: false,
+              )),
     );
   }
 
