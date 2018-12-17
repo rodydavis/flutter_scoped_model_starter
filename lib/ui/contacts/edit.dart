@@ -162,6 +162,11 @@ class _ContactItemEditState extends State<ContactItemEdit> {
                   if (value != null) _updateView(phoneContact: value);
                 }),
           ),
+          IconButton(
+            tooltip: "Contact Groups",
+            icon: Icon(Icons.group),
+            onPressed: null,
+          ),
         ],
       ),
       body: SingleChildScrollView(

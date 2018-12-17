@@ -11,7 +11,9 @@ import '../../ui/general/email_tile.dart';
 import '../../ui/general/phone_tile.dart';
 import '../../utils/null_or_empty.dart';
 import 'edit.dart';
+import 'groups/manage.dart';
 import 'groups/view.dart';
+import '../general/simple_scaffold.dart';
 
 class ContactItemDetails extends StatefulWidget {
   final ContactRow item;
@@ -85,6 +87,45 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
     });
   }
 
+  void _manageContactGroups(BuildContext context, {ContactModel model}) async {
+    if (model.groups == null || model.groups.isEmpty) {
+      await model.loadContactGroups(context, auth: widget.auth);
+    }
+
+    var _source = model.groups;
+    var _inital = details.contactGroups;
+
+    if (_source != null) {
+      for (var _item in _inital) {
+        if (_source.contains(_item)) {
+          _source.remove(_item);
+        }
+      }
+      // Navigator.pushNamed(context, "manage_groups");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ContactGroupManageContact(
+                source: _source,
+                inital: _inital,
+              ),
+        ),
+      ).then((value) {
+        if (value != null) {
+          final List<ContactGroup> _items = value;
+          details.contactGroups = _items;
+          // -- Update Contact --
+          ContactDetails _item = details;
+          print(_item.toJson());
+          widget.model.editItem(context, item: _item, id: item?.id);
+          setState(() {
+            details = _item;
+          });
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _model = widget.model;
@@ -125,7 +166,7 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
         );
       }
 
-      if (details?.contactGroups != null) {
+      if (details?.contactGroups != null && details.contactGroups.isNotEmpty) {
         var _groups = <Widget>[];
         for (var _group in details.contactGroups) {
           //   print("Name: ${_group?.name} => ID: ${_group?.id}");
@@ -151,6 +192,11 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
             ? Text(widget?.name ?? item?.firstName ?? "Details")
             : Text("Details"),
         actions: <Widget>[
+          IconButton(
+            tooltip: "Contact Groups",
+            icon: Icon(Icons.people),
+            onPressed: () => _manageContactGroups(context, model: _model),
+          ),
           IconButton(
             tooltip: "Share Contact",
             icon: Icon(Icons.share),
@@ -209,7 +255,10 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
             if (value != null) {
               ContactDetails _item = value;
               widget.model.editItem(context, item: _item, id: item?.id);
-              Navigator.pop(context);
+              setState(() {
+                details = _item;
+              });
+              // Navigator.pop(context);
             }
           });
         },
