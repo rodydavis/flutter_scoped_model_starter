@@ -27,9 +27,7 @@ class ContactGroupsScreen extends StatelessWidget {
           fullscreenDialog: true),
     ).then((value) {
       if (value != null) {
-        // ContactDetails _item = value;
-        // widget.model.editItem(context, item: _item, id: item?.id);
-        // Navigator.pop(context);
+        model.loadContactGroups(context);
       }
     });
   }
@@ -40,7 +38,11 @@ class ContactGroupsScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => ContactGroupList(groupName: name),
       ),
-    );
+    ).then((value) {
+      if (value != null) {
+        model.loadContactGroups(context);
+      }
+    });
   }
 
   @override

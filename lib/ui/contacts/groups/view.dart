@@ -19,9 +19,7 @@ class ContactGroupList extends StatelessWidget {
           fullscreenDialog: true),
     ).then((value) {
       if (value != null) {
-        // ContactDetails _item = value;
-        // widget.model.editItem(context, item: _item, id: item?.id);
-        // Navigator.pop(context);
+        Navigator.pop(context, true);
       }
     });
   }
