@@ -111,6 +111,7 @@ class LoadingScreenState extends State<LoadingScreen>
           Text(_message.contains("Signing In")
               ? _message + " ($_users/$_count)"
               : _message),
+          Container(height: 50.0),
           RaisedButton(
             child: Text("Cancel"),
             onPressed: () {

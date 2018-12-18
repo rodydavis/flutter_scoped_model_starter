@@ -89,7 +89,7 @@ class AppDrawer extends StatelessWidget {
           // STARTER: menu - do not remove comment
 
           ListTile(
-            leading: Icon(Icons.people),
+            leading: Icon(Icons.contacts),
             title: Text('Contacts'),
             onTap: () => navigator.pushReplacementNamed("/contacts"),
           ),
