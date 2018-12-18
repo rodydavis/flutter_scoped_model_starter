@@ -16,6 +16,7 @@ import 'ui/contacts/groups/screen.dart';
 import 'ui/contacts/screen.dart';
 import 'ui/general/simple_scaffold.dart';
 import 'ui/phone_contacts/import.dart';
+import 'ui/leads/screen.dart';
 
 // STARTER: import - do not remove comment
 
@@ -58,6 +59,7 @@ class AppTheme extends StatelessWidget {
         // STARTER: routes - do not remove comment
         '/contacts': (BuildContext context) =>
             ContactScreen(model: contactModel),
+        '/leads': (BuildContext context) => LeadsScreen(),
         '/import': (BuildContext context) => ImportContactsScreen(),
         '/import_single': (BuildContext context) =>
             ImportContactsScreen(selectSingle: true),
