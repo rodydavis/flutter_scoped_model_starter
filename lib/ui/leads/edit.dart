@@ -28,7 +28,6 @@ class EditLeadScreen extends StatefulWidget {
 class EditLeadScreenState extends State<EditLeadScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _firstName, _lastName, _email;
-  String id;
   LeadDetails lead;
 
   @override
