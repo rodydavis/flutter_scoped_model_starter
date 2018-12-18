@@ -210,18 +210,23 @@ void createLead(BuildContext context, {@required LeadModel model}) {
 }
 
 void editLead(BuildContext context,
-    {@required LeadModel model,
+    {LeadDetailsModel detailsModel,
+    LeadModel model,
     LeadDetails details,
     @required LeadRow leadRow}) {
+  if (detailsModel == null && model == null) {
+    throw Exception("Lead Model or Details Model Required");
+  }
+
   Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new EditLeadScreen(
-              model: LeadDetailsModel(authModel: model?.auth, id: leadRow?.id),
-              isNew: false,
-              details: details,
-              leadRow: leadRow,
-            ),
+            model: detailsModel ??
+                LeadDetailsModel(authModel: model?.auth, id: leadRow?.id),
+            isNew: false,
+            details: details,
+            leadRow: leadRow),
         fullscreenDialog: true,
       ));
 }

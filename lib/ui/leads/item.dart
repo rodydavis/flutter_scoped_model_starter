@@ -10,6 +10,7 @@ import 'view.dart';
 class LeadItem extends StatelessWidget {
   final LeadRow lead;
   final LeadModel model;
+
   LeadItem({@required this.lead, @required this.model});
 
   @override

@@ -114,7 +114,7 @@ class LeadDetailsScreen extends StatelessWidget {
                     heroTag: "Lead Edit",
                     backgroundColor: Theme.of(context).primaryColor,
                     onPressed: () => editLead(context,
-                        model: leadModel,
+                        detailsModel: model,
                         details: model.details,
                         leadRow: leadRow),
                     child: Icon(Icons.edit, color: Colors.white),
