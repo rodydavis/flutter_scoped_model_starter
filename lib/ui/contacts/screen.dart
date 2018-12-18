@@ -154,7 +154,7 @@ class __ContactScreenState extends State<_ContactScreen> {
         ),
       ),
       // body: ContactList(model: _model, isSearching: _isSearching),
-      bottomNavigationBar: AppBottomBarStateless(
+      bottomNavigationBar: AppBottomBar(
         buttons: [
           new ScopedModelDescendant<ContactModel>(
               builder: (context, child, model) => AppSortButton(

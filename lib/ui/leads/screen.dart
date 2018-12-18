@@ -53,7 +53,7 @@ class LeadsScreen extends StatelessWidget {
                       ),
                     ),
                   )),
-          bottomNavigationBar: AppBottomBarStateless(
+          bottomNavigationBar: AppBottomBar(
             buttons: [
               new ScopedModelDescendant<LeadModel>(
                   builder: (context, child, model) => AppSortButton(

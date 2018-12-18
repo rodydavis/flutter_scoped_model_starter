@@ -230,7 +230,7 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
         child: Column(children: _widgets),
       ),
       bottomNavigationBar: AppBottomBar(
-        showSort: false,
+        // showSort: false,
         buttons: [
           IconButton(
             tooltip: "Delete Contact",

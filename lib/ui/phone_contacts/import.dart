@@ -221,7 +221,7 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
             ],
           )),
       bottomNavigationBar: AppBottomBar(
-        showSort: false,
+        // showSort: false,
         buttons: [
           IconButton(
             tooltip: _allSelected ? "Deselect All" : "Select All",
