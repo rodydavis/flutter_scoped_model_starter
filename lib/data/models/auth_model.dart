@@ -50,10 +50,11 @@ class AuthModel extends Model {
           await _getUser(_newToken, username: username, password: password);
       switchToAccount(_newUser, softLogin: softLogin);
     } else {
+      _module.isLoading = false;
       notifyListeners();
       return false;
     }
-    _module?.isLoading = false;
+    _module.isLoading = false;
     notifyListeners();
     return true;
   }
