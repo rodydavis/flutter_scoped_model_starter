@@ -16,7 +16,7 @@ class AppSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var title = name ?? "search".toString();
+    var title = name ?? "Search".toString();
     var _theme = Theme.of(context);
     return isSearching
         ? Container(
@@ -47,7 +47,10 @@ class AppSearchBar extends StatelessWidget {
 class AppSearchButton extends StatelessWidget {
   final bool isSearching;
   final VoidCallback onSearchPressed;
-  AppSearchButton({this.onSearchPressed, this.isSearching});
+  AppSearchButton({
+    this.onSearchPressed,
+    this.isSearching = false,
+  });
   @override
   Widget build(BuildContext context) {
     return IconButton(
