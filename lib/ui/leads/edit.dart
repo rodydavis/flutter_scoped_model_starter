@@ -111,6 +111,7 @@ class EditLeadScreenState extends State<EditLeadScreen> {
                               : null,
                     ),
                   ),
+                  Container(height: 10.0),
                   new ScopedModelDescendant<LeadDetailsModel>(
                       builder: (context, child, model) => Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -136,8 +137,12 @@ class EditLeadScreenState extends State<EditLeadScreen> {
                                           } else {
                                             await model.edit(lead);
                                           }
-                                          if (model.error.isEmpty)
+
+                                          if (model.fetching == false &&
+                                              (model?.error?.isEmpty ??
+                                                  false)) {
                                             Navigator.pop(context, true);
+                                          }
                                         }
                                       },
                                     ),
@@ -146,7 +151,8 @@ class EditLeadScreenState extends State<EditLeadScreen> {
                   new ScopedModelDescendant<LeadDetailsModel>(
                       rebuildOnChange: true,
                       builder: (context, child, model) =>
-                          model?.error?.isNotEmpty ?? false
+                          model.fetching == false &&
+                                  (model?.error?.isNotEmpty ?? false)
                               ? Text(
                                   model.error,
                                   maxLines: null,

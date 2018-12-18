@@ -55,7 +55,11 @@ class LeadDetailsModel extends LeadModel {
         _error = "Error Creating Lead";
       }
     } catch (e) {
-      if (devMode) _error = e;
+      if (devMode) {
+        _error = e;
+      } else {
+        _error = "Error Creating Lead";
+      }
     }
 
     _fetching = false;
@@ -77,7 +81,11 @@ class LeadDetailsModel extends LeadModel {
         _error = "Error Saving Lead";
       }
     } catch (e) {
-      if (devMode) _error = e;
+      if (devMode) {
+        _error = e;
+      } else {
+        _error = "Error Saving Lead";
+      }
     }
 
     _fetching = false;
@@ -97,7 +105,11 @@ class LeadDetailsModel extends LeadModel {
         _error = "Error Deleting Lead";
       }
     } catch (e) {
-      if (devMode) _error = e;
+      if (devMode) {
+        _error = e;
+      } else {
+        _error = "Error Deleting Lead";
+      }
     }
 
     _fetching = false;
