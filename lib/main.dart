@@ -4,6 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'constants.dart';
 import 'data/models/auth_model.dart';
 import 'data/models/contact_model.dart';
+import 'data/models/lead_model.dart';
 import 'data/models/task_model.dart';
 import 'data/models/theme_model.dart';
 import 'ui/app/account/screen.dart';
@@ -11,13 +12,10 @@ import 'ui/app/home/screen.dart';
 import 'ui/app/settings/screen.dart';
 import 'ui/app/splash_screen.dart';
 import 'ui/auth/login.dart';
-import 'ui/contacts/groups/manage.dart';
 import 'ui/contacts/groups/screen.dart';
 import 'ui/contacts/screen.dart';
-import 'ui/general/simple_scaffold.dart';
-import 'ui/phone_contacts/import.dart';
 import 'ui/leads/screen.dart';
-import 'data/models/lead_model.dart';
+import 'ui/phone_contacts/import.dart';
 
 // STARTER: import - do not remove comment
 
@@ -51,7 +49,7 @@ class AppTheme extends StatelessWidget {
       debugShowCheckedModeBanner: !devMode,
       title: 'Scoped Model Starter',
       theme: _model.theme,
-      home: SplashScreen(duration: Duration(seconds: 3), auth: authModel),
+      home: SplashScreen(auth: authModel),
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) =>
             LoginPage(username: authModel?.currentUser?.username),

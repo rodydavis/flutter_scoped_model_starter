@@ -13,6 +13,8 @@ import '../../ui/app/app_drawer.dart';
 import '../../ui/app/app_search_bar.dart';
 import 'edit.dart';
 import 'list.dart';
+import '../app/app_sort_button.dart';
+import '../../data/classes/app/sort.dart';
 
 class ContactScreen extends StatelessWidget {
   final ContactModel model;
@@ -44,8 +46,8 @@ class __ContactScreenState extends State<_ContactScreen> {
   }
 
   bool _isSearching = false;
-  bool _sortASC = true;
-  String _sortField = ContactFields.last_name;
+  // bool _sortASC = true;
+  // String _sortField = ContactFields.last_name;
   RefreshController _refreshController;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -112,12 +114,12 @@ class __ContactScreenState extends State<_ContactScreen> {
               _model.loaded = true;
               return Center(child: CircularProgressIndicator());
             }
-            if (_sortField.isEmpty) {
-              _sortField = _sort.sortField;
-            }
-            _sort.sortField = _sortField;
-            _sort.sortAscending = _sortASC;
-            _model.sort(_sortField, _sortASC);
+            // if (_sortField.isEmpty) {
+            //   _sortField = _sort.sortField;
+            // }
+            // _sort.sortField = _sortField;
+            // _sort.sortAscending = _sortASC;
+            // _model.sort(_sortField, _sortASC);
             return new SmartRefresher(
                 enablePullDown: true,
                 enablePullUp: (_model?.items?.length ?? 0) > 10,
@@ -152,8 +154,17 @@ class __ContactScreenState extends State<_ContactScreen> {
         ),
       ),
       // body: ContactList(model: _model, isSearching: _isSearching),
-      bottomNavigationBar: AppBottomBar(
+      bottomNavigationBar: AppBottomBarStateless(
         buttons: [
+          new ScopedModelDescendant<ContactModel>(
+              builder: (context, child, model) => AppSortButton(
+                    sort: model.sorting,
+                    sortChanged: (Sort value) {
+                      setState(() {
+                        model.sortChanged(value);
+                      });
+                    },
+                  )),
           IconButton(
             tooltip: "Refresh",
             icon: Icon(Icons.refresh),
@@ -203,31 +214,31 @@ class __ContactScreenState extends State<_ContactScreen> {
             },
           ),
         ],
-        onChangeSortOrder: (bool value) {
-          if (!_isDisposed)
-            setState(() {
-              _sort.sortAscending = value;
-              _sortASC = value;
-              _model.sort(_sortField, _sortASC);
-            });
-        },
-        onSelectedSortField: (String value) {
-          if (_sortField.contains(value)) {
-            if (!_isDisposed)
-              setState(() {
-                _sortASC = !_sortASC;
-                _sort.sortAscending = _sortASC;
-                _model.sort(_sortField, _sortASC);
-              });
-          } else {
-            if (!_isDisposed)
-              setState(() {
-                _sort.sortField = value;
-                _sortField = value;
-                _model.sort(_sortField, _sortASC);
-              });
-          }
-        },
+        // onChangeSortOrder: (bool value) {
+        //   if (!_isDisposed)
+        //     setState(() {
+        //       _sort.sortAscending = value;
+        //       _sortASC = value;
+        //       _model.sort(_sortField, _sortASC);
+        //     });
+        // },
+        // onSelectedSortField: (String value) {
+        //   if (_sortField.contains(value)) {
+        //     if (!_isDisposed)
+        //       setState(() {
+        //         _sortASC = !_sortASC;
+        //         _sort.sortAscending = _sortASC;
+        //         _model.sort(_sortField, _sortASC);
+        //       });
+        //   } else {
+        //     if (!_isDisposed)
+        //       setState(() {
+        //         _sort.sortField = value;
+        //         _sortField = value;
+        //         _model.sort(_sortField, _sortASC);
+        //       });
+        //   }
+        // },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
@@ -246,7 +257,7 @@ class __ContactScreenState extends State<_ContactScreen> {
             if (value != null) {
               ContactDetails _item = value;
               _model.addItem(context, item: _item);
-              _model.sort(_sortField, _sortASC);
+              // _model.sort(_sortField, _sortASC);
             }
           });
         },

@@ -7,6 +7,7 @@ import '../general/simple_fab.dart';
 import '../app/app_search_bar.dart';
 import '../app/app_sort_button.dart';
 import '../../data/models/lead_model.dart';
+import 'edit.dart';
 
 class LeadsScreen extends StatelessWidget {
   final LeadModel model;
@@ -47,10 +48,8 @@ class LeadsScreen extends StatelessWidget {
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           floatingActionButton: SimpleFAB(
             child: Icon(Icons.add),
-            onPressed: () => _fabPressed(),
+            onPressed: () => createLead(context, model: model),
           )),
     );
   }
-
-  void _fabPressed() {}
 }

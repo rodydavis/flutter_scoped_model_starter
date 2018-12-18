@@ -3,14 +3,16 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../data/local_storage.dart';
 import '../../data/models/auth_model.dart';
+import 'package:navigate/navigate.dart';
 import '../../data/models/theme_model.dart';
+import '../../routes.dart';
 
-// class SplashScreen extends StatelessWidget {
+// class LoadingScreen extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
 //     final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
 //     final _theme = ScopedModel.of<ThemeModel>(context, rebuildOnChange: true);
-//     return SplashScreen(
+//     return LoadingScreen(
 //       auth: _auth,
 //       theme: _theme,
 //       duration: Duration(seconds: 10),
@@ -18,17 +20,31 @@ import '../../data/models/theme_model.dart';
 //   }
 // }
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
+  final AuthModel auth;
+
+  SplashScreen({this.auth}) {
+    Navigate.registerRoutes(
+        routes: routes, defualtTransactionType: TransactionType.fromRight);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LoadingScreen(auth: auth, duration: Duration(seconds: 30));
+  }
+}
+
+class LoadingScreen extends StatefulWidget {
   final Duration duration;
   final AuthModel auth;
 
-  const SplashScreen({@required this.duration, this.auth});
+  const LoadingScreen({@required this.duration, this.auth});
 
   @override
-  SplashScreenState createState() => new SplashScreenState();
+  LoadingScreenState createState() => new LoadingScreenState();
 }
 
-class SplashScreenState extends State<SplashScreen>
+class LoadingScreenState extends State<LoadingScreen>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
   bool autoLogin = false;

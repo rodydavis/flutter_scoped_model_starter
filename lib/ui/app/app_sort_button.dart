@@ -29,14 +29,14 @@ class AppSortButtonState extends State<AppSortButton> {
   }
 
   void _sortFieldChanged(String value) {
-    setState(() {
+    _sortController?.setState(() {
       sort.field = value;
     });
     widget.sortChanged(sort);
   }
 
   void _sortOrderChanged(bool value) {
-    setState(() {
+    _sortController?.setState(() {
       sort.ascending = value;
     });
     widget.sortChanged(sort);

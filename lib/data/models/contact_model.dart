@@ -35,6 +35,14 @@ class ContactModel extends Model {
     groups: [],
   );
 
+  Sort get sorting => _module?.sorting;
+
+  void sortChanged(Sort value) {
+    _module.sorting = value;
+    sort(_module.sorting?.field, _module.sorting?.ascending);
+    notifyListeners();
+  }
+
   bool get lastPage => _module?.lastPage ?? false;
 
   int get lastUpdated => _module?.lastUpdated ?? 0;
@@ -213,6 +221,9 @@ class ContactModel extends Model {
     }
 
     _module?.lastUpdated = DateTime.now().millisecondsSinceEpoch;
+
+    sort(_module.sorting?.field, _module.sorting?.ascending);
+    
     notifyListeners();
     return true;
   }
