@@ -210,7 +210,9 @@ void createLead(BuildContext context, {@required LeadModel model}) {
 }
 
 void editLead(BuildContext context,
-    {LeadModel model, LeadDetails details, @required LeadRow leadRow}) {
+    {@required LeadModel model,
+    LeadDetails details,
+    @required LeadRow leadRow}) {
   Navigator.push(
       context,
       new MaterialPageRoute(
