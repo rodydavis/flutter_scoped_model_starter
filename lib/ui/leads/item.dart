@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../general/three_row_tile.dart';
-import '../../data/classes/leads/lead_row.dart';
+
 import '../../data/classes/general/phone.dart';
-import '../../data/models/lead_model.dart';
+import '../../data/classes/leads/lead_row.dart';
+import '../../data/models/leads/list.dart';
+import '../general/three_row_tile.dart';
 import 'edit.dart';
 import 'view.dart';
 

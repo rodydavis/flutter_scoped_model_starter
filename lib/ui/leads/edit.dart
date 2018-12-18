@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../data/models/lead_model.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:navigate/navigate.dart';
-import '../../routes.dart';
+
+import '../../data/models/leads/list.dart';
 
 class EditLeadScreen extends StatelessWidget {
   final LeadModel model;

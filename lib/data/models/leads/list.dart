@@ -1,10 +1,11 @@
-import 'package:scoped_model/scoped_model.dart';
-import '../classes/app/sort.dart';
-import '../classes/leads/lead_row.dart';
-import 'auth_model.dart';
-import '../repositories/lead_repository.dart';
-import '../classes/app/paging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import '../../classes/app/paging.dart';
+import '../../classes/app/sort.dart';
+import '../../classes/leads/lead_row.dart';
+import '../../repositories/leads/list.dart';
+import '../auth_model.dart';
 
 class LeadModel extends Model {
   final AuthModel auth;
@@ -30,7 +31,7 @@ class LeadModel extends Model {
 
     print("Searching... $value");
 
-    // -- Loacal Search --
+    // -- Local Search --
     List<LeadRow> _results = [];
 
     if (_leads != null && _leads.isNotEmpty) {
@@ -69,9 +70,9 @@ class LeadModel extends Model {
   }
 
   // -- Data --
-  bool _isLoading = false;
+  bool _isLoaded = false;
 
-  get isLoading => _isLoading;
+  get isLoaded => _isLoaded;
 
   List<LeadRow> _leads, _filtered;
 
@@ -85,7 +86,7 @@ class LeadModel extends Model {
       return _filtered;
     }
 
-    if (_leads == null) {
+    if (_leads == null || !_isLoaded) {
       _loadList();
     }
     _sortList(_sort?.field, _sort?.ascending);
@@ -104,42 +105,48 @@ class LeadModel extends Model {
     await _loadList();
   }
 
+  bool _fetching = false;
   Future _loadList({bool nextPage = false}) async {
-    _isLoading = true;
+    _isLoaded = false;
     notifyListeners();
 
-    var _items = await LeadRepository().loadList(auth, paging: _paging);
+    if (!_fetching) {
+      _fetching = true;
+      var _items = await LeadRepository().loadList(auth, paging: _paging);
 
-    List<dynamic> _result = _items?.result;
+      List<dynamic> _result = _items?.result;
 
-    if (_result?.isEmpty ?? true) {
-      _lastPage = true;
-    } else {
-      var _results = _result
-          ?.map((e) =>
-              e == null ? null : LeadRow.fromJson(e as Map<String, dynamic>))
-          ?.toList();
-
-      if (nextPage) {
-        _leads.addAll(_results);
+      if (_result?.isEmpty ?? true) {
+        _lastPage = true;
       } else {
-        _leads = _results;
+        var _results = _result
+            ?.map((e) =>
+                e == null ? null : LeadRow.fromJson(e as Map<String, dynamic>))
+            ?.toList();
+
+        if (nextPage) {
+          _leads.addAll(_results);
+        } else {
+          _leads = _results;
+        }
+
+        _lastPage = false;
       }
 
-      _lastPage = false;
+      // // -- Dummy Data --
+      // _leads = [
+      //   LeadRow(id: "0", firstName: "Alfred", lastName: "Test"),
+      //   LeadRow(id: "1", firstName: "Blfred", lastName: "Cest"),
+      //   LeadRow(id: "2", firstName: "Clfred", lastName: "Dest"),
+      //   LeadRow(id: "3", firstName: "Dlfred", lastName: "Rest"),
+      //   LeadRow(id: "4", firstName: "Rlfred", lastName: "Iest"),
+      // ];
+      // _lastPage = true;
+
+      _isLoaded = true;
+      _fetching = false;
     }
 
-    // // -- Dummy Data --
-    // _leads = [
-    //   LeadRow(id: "0", firstName: "Alfred", lastName: "Test"),
-    //   LeadRow(id: "1", firstName: "Blfred", lastName: "Cest"),
-    //   LeadRow(id: "2", firstName: "Clfred", lastName: "Dest"),
-    //   LeadRow(id: "3", firstName: "Dlfred", lastName: "Rest"),
-    //   LeadRow(id: "4", firstName: "Rlfred", lastName: "Iest"),
-    // ];
-    // _lastPage = true;
-
-    _isLoading = false;
     notifyListeners();
   }
 

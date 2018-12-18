@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import '../../data/models/leads/list.dart';
 import '../app/app_bottom_bar.dart';
 import '../app/app_drawer.dart';
-import '../general/simple_fab.dart';
 import '../app/app_search_bar.dart';
 import '../app/app_sort_button.dart';
-import '../../data/models/lead_model.dart';
-import 'edit.dart';
 import '../general/list_widget.dart';
+import '../general/simple_fab.dart';
+import 'edit.dart';
 import 'item.dart';
 
 class LeadsScreen extends StatelessWidget {

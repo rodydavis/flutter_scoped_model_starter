@@ -4,7 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'constants.dart';
 import 'data/models/auth_model.dart';
 import 'data/models/contact_model.dart';
-import 'data/models/lead_model.dart';
+import 'data/models/leads/list.dart';
 import 'data/models/task_model.dart';
 import 'data/models/theme_model.dart';
 import 'ui/app/account/screen.dart';
