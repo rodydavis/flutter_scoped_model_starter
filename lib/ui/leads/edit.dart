@@ -15,12 +15,14 @@ class EditLeadScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: isNew ? const Text("New Lead") : const Text("Edit Lead"),
-      ),
-      body: Container(),
-    );
+    return ScopedModel<LeadModel>(
+        model: model,
+        child: Scaffold(
+          appBar: AppBar(
+            title: isNew ? const Text("New Lead") : const Text("Edit Lead"),
+          ),
+          body: Container(),
+        ));
   }
 }
 

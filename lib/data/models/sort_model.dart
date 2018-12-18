@@ -8,7 +8,6 @@ class SortModel extends Model {
       ScopedModel.of<SortModel>(context);
 
   Sort _sort = Sort(
-    defaultField: "",
     initialized: false,
     field: "",
     fields: [],

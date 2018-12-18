@@ -3,13 +3,14 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../constants.dart';
 import '../classes/app/paging.dart';
+import '../classes/app/sort.dart';
 import '../classes/contacts/contact_details.dart';
 import '../classes/contacts/contact_module.dart';
 import '../classes/contacts/contact_row.dart';
-import '../models/auth_model.dart';
-import '../classes/app/sort.dart';
-import '../repositories/contact_repository.dart';
 import '../classes/unify/contact_group.dart';
+import '../models/auth_model.dart';
+import '../repositories/contact_group_repoistory.dart';
+import '../repositories/contact_repository.dart';
 
 class ContactModel extends Model {
   static ContactModel of(BuildContext context) =>
@@ -23,7 +24,6 @@ class ContactModel extends Model {
     lastUpdated: 0,
     paging: Paging(rows: 100, page: 1),
     sorting: Sort(
-        defaultField: ContactFields.last_name,
         initialized: true,
         ascending: true,
         field: ContactFields.last_name,
@@ -79,7 +79,7 @@ class ContactModel extends Model {
     // final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     auth.confirmUserChange();
 
-    var _groups = await ContactRepository().getContactGroups(auth);
+    var _groups = await ContactGroupRepository().getContactGroups(auth);
     if (force) {
       _module.groups.clear();
       notifyListeners();
@@ -107,10 +107,10 @@ class ContactModel extends Model {
 
     bool _valid = true;
     if (isNew) {
-      _valid =
-          await ContactRepository().addContactGroup(auth, name: model?.name);
+      _valid = await ContactGroupRepository()
+          .addContactGroup(auth, name: model?.name);
     } else {
-      _valid = await ContactRepository()
+      _valid = await ContactGroupRepository()
           .editContactGroup(auth, name: model?.name, id: model?.id);
     }
 
@@ -131,7 +131,8 @@ class ContactModel extends Model {
     _module.groups.clear();
     notifyListeners();
 
-    bool _valid = await ContactRepository().deleteContactGroup(auth, id: id);
+    bool _valid =
+        await ContactGroupRepository().deleteContactGroup(auth, id: id);
 
     loadContactGroups(context, force: true, auth: auth);
 
@@ -146,7 +147,7 @@ class ContactModel extends Model {
     // final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
     auth.confirmUserChange();
 
-    var _contacts = await ContactRepository()
+    var _contacts = await ContactGroupRepository()
         .getContactsFromGroup(auth, paging: paging, id: id);
 
     List<dynamic> _result = _contacts?.result;
@@ -223,7 +224,7 @@ class ContactModel extends Model {
     _module?.lastUpdated = DateTime.now().millisecondsSinceEpoch;
 
     sort(_module.sorting?.field, _module.sorting?.ascending);
-    
+
     notifyListeners();
     return true;
   }

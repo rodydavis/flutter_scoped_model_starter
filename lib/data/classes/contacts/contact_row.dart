@@ -5,7 +5,7 @@ part 'contact_row.g.dart';
 
 
 class ContactFields {
-  static const String id = 'ID';
+  static const String id = 'Contact ID';
   static const String objectType = "Contact";
   // STARTER: fields - do not remove comment
   static const String first_name = 'First Name';

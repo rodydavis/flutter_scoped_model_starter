@@ -8,6 +8,8 @@ import '../app/app_search_bar.dart';
 import '../app/app_sort_button.dart';
 import '../../data/models/lead_model.dart';
 import 'edit.dart';
+import '../general/list_widget.dart';
+import 'item.dart';
 
 class LeadsScreen extends StatelessWidget {
   final LeadModel model;
@@ -35,7 +37,22 @@ class LeadsScreen extends StatelessWidget {
             ],
           ),
           drawer: AppDrawer(),
-          body: Container(),
+          body: new ScopedModelDescendant<LeadModel>(
+              builder: (context, child, model) => RefreshIndicator(
+                    onRefresh: model.refresh,
+                    child: ListWidget(
+                      items: model.leads,
+                      child: ListView.builder(
+                        itemCount: model?.leads?.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final _lead = model.leads[index];
+                          if (index == model.leads.length - 1)
+                            model.fetchNext();
+                          return LeadItem(model: model, lead: _lead);
+                        },
+                      ),
+                    ),
+                  )),
           bottomNavigationBar: AppBottomBarStateless(
             buttons: [
               new ScopedModelDescendant<LeadModel>(

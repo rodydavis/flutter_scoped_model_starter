@@ -26,7 +26,7 @@ final AuthModel authModel = AuthModel();
 final ThemeModel themeModel = ThemeModel();
 final ContactModel contactModel = ContactModel();
 final TaskModel taskModel = TaskModel();
-final LeadModel leadModel = LeadModel();
+final LeadModel leadModel = LeadModel(auth: authModel);
 
 class MyApp extends StatelessWidget {
   @override
