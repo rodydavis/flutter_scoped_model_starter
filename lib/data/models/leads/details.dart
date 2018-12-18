@@ -58,7 +58,7 @@ class LeadDetailsModel extends LeadModel {
       if (devMode) {
         _error = e;
       } else {
-        _error = "Error Creating Lead";
+        _error = "Error Creating Lead (2)";
       }
     }
 
@@ -84,7 +84,7 @@ class LeadDetailsModel extends LeadModel {
       if (devMode) {
         _error = e;
       } else {
-        _error = "Error Saving Lead";
+        _error = "Error Saving Lead (2)";
       }
     }
 
@@ -108,7 +108,7 @@ class LeadDetailsModel extends LeadModel {
       if (devMode) {
         _error = e;
       } else {
-        _error = "Error Deleting Lead";
+        _error = "Error Deleting Lead (2)";
       }
     }
 
