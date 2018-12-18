@@ -68,8 +68,27 @@ class EditLeadScreenState extends State<EditLeadScreen> {
         model: widget.model,
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title:
                 widget.isNew ? const Text("New Lead") : const Text("Edit Lead"),
+            actions: <Widget>[
+              IconButton(
+                tooltip: "Import Phone Contact",
+                icon: Icon(Icons.import_contacts),
+//                onPressed: () => Navigator.pushNamed(context, "/import_single")
+//                        .then((value) {
+//                      if (value != null) _updateView(phoneContact: value);
+//                    }),
+                onPressed: null,
+              ),
+              IconButton(
+                tooltip: "Lead Groups",
+                icon: Icon(Icons.group),
+//                onPressed: () =>
+//                    _manageContactGroups(context, model: widget.model),
+                onPressed: null,
+              ),
+            ],
           ),
           body: SingleChildScrollView(
             child: Form(

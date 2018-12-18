@@ -214,7 +214,7 @@ class _ContactItemEditState extends State<ContactItemEdit> {
         title: _isNew ? Text("New $_type") : Text("Edit $_type"),
         actions: <Widget>[
           IconButton(
-            tooltip: "Import Contact",
+            tooltip: "Import Phone Contact",
             icon: Icon(Icons.import_contacts),
             onPressed: () =>
                 Navigator.pushNamed(context, "/import_single").then((value) {
