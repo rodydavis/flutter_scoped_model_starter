@@ -6,6 +6,9 @@ import '../../data/models/leads/details.dart';
 import '../../data/models/leads/list.dart';
 import '../app/app_bottom_bar.dart';
 import 'edit.dart';
+import '../general/address_tile.dart';
+import '../general/phone_tile.dart';
+import '../../data/classes/general/phone.dart';
 
 class LeadDetailsScreen extends StatelessWidget {
   final LeadModel leadModel;
@@ -24,22 +27,43 @@ class LeadDetailsScreen extends StatelessWidget {
           body: ListView(
             children: <Widget>[
               ListTile(
-                title: Text(leadRow?.displayName),
+                leading: Icon(Icons.info),
+                title: Text(
+                    ((leadRow?.firstName ?? "") + " " + leadRow?.lastName)
+                        .trim()),
               ),
-              ListTile(
-                title: Text(leadRow?.cellPhone),
-              ),
-              ListTile(
-                title: Text(leadRow?.homePhone),
-              ),
-              ListTile(
-                title: Text(leadRow?.officePhone),
-              ),
+              PhoneTile(
+                  label: "Cell Phone",
+                  number: Phone.fromString(leadRow?.cellPhone),
+                  icon: Icons.phone),
+              PhoneTile(
+                  label: "Home Phone",
+                  number: Phone.fromString(leadRow?.homePhone),
+                  icon: Icons.home),
+              PhoneTile(
+                  label: "Office Phone",
+                  number: Phone.fromString(leadRow?.officePhone),
+                  icon: Icons.work),
               new ScopedModelDescendant<LeadDetailsModel>(
 //                  rebuildOnChange: true,
                   builder: (context, child, model) {
                 if (model.isLoaded) {
-                  return Text(model?.details?.firstName ?? "Loading...");
+                  final _details = model.details;
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      AddressTile(
+                        address: _details?.currentAddress,
+                        label: "Current Address",
+                        icon: Icons.map,
+                      ),
+                      AddressTile(
+                        address: _details?.propertyAddress,
+                        label: "Property Address",
+                        icon: Icons.map,
+                      ),
+                    ],
+                  );
                 }
                 model.loadData();
                 return Center(child: CircularProgressIndicator());
