@@ -94,6 +94,12 @@ class AppDrawer extends StatelessWidget {
             onTap: () => navigator.pushReplacementNamed("/contacts"),
           ),
 
+          ListTile(
+            leading: Icon(Icons.group),
+            title: Text('Leads'),
+            onTap: () => navigator.pushReplacementNamed("/leads"),
+          ),
+
           Divider(),
 
           ListTile(

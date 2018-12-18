@@ -102,3 +102,16 @@ class _AppBottomBarState extends State<AppBottomBar> {
     );
   }
 }
+
+class AppBottomBarStateless extends StatelessWidget {
+  final List<IconButton> buttons;
+  AppBottomBarStateless({this.buttons});
+
+  @override
+  Widget build(BuildContext context) {
+    return new BottomAppBar(
+      shape: CircularNotchedRectangle(),
+      child: Row(children: buttons),
+    );
+  }
+}
