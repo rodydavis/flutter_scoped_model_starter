@@ -111,7 +111,7 @@ class AppBottomBarStateless extends StatelessWidget {
   Widget build(BuildContext context) {
     return new BottomAppBar(
       shape: CircularNotchedRectangle(),
-      child: buttons == null ? Container() : Row(children: buttons),
+      child: buttons == null ? Container(height: 25.0) : Row(children: buttons),
     );
   }
 }
