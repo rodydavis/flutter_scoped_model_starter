@@ -108,13 +108,16 @@ class LeadDetailsScreen extends StatelessWidget {
             ],
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-          floatingActionButton: FloatingActionButton(
-            heroTag: "Lead Edit",
-            backgroundColor: Theme.of(context).primaryColor,
-            onPressed: () => editLead(context, model: leadModel),
-            child: Icon(Icons.edit, color: Colors.white),
-            tooltip: 'Edit Item',
-          ),
+          floatingActionButton: new ScopedModelDescendant<LeadDetailsModel>(
+//                  rebuildOnChange: true,
+              builder: (context, child, model) => FloatingActionButton(
+                    heroTag: "Lead Edit",
+                    backgroundColor: Theme.of(context).primaryColor,
+                    onPressed: () => editLead(context,
+                        model: leadModel, details: model.details),
+                    child: Icon(Icons.edit, color: Colors.white),
+                    tooltip: 'Edit Item',
+                  )),
         ));
   }
 }

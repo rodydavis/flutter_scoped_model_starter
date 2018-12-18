@@ -7,6 +7,7 @@ import '../../ui/general/three_row_tile.dart';
 import '../../utils/date_formatter.dart';
 import 'edit.dart';
 import 'view.dart';
+import '../../data/classes/general/phone.dart';
 import '../../data/models/auth_model.dart';
 
 class ContactItem extends StatelessWidget {
@@ -79,9 +80,9 @@ class ContactItem extends StatelessWidget {
       // subtitle: Text(item?.id),
       onTap: () => _viewItem(context),
       onLongPress: () => _editItem(context),
-      cell: item?.cellPhone,
-      home: item?.homePhone,
-      office: item?.officePhone,
+      cell: Phone.fromString(item?.cellPhone),
+      home: Phone.fromString(item?.homePhone),
+      office: Phone.fromString(item?.officePhone),
       email: item?.email,
       box1: Utility(
         value: formatDate(item?.dateCreated),

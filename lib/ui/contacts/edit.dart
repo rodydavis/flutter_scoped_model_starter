@@ -11,6 +11,7 @@ import '../../data/models/contact_model.dart';
 import '../../ui/contacts/groups/manage.dart';
 import '../general/address_tile.dart';
 import '../general/phone_tile.dart';
+import '../../data/classes/general/phone.dart';
 
 class ContactItemEdit extends StatefulWidget {
   final ContactRow item;
@@ -116,9 +117,9 @@ class _ContactItemEditState extends State<ContactItemEdit> {
 
       if (!_isDisposed)
         setState(() {
-          _cell = widget?.item?.cellPhone;
-          _home = widget?.item?.homePhone;
-          _office = widget?.item?.officePhone;
+          _cell = Phone.fromString(widget?.item?.cellPhone);
+          _home = Phone.fromString(widget?.item?.homePhone);
+          _office = Phone.fromString(widget?.item?.officePhone);
         });
     } else {
       if (phoneContact != null) {

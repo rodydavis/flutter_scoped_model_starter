@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/classes/contacts/contact_details.dart';
 import '../../data/classes/contacts/contact_row.dart';
+import '../../data/classes/general/phone.dart';
 import '../../data/classes/unify/contact_group.dart';
 import '../../data/models/auth_model.dart';
 import '../../data/models/contact_model.dart';
@@ -9,11 +10,9 @@ import '../../ui/app/app_bottom_bar.dart';
 import '../../ui/general/address_tile.dart';
 import '../../ui/general/email_tile.dart';
 import '../../ui/general/phone_tile.dart';
-import '../../utils/null_or_empty.dart';
 import 'edit.dart';
 import 'groups/manage.dart';
 import 'groups/view.dart';
-import '../general/simple_scaffold.dart';
 
 class ContactItemDetails extends StatefulWidget {
   final ContactRow item;
@@ -153,10 +152,17 @@ class _ContactItemDetailsState extends State<ContactItemDetails> {
         // subtitle: Text(item?.lastActivity ?? ""),
       ),
       PhoneTile(
-          label: "Cell Phone", number: item?.cellPhone, icon: Icons.phone),
-      PhoneTile(label: "Home Phone", number: item?.homePhone, icon: Icons.home),
+          label: "Cell Phone",
+          number: Phone.fromString(item?.cellPhone),
+          icon: Icons.phone),
       PhoneTile(
-          label: "Office Phone", number: item?.officePhone, icon: Icons.work),
+          label: "Home Phone",
+          number: Phone.fromString(item?.homePhone),
+          icon: Icons.home),
+      PhoneTile(
+          label: "Office Phone",
+          number: Phone.fromString(item?.officePhone),
+          icon: Icons.work),
       EmailTile(label: "Email Address", email: item?.email),
     ];
 
