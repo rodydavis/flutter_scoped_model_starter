@@ -5,11 +5,13 @@ import '../app/app_bottom_bar.dart';
 import '../app/app_drawer.dart';
 import '../general/simple_fab.dart';
 import '../app/app_search_bar.dart';
+import '../app/app_sort_button.dart';
 import '../../data/models/lead_model.dart';
 
 class LeadsScreen extends StatelessWidget {
   final LeadModel model;
   LeadsScreen({this.model});
+
   @override
   Widget build(BuildContext context) {
     return ScopedModel<LeadModel>(
@@ -35,10 +37,11 @@ class LeadsScreen extends StatelessWidget {
           body: Container(),
           bottomNavigationBar: AppBottomBarStateless(
             buttons: [
-              IconButton(
-                icon: Icon(Icons.sort_by_alpha),
-                onPressed: () => _sortPressed(),
-              ),
+              new ScopedModelDescendant<LeadModel>(
+                  builder: (context, child, model) => AppSortButton(
+                        sort: model.sort,
+                        sortChanged: model.sortChanged,
+                      )),
             ],
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -50,6 +53,4 @@ class LeadsScreen extends StatelessWidget {
   }
 
   void _fabPressed() {}
-
-  void _sortPressed() {}
 }

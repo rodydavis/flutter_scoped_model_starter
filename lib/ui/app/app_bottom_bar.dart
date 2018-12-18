@@ -7,7 +7,7 @@ class AppBottomBar extends StatefulWidget {
   final bool showSort;
   final Function(String) onSelectedSortField;
   final Function(bool) onChangeSortOrder;
-  final List<IconButton> buttons;
+  final List<Widget> buttons;
 
   AppBottomBar({
     this.onSelectedSortField,
@@ -104,7 +104,7 @@ class _AppBottomBarState extends State<AppBottomBar> {
 }
 
 class AppBottomBarStateless extends StatelessWidget {
-  final List<IconButton> buttons;
+  final List<Widget> buttons;
   AppBottomBarStateless({this.buttons});
 
   @override
