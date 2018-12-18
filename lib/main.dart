@@ -17,6 +17,7 @@ import 'ui/contacts/screen.dart';
 import 'ui/general/simple_scaffold.dart';
 import 'ui/phone_contacts/import.dart';
 import 'ui/leads/screen.dart';
+import 'data/models/lead_model.dart';
 
 // STARTER: import - do not remove comment
 
@@ -27,6 +28,7 @@ final AuthModel authModel = AuthModel();
 final ThemeModel themeModel = ThemeModel();
 final ContactModel contactModel = ContactModel();
 final TaskModel taskModel = TaskModel();
+final LeadModel leadModel = LeadModel();
 
 class MyApp extends StatelessWidget {
   @override
@@ -59,7 +61,7 @@ class AppTheme extends StatelessWidget {
         // STARTER: routes - do not remove comment
         '/contacts': (BuildContext context) =>
             ContactScreen(model: contactModel),
-        '/leads': (BuildContext context) => LeadsScreen(),
+        '/leads': (BuildContext context) => LeadsScreen(model: leadModel),
         '/import': (BuildContext context) => ImportContactsScreen(),
         '/import_single': (BuildContext context) =>
             ImportContactsScreen(selectSingle: true),
