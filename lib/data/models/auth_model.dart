@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,6 +13,9 @@ import '../local_storage.dart';
 import '../repositories/auth_repository.dart';
 
 class AuthModel extends Model {
+  static AuthModel of(BuildContext context) =>
+      ScopedModel.of<AuthModel>(context);
+
   AuthModule _module = AuthModule(
     users: [],
     isLoading: false,

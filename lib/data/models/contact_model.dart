@@ -12,6 +12,9 @@ import '../repositories/contact_repository.dart';
 import '../classes/unify/contact_group.dart';
 
 class ContactModel extends Model {
+  static ContactModel of(BuildContext context) =>
+      ScopedModel.of<ContactModel>(context);
+
   ContactModule _module = ContactModule(
     contacts: [],
     filtered: [],

@@ -1,8 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../classes/app/sort.dart';
 
 class SortModel extends Model {
+  static SortModel of(BuildContext context) =>
+      ScopedModel.of<SortModel>(context);
+
   Sort _sort = Sort(
     defaultField: "",
     initialized: false,

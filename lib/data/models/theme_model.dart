@@ -5,6 +5,9 @@ import '../../data/local_storage.dart';
 import '../classes/app/theme.dart';
 
 class ThemeModel extends Model {
+  static ThemeModel of(BuildContext context) =>
+      ScopedModel.of<ThemeModel>(context);
+
   ThemeData _currentTheme = defaultTheme;
   ThemeModule _module = ThemeModule(
     darkMode: false,

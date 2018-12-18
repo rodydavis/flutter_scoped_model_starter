@@ -8,6 +8,9 @@ import '../repositories/task_repository.dart';
 import 'auth_model.dart';
 
 class TaskModel extends Model {
+  static TaskModel of(BuildContext context) =>
+      ScopedModel.of<TaskModel>(context);
+
   TaskModule _module = TaskModule(
     tasks: [],
     isLoaded: false,
