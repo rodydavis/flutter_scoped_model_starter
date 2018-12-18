@@ -54,7 +54,7 @@ class LeadDetails {
   Map<String, dynamic> toJson() => _$LeadDetailsToJson(this);
 
   /// Parse Phone Lead
-  LeadDetails.fromPhoneLead(Contact contact) {
+  LeadDetails.fromPhoneContact(Contact contact) {
     firstName = contact?.givenName ?? "";
     // middleName = Lead?.middleName ?? "";
     lastName = contact?.familyName ?? "";

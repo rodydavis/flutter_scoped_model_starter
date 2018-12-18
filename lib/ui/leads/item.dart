@@ -19,7 +19,7 @@ class LeadItem extends StatelessWidget {
       title: Text(lead?.displayName),
       subtitle: Text(lead?.lastActivity),
       onTap: () => viewLead(context, model: model, leadRow: lead),
-      onLongPress: () => editLead(context, model: model),
+      onLongPress: () => editLead(context, model: model, leadRow: lead),
       cell: Phone.fromString(lead?.cellPhone),
       home: Phone.fromString(lead?.homePhone),
       office: Phone.fromString(lead?.officePhone),
