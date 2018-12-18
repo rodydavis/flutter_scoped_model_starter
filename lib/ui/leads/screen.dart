@@ -13,7 +13,7 @@ class LeadsScreen extends StatelessWidget {
       ),
       drawer: AppDrawer(),
       body: Container(),
-      bottomNavigationBar: AppBottomBarStateless(),
+      // bottomNavigationBar: AppBottomBarStateless(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
