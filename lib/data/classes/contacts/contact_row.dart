@@ -35,22 +35,31 @@ class ContactRow {
 
   @JsonKey(name: 'Contact_ID')
   String id;
+
   @JsonKey(name: 'First_Name')
   String firstName;
+
   @JsonKey(name: 'Last_Name')
   String lastName;
+
   @JsonKey(name: 'Cell_Phone')
   Phone cellPhone;
+
   @JsonKey(name: 'Office_Phone')
   Phone officePhone;
+
   @JsonKey(name: 'Home_Phone')
   Phone homePhone;
+
   @JsonKey(name: 'Date_Created')
-  String dateCreated;
+  DateTime dateCreated;
+
   @JsonKey(name: 'Date_Modified')
-  String dateModified;
+  DateTime dateModified;
+
   @JsonKey(name: 'Email_Address')
   String email;
+
 //  @JsonKey(name: 'last_activity')
 //  String lastActivity;
 
@@ -133,10 +142,10 @@ class ContactRow {
 //    if (lastActivity.toLowerCase().contains(search)) {
 //      return true;
 //    }
-    if (dateCreated.toLowerCase().contains(search)) {
+    if (dateCreated.toString().toLowerCase().contains(search)) {
       return true;
     }
-    if (dateModified.toLowerCase().contains(search)) {
+    if (dateModified.toString().toLowerCase().contains(search)) {
       return true;
     }
     return false;

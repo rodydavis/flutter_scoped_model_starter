@@ -52,39 +52,6 @@ class ThreeRowTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    // List<Widget> buildChildren() {
-    //   List<Widget> builder = [];
-    //   if (cell.isNotEmpty && !cell.toString().contains("--")) {
-    //     builder.add(buildPhoneTile(context,
-    //         label: "Cell", number: cell, icon: Icons.phone));
-    //   }
-    //   if (office.isNotEmpty && !office.toString().contains("--")) {
-    //     builder.add(buildPhoneTile(context,
-    //         label: "Office", number: office, icon: Icons.work));
-    //   }
-    //   if (home.isNotEmpty && !home.toString().contains("--")) {
-    //     builder.add(buildPhoneTile(context,
-    //         label: "Home", number: home, icon: Icons.home));
-    //   }
-    //   if (email.isNotEmpty && !email.contains('No Email Address')) {
-    //     buildEmailTile(context, label: "Email", email: email);
-    //   }
-    //   if (builder.isEmpty) {
-    //     builder.add(
-    //       ListTile(
-    //         leading: const Icon(Icons.info),
-    //         title: Text(
-    //           'No Contact Information Found',
-    //           textScaleFactor: textScaleFactor,
-    //           style: TextStyle(
-    //             fontWeight: FontWeight.bold,
-    //           ),
-    //         ),
-    //       ),
-    //     );
-    //   }
-    //   return builder;
-    // }
 
     List<Widget> buildUtility() {
       List<Widget> _utilities = [];
@@ -218,6 +185,24 @@ class ThreeRowTile extends StatelessWidget {
       // color: globals.isDarkTheme ? Colors.black45 : Colors.white,
     );
 
+    var secondaryActions = <Widget>[];
+
+    if (onEdit != null)
+      secondaryActions.add(new IconSlideAction(
+        caption: 'Edit',
+        color: Colors.black45,
+        icon: Icons.edit,
+        onTap: onEdit,
+      ));
+
+    if (onDelete != null)
+      secondaryActions.add(new IconSlideAction(
+        caption: 'Delete',
+        color: Colors.red,
+        icon: Icons.delete,
+        onTap: onDelete,
+      ));
+
     return Container(
       child: new Slidable(
         delegate: new SlidableDrawerDelegate(),
@@ -238,28 +223,8 @@ class ThreeRowTile extends StatelessWidget {
                       ),
               ],
         // -- Right Side --
-        secondaryActions: onDelete == null && onEdit == null
-            ? null
-            : <Widget>[
-                // -- Edit Button --
-                onEdit == null
-                    ? Container()
-                    : new IconSlideAction(
-                        caption: 'Edit',
-                        color: Colors.black45,
-                        icon: Icons.edit,
-                        onTap: onEdit,
-                      ),
-                // -- Delete Button --
-                onDelete == null
-                    ? Container()
-                    : new IconSlideAction(
-                        caption: 'Delete',
-                        color: Colors.red,
-                        icon: Icons.delete,
-                        onTap: onDelete,
-                      ),
-              ],
+        secondaryActions:
+            onDelete == null && onEdit == null ? null : secondaryActions,
       ),
     );
   }

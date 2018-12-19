@@ -9,6 +9,9 @@ import 'item.dart';
 import 'view.dart';
 import '../../general/list_widget.dart';
 import 'package:scoped_model/scoped_model.dart';
+import '../../app/app_bottom_bar.dart';
+import '../../app/app_refresh_button.dart';
+import '../../general/simple_fab.dart';
 
 class ContactGroupsScreen extends StatelessWidget {
   final ContactGroupModel groupModel;
@@ -26,18 +29,6 @@ class ContactGroupsScreen extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text("Contact Groups"),
-            actions: <Widget>[
-              new ScopedModelDescendant<ContactGroupModel>(
-                  builder: (context, child, model) => IconButton(
-                        icon: Icon(Icons.refresh),
-                        onPressed: model.refreshGroups,
-                      )),
-              IconButton(
-                icon: Icon(Icons.group_add),
-//                onPressed: () => _editGroup(context, isNew: true),
-                onPressed: null,
-              ),
-            ],
           ),
           body: new ScopedModelDescendant<ContactGroupModel>(
               builder: (context, child, model) => ListWidget(
@@ -75,6 +66,20 @@ class ContactGroupsScreen extends StatelessWidget {
                           );
                         },
                       )))),
+          bottomNavigationBar: AppBottomBar(
+            buttons: [
+              new ScopedModelDescendant<ContactGroupModel>(
+                  builder: (context, child, model) => AppRefreshButton(
+                        isRefreshing: model.fetching,
+                        onRefresh: model.refreshGroups,
+                      )),
+            ],
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+          floatingActionButton: SimpleFAB(
+            child: Icon(Icons.group_add),
+            onPressed: () => null,
+          ),
         ));
   }
 }

@@ -12,6 +12,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../general/list_widget.dart';
 import '../../app/app_bottom_bar.dart';
 import '../../app/app_search_bar.dart';
+import '../../app/app_refresh_button.dart';
 import '../../app/app_sort_button.dart';
 //
 //class ContactGroupList extends StatefulWidget {
@@ -144,20 +145,21 @@ class ContactsFromGroupScreen extends StatelessWidget {
       model: ContactGroupModel(auth: contactModel?.auth, id: group?.id),
       child: Scaffold(
         appBar: AppBar(
-          title: new ScopedModelDescendant<ContactGroupModel>(
-              builder: (context, child, model) => AppSearchBar(
-                    isSearching: model.isSearching,
-                    name: group.name,
-                    search: model.searchValue,
-                    onSearchChanged: model.searchChanged,
-                  )),
-          actions: <Widget>[
-            new ScopedModelDescendant<ContactGroupModel>(
-                builder: (context, child, model) => AppSearchButton(
-                      isSearching: model.isSearching,
-                      onSearchPressed: model.searchPressed,
-                    )),
-          ],
+          title: Text(group.name ?? "No Group Name"),
+//          title: new ScopedModelDescendant<ContactGroupModel>(
+//              builder: (context, child, model) => AppSearchBar(
+//                    isSearching: model.isSearching,
+//                    name: group.name,
+//                    search: model.searchValue,
+//                    onSearchChanged: model.searchChanged,
+//                  )),
+//          actions: <Widget>[
+//            new ScopedModelDescendant<ContactGroupModel>(
+//                builder: (context, child, model) => AppSearchButton(
+//                      isSearching: model.isSearching,
+//                      onSearchPressed: model.searchPressed,
+//                    )),
+//          ],
         ),
 //        drawer: AppDrawer(),
         body: new ScopedModelDescendant<ContactGroupModel>(
@@ -184,9 +186,9 @@ class ContactsFromGroupScreen extends StatelessWidget {
                       sortChanged: model.sortChanged,
                     )),
             new ScopedModelDescendant<ContactGroupModel>(
-                builder: (context, child, model) => IconButton(
-                      icon: Icon(Icons.refresh),
-                      onPressed: model.refreshGroups,
+                builder: (context, child, model) => AppRefreshButton(
+                      isRefreshing: model.fetching,
+                      onRefresh: model.refresh,
                     )),
 //            IconButton(
 //              tooltip: "Contact Tasks",

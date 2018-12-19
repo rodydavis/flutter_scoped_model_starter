@@ -36,6 +36,10 @@ dependencies:
   flutter_sidekick: ^0.1.3
   font_awesome_flutter: ^8.2.0
   navigate: ^1.0.0
+  share_extend: ^1.0.3
+  share: ^0.5.3
+  image_picker: ^0.4.10
+  path_provider: ^0.4.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

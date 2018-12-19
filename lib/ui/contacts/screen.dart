@@ -10,6 +10,7 @@ import '../general/list_widget.dart';
 import '../general/simple_fab.dart';
 import 'edit.dart';
 import 'item.dart';
+import '../app/app_refresh_button.dart';
 
 class ContactsScreen extends StatelessWidget {
   final ContactModel model;
@@ -59,6 +60,11 @@ class ContactsScreen extends StatelessWidget {
                   builder: (context, child, model) => AppSortButton(
                         sort: model.sort,
                         sortChanged: model.sortChanged,
+                      )),
+              new ScopedModelDescendant<ContactModel>(
+                  builder: (context, child, model) => AppRefreshButton(
+                        isRefreshing: model.fetching,
+                        onRefresh: model.refresh,
                       )),
               IconButton(
                 tooltip: "Contact Tasks",

@@ -6,6 +6,8 @@ import '../../data/models/contacts/list.dart';
 import '../general/three_row_tile.dart';
 import 'edit.dart';
 import 'view.dart';
+import '../../utils/date_formatter.dart';
+import '../../utils/share.dart';
 
 class ContactItem extends StatelessWidget {
   final ContactRow contact;
@@ -25,17 +27,17 @@ class ContactItem extends StatelessWidget {
       home: contact?.homePhone,
       office: contact?.officePhone,
       email: contact?.email,
-      // box1: Utility(
-      //   value: formatDate(lead?.dateCreated),
-      //   hint: "Date Created",
-      // ),
-      // box2: Utility(
-      //   value: formatDate(lead?.dateModified),
-      //   hint: "Date Modified",
-      // ),
+      box1: Utility(
+        value: formatDate(contact?.dateCreated.toString()),
+        hint: "Date Created",
+      ),
+      box2: Utility(
+        value: formatDate(contact?.dateModified.toString()),
+        hint: "Date Modified",
+      ),
       // onDelete: () => _removeItem(context),
-      // onEdit: () => _editItem(context),
-      // onShare: () => _shareItem(context),
+      onEdit: () => editContact(context, model: model, row: contact),
+      onShare: () => shareText(contact.toString()),
     );
   }
 }

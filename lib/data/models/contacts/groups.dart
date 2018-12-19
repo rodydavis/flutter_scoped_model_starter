@@ -16,7 +16,12 @@ class ContactGroupModel extends Model {
 
   List<ContactGroup> _groups;
 
-  List<ContactGroup> get groups => _groups;
+  List<ContactGroup> get groups {
+    if (_groups == null) {
+      getGroups();
+    }
+    return _groups;
+  }
 
   bool _isLoaded = false;
 
@@ -208,7 +213,7 @@ class ContactGroupModel extends Model {
 
       if (_result?.isEmpty ?? true) {
         _lastPage = true;
-        _paging.page -= 1;
+        if (_paging.page >= 2) _paging.page -= 1;
       } else {
         var _results = _result
             ?.map((e) => e == null

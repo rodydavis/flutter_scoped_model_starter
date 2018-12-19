@@ -121,7 +121,9 @@ class LeadModel extends Model {
     await _loadList();
   }
 
+  bool get fetching => _fetching;
   bool _fetching = false;
+
   Future _loadList({bool nextPage = false}) async {
     _isLoaded = false;
     notifyListeners();
