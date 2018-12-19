@@ -87,7 +87,9 @@ void shareContact(BuildContext context, {ContactRow contact}) async {
 
     print("New File => " + _newContents);
 
-    ShareExtend.share(testFile.path.replaceAll(".txt", ".vcf"), "file");
+//    File _vcf = new File(testFile.path.replaceAll(".txt", ".vcf"));
+
+    ShareExtend.share(testFile.path, "file");
 
 //    if (!await testFile.exists()) {
 //      await testFile.create(recursive: true);
