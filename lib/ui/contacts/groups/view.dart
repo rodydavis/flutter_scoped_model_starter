@@ -1,134 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_scoped_model_starter/ui/app/buttons/app_refresh_button.dart';
+import 'package:flutter_scoped_model_starter/ui/app/buttons/app_sort_button.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-import '../../../data/classes/app/paging.dart';
-import '../../../data/classes/contacts/contact_row.dart';
-import '../../../data/models/auth_model.dart';
+import '../../../data/classes/unify/contact_group.dart';
 import '../../../data/models/contacts/groups.dart';
 import '../../../data/models/contacts/list.dart';
+import '../../app/app_bottom_bar.dart';
+import '../../app/buttons/app_delete_button.dart';
+import '../../general/list_widget.dart';
 import '../item.dart';
 import 'edit.dart';
-import '../../../data/classes/unify/contact_group.dart';
-import 'package:scoped_model/scoped_model.dart';
-import '../../general/list_widget.dart';
-import '../../app/app_bottom_bar.dart';
-import '../../app/app_search_bar.dart';
-import '../../app/app_refresh_button.dart';
-import '../../app/app_sort_button.dart';
-//
-//class ContactGroupList extends StatefulWidget {
-//  final ContactGroup group;
-//  final VoidCallback groupDeleted;
-//  final ContactGroupModel model;
-//  final ContactModel contactModel;
-//
-//  ContactGroupList({
-//    this.group,
-//    this.groupDeleted,
-//    @required this.model,
-//    @required this.contactModel,
-//  });
-//
-//  @override
-//  ContactGroupListState createState() {
-//    return new ContactGroupListState();
-//  }
-//}
-//
-//class ContactGroupListState extends State<ContactGroupList> {
-//  bool _isDisposed = false;
-//  @override
-//  void dispose() {
-//    _isDisposed = true;
-//    super.dispose();
-//  }
-//
-//  List<ContactRow> _contacts;
-//  Paging _paging = Paging(rows: 100, page: 1);
-//
-//  void _editGroup(BuildContext context,
-//      {bool isNew = true, ContactGroup item}) {
-//    Navigator.push(
-//      context,
-//      MaterialPageRoute(
-//          builder: (context) => EditContactGroup(
-//                isNew: isNew,
-//                group: item,
-//                groupDeleted: () {
-//                  Navigator.pop(context);
-//                  widget.groupDeleted();
-//                },
-//              ),
-//          fullscreenDialog: true),
-//    ).then((value) {
-//      if (value != null) {
-//        Navigator.pop(context, value);
-//      }
-//    });
-//  }
-//
-//  void _loadData() {
-//    if (!_isDisposed)
-//      setState(() {
-//        _contacts = null;
-//      });
-//    widget.model.getContacts(widget.group?.id ?? "").then((items) {
-//      final List<ContactRow> _items = items;
-//      if (!_isDisposed)
-//        setState(() {
-//          _contacts = _items ?? [];
-//        });
-//    });
-//  }
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    final appBar = AppBar(
-//      title: Text(widget.group?.name ?? "Contact Group"),
-//      actions: <Widget>[
-//        IconButton(
-//          icon: Icon(Icons.refresh),
-//          onPressed: () => _loadData(),
-//        ),
-//        IconButton(
-//          icon: Icon(Icons.edit),
-//          onPressed: () =>
-//              _editGroup(context, isNew: false, item: widget.group),
-//        ),
-//      ],
-//    );
-//
-//    if (_contacts == null || _contacts.isEmpty) {
-//      if (_contacts == null) {
-//        _loadData();
-//
-//        return Scaffold(
-//          appBar: appBar,
-//          body: Center(
-//            child: CircularProgressIndicator(),
-//          ),
-//        );
-//      }
-//
-//      return Scaffold(
-//        appBar: appBar,
-//        body: Center(
-//          child: Text("No Contacts Found"),
-//        ),
-//      );
-//    }
-//
-//    return Scaffold(
-//      appBar: appBar,
-//      body: ListView.builder(
-//        itemCount: _contacts?.length ?? 0,
-//        itemBuilder: (BuildContext context, int index) {
-//          final _item = _contacts[index];
-//          return ContactItem(contact: _item, model: widget.contactModel);
-//        },
-//      ),
-//    );
-//  }
-//}
 
 class ContactsFromGroupScreen extends StatelessWidget {
   final ContactGroup group;
@@ -146,22 +28,15 @@ class ContactsFromGroupScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(group.name ?? "No Group Name"),
-//          title: new ScopedModelDescendant<ContactGroupModel>(
-//              builder: (context, child, model) => AppSearchBar(
-//                    isSearching: model.isSearching,
-//                    name: group.name,
-//                    search: model.searchValue,
-//                    onSearchChanged: model.searchChanged,
-//                  )),
-//          actions: <Widget>[
-//            new ScopedModelDescendant<ContactGroupModel>(
-//                builder: (context, child, model) => AppSearchButton(
-//                      isSearching: model.isSearching,
-//                      onSearchPressed: model.searchPressed,
-//                    )),
-//          ],
+          actions: <Widget>[
+            new ScopedModelDescendant<ContactGroupModel>(
+                builder: (context, child, model) => IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () =>
+                          editGroup(context, model: contactModel, group: group),
+                    )),
+          ],
         ),
-//        drawer: AppDrawer(),
         body: new ScopedModelDescendant<ContactGroupModel>(
             builder: (context, child, model) => RefreshIndicator(
                   onRefresh: model.refresh,
@@ -191,27 +66,16 @@ class ContactsFromGroupScreen extends StatelessWidget {
                       isRefreshing: model.fetching,
                       onRefresh: model.refresh,
                     )),
-//            IconButton(
-//              tooltip: "Contact Tasks",
-//              icon: Icon(Icons.event),
-//              onPressed: () {
-//                Navigator.pushNamed(context, "/contact_tasks");
-//              },
-//            ),
-//            IconButton(
-//              tooltip: "Contact Groups",
-//              icon: Icon(Icons.group),
-//              onPressed: () {
-//                Navigator.pushNamed(context, "/contact_groups");
-//              },
-//            ),
+            new ScopedModelDescendant<ContactGroupModel>(
+                builder: (context, child, model) =>
+                    model.contacts == null || model.contacts.isEmpty
+                        ? AppDeleteButton(onDelete: () async {
+                            await model.deleteContactGroup(id: group.id);
+                            Navigator.pop(context);
+                          })
+                        : Container(height: 48.0))
           ],
         ),
-//        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-//        floatingActionButton: SimpleFAB(
-//          child: Icon(Icons.add),
-//          onPressed: () => createContact(context, model: model),
-//        ),
       ),
     );
   }

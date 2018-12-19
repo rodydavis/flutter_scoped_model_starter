@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../data/classes/app/sort.dart';
+import '../../../data/classes/app/sort.dart';
 
 class AppSortButton extends StatefulWidget {
   final Sort sort;
@@ -99,6 +99,7 @@ class AppSortButtonState extends State<AppSortButton> {
     };
 
     return IconButton(
+      tooltip: "Sort Items",
       icon: Icon(Icons.sort_by_alpha),
       onPressed: () => _showSortSheet(),
     );

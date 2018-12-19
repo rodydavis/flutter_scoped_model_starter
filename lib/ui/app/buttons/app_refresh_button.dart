@@ -23,6 +23,7 @@ class AppRefreshButton extends StatelessWidget {
     }
 
     return IconButton(
+      tooltip: "Refresh Items",
       icon: Icon(Icons.refresh),
       onPressed: onRefresh,
     );

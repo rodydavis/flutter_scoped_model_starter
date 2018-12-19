@@ -6,9 +6,13 @@ class AppBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new BottomAppBar(
-      shape: CircularNotchedRectangle(),
-      child: buttons == null ? Container(height: 25.0) : Row(children: buttons),
+    return new Container(
+//      height: 48.0,
+      child: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        child:
+            buttons == null ? Container(height: 25.0) : Row(children: buttons),
+      ),
     );
   }
 }

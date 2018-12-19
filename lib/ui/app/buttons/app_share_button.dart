@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:share/share.dart';
-import 'package:flutter/material.dart';
 import 'dart:io';
 
 import 'package:share_extend/share_extend.dart';
@@ -24,13 +22,13 @@ class ShareButton extends StatelessWidget {
       onPressed: () {
         switch (type) {
           case ShareTypes.text:
-            shareText(data, select: select);
+            shareText(context, text: data, select: select);
             break;
           case ShareTypes.file:
-            shareFile(data, select: select);
+            shareFile(context, file: data, select: select);
             break;
           case ShareTypes.image:
-            shareImage(data, select: select);
+            shareImage(context, image: data, select: select);
             break;
         }
       },
@@ -38,7 +36,7 @@ class ShareButton extends StatelessWidget {
   }
 }
 
-void shareImage(File image, {bool select = false}) async {
+void shareImage(BuildContext context, {bool select = false, File image}) async {
   if (select) {
     File f = await ImagePicker.pickImage(source: ImageSource.gallery);
     ShareExtend.share(f.path, "image");
@@ -48,13 +46,19 @@ void shareImage(File image, {bool select = false}) async {
   }
 }
 
-void shareText(String text, {bool select = false}) async {
+void shareText(BuildContext context,
+    {String text = "", bool select = false}) async {
   if (text != null && text.isNotEmpty) {
-    ShareExtend.share(text, "text");
+//    ShareExtend.share(text, "text");
+    final RenderBox box = context.findRenderObject();
+    Share.share(
+      text,
+      sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
+    );
   }
 }
 
-void shareFile(File file, {bool select = false}) async {
+void shareFile(BuildContext context, {bool select = false, File file}) async {
   if (select) {
     Directory dir = await getApplicationDocumentsDirectory();
     File testFile = new File("${dir.path}/flutter/test.txt");

@@ -8,6 +8,8 @@ import '../app/app_bottom_bar.dart';
 import '../general/address_tile.dart';
 import '../general/phone_tile.dart';
 import 'edit.dart';
+import '../app/buttons/app_delete_button.dart';
+import '../app/buttons/app_share_button.dart';
 
 class LeadDetailsScreen extends StatelessWidget {
   final ContactRow contactRow;
@@ -25,6 +27,12 @@ class LeadDetailsScreen extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text("Details"),
+            actions: <Widget>[
+              new ScopedModelDescendant<ContactDetailsModel>(
+                  builder: (context, child, model) => ShareButton(
+                        data: model.details.toString(),
+                      )),
+            ],
           ),
           body: ListView(
             children: <Widget>[
@@ -71,17 +79,11 @@ class LeadDetailsScreen extends StatelessWidget {
             // showSort: false,
             buttons: [
               new ScopedModelDescendant<ContactDetailsModel>(
-//                  rebuildOnChange: true,
-                  builder: (context, child, model) => IconButton(
-                        tooltip: "Delete Lead",
-                        icon: Icon(Icons.delete),
-                        // onPressed: () {
-                        //   //Todo: Ask for Confirmation
-                        //   widget.model.deleteItem(context, id: item?.id);
-                        //   Navigator.pop(context);
-                        // },
-                        onPressed: model.delete,
-                      )),
+                  builder: (context, child, model) =>
+                      AppDeleteButton(onDelete: () async {
+                        await model.delete();
+                        Navigator.pop(context);
+                      })),
               IconButton(
                 tooltip: "Lead Groups",
                 icon: Icon(Icons.people),

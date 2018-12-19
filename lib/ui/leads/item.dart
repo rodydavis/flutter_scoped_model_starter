@@ -7,6 +7,8 @@ import '../general/three_row_tile.dart';
 import 'edit.dart';
 import 'view.dart';
 import '../../utils/date_formatter.dart';
+import '../app/buttons/app_share_button.dart';
+import '../../utils/popUp.dart';
 
 class LeadItem extends StatelessWidget {
   final LeadRow lead;
@@ -34,9 +36,10 @@ class LeadItem extends StatelessWidget {
       //   value: formatDate(lead?.dateModified),
       //   hint: "Date Modified",
       // ),
-      // onDelete: () => _removeItem(context),
-      // onEdit: () => _editItem(context),
-      // onShare: () => _shareItem(context),
+      onDelete: () => showConfirmationPopup(context,
+          detail: "Are you sure you want to delete?"),
+      onEdit: () => editLead(context, model: model, leadRow: lead),
+      onShare: () => shareText(context, text: lead.toString()),
     );
   }
 }

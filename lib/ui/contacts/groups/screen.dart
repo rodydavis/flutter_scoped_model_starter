@@ -10,7 +10,7 @@ import 'view.dart';
 import '../../general/list_widget.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../../app/app_bottom_bar.dart';
-import '../../app/app_refresh_button.dart';
+import 'package:flutter_scoped_model_starter/ui/app/buttons/app_refresh_button.dart';
 import '../../general/simple_fab.dart';
 
 class ContactGroupsScreen extends StatelessWidget {
@@ -51,8 +51,8 @@ class ContactGroupsScreen extends StatelessWidget {
                               index: index,
                               onTap: () => viewGroup(context,
                                   model: contactModel, group: _group),
-//                          onLongPressed: () =>
-//                              _editGroup(context, isNew: false, item: _group),
+                              onLongPressed: () => editGroup(context,
+                                  model: contactModel, group: _group),
                             ),
                           );
                         },
@@ -69,7 +69,7 @@ class ContactGroupsScreen extends StatelessWidget {
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           floatingActionButton: SimpleFAB(
             child: Icon(Icons.group_add),
-            onPressed: () => null,
+            onPressed: () => createGroup(context, model: contactModel),
           ),
         ));
   }
