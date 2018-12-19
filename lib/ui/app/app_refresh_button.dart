@@ -10,7 +10,7 @@ class AppRefreshButton extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isRefreshing) {
       return Container(
-        height: 45.0,
+        height: 48.0,
         child: Row(
           children: <Widget>[
             Container(
