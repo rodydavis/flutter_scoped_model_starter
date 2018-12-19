@@ -27,11 +27,11 @@ class ContactItem extends StatelessWidget {
       office: contact?.officePhone,
       email: contact?.email,
       box1: Utility(
-        value: formatDate(contact?.dateCreated.toString()),
+        value: formatDateCustom(contact?.dateCreated),
         hint: "Date Created",
       ),
       box2: Utility(
-        value: formatDate(contact?.dateModified.toString()),
+        value: formatDateCustom(contact?.dateModified),
         hint: "Date Modified",
       ),
       // onDelete: () => _removeItem(context),

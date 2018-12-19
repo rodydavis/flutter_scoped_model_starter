@@ -6,6 +6,7 @@ import '../../data/models/leads/list.dart';
 import '../general/three_row_tile.dart';
 import 'edit.dart';
 import 'view.dart';
+import '../../utils/date_formatter.dart';
 
 class LeadItem extends StatelessWidget {
   final LeadRow lead;
@@ -25,10 +26,10 @@ class LeadItem extends StatelessWidget {
       home: Phone.fromString(lead?.homePhone),
       office: Phone.fromString(lead?.officePhone),
       email: lead?.email,
-      // box1: Utility(
-      //   value: formatDate(lead?.dateCreated),
-      //   hint: "Date Created",
-      // ),
+      box1: Utility(
+        value: formatDateCustom(lead?.dateCreated),
+        hint: "Date Created",
+      ),
       // box2: Utility(
       //   value: formatDate(lead?.dateModified),
       //   hint: "Date Modified",

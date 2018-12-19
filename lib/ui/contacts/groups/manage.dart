@@ -3,11 +3,17 @@ import 'package:flutter_sidekick/flutter_sidekick.dart';
 import '../../../data/classes/unify/contact_group.dart';
 
 class ContactGroupManageContact extends StatelessWidget {
-  final List<ContactGroup> source, inital;
-  ContactGroupManageContact({this.source, this.inital});
+  final List<ContactGroup> source, initial;
+  ContactGroupManageContact({this.source, this.initial});
 
   @override
   Widget build(BuildContext context) {
+    for (var _item in initial) {
+      if (source.contains(_item)) {
+        source.remove(_item);
+      }
+    }
+
     // The SidekickTeamBuilder takes in charge the animations and
     // the state management.
     return SidekickTeamBuilder<ContactGroup>(
@@ -18,7 +24,7 @@ class ContactGroupManageContact extends StatelessWidget {
       initialSourceList: source,
 
       // We can also set a the initial list of the container denoted the 'target'.
-      initialTargetList: inital,
+      initialTargetList: initial,
 
       // The builder let you build everything you want.
       // The sourceBuilderDelegates and targetBuilderDelegates let you build

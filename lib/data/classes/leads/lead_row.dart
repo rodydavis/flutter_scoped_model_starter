@@ -15,10 +15,10 @@ class LeadFields {
   static const String cell_phone = 'Cell Phone';
   static const String office_phone = 'Office Phone';
   static const String home_phone = 'Home Phone';
-  // static const String date_created = 'Date Created';
+  static const String date_created = 'Date Created';
   // static const String date_modified = 'Date Modified';
   static const String email = 'Email Address';
-  // static const String last_activity = 'Last Activity';
+  static const String last_activity = 'Last Activity';
 }
 
 @JsonSerializable()
@@ -30,7 +30,7 @@ class LeadRow {
     this.cellPhone,
     this.officePhone,
     this.homePhone,
-    // this.dateCreated,
+    this.dateCreated,
     // this.dateModified,
     this.email,
     this.lastActivity,
@@ -39,24 +39,34 @@ class LeadRow {
 
   @JsonKey(name: 'lead_id')
   String id;
+
   @JsonKey(name: 'contact_id')
   String contactId;
+
   @JsonKey(name: 'first_name')
   String firstName;
+
   @JsonKey(name: 'last_name')
   String lastName;
+
   @JsonKey(name: 'cell_phone')
   String cellPhone;
+
   @JsonKey(name: 'office_phone')
   String officePhone;
+
   @JsonKey(name: 'home_phone')
   String homePhone;
-  // @JsonKey(name: 'Date_Created')
-  // String dateCreated;
+
+  @JsonKey(name: 'date_created')
+  DateTime dateCreated;
+
   // @JsonKey(name: 'Date_Modified')
   // String dateModified;
+
   @JsonKey(name: 'email')
   String email;
+
   @JsonKey(name: 'last_activity')
   String lastActivity;
 
@@ -87,18 +97,18 @@ class LeadRow {
       case LeadFields.home_phone:
         response = objectA.homePhone.compareTo(objectB.homePhone);
         break;
-      // case LeadFields.date_created:
-      //   response = objectA.dateCreated.compareTo(objectB.dateCreated);
-      //   break;
+      case LeadFields.date_created:
+        response = objectA.dateCreated.compareTo(objectB.dateCreated);
+        break;
       // case LeadFields.date_modified:
       //   response = objectA.dateModified.compareTo(objectB.dateModified);
       //   break;
       case LeadFields.email:
         response = objectA.email.compareTo(objectB.email);
         break;
-      // case LeadFields.last_activity:
-      //   response = objectA.lastActivity.compareTo(objectB.lastActivity);
-      //   break;
+      case LeadFields.last_activity:
+        response = objectA.lastActivity.compareTo(objectB.lastActivity);
+        break;
     }
 
     if (response == 0) {
@@ -135,12 +145,12 @@ class LeadRow {
     if (email.toLowerCase().contains(search)) {
       return true;
     }
-    // if (lastActivity.toLowerCase().contains(search)) {
-    //   return true;
-    // }
-    // if (dateCreated.toLowerCase().contains(search)) {
-    //   return true;
-    // }
+    if (lastActivity.toLowerCase().contains(search)) {
+      return true;
+    }
+    if (dateCreated.toString().toLowerCase().contains(search)) {
+      return true;
+    }
     // if (dateModified.toLowerCase().contains(search)) {
     //   return true;
     // }

@@ -56,7 +56,7 @@ class ThreeRowTile extends StatelessWidget {
     List<Widget> buildUtility() {
       List<Widget> _utilities = [];
 
-      if (box1.value.isNotEmpty) {
+      if (box1 != null && box1.value.isNotEmpty) {
         _utilities.add(Container(
           margin: const EdgeInsets.all(3.0),
           padding: EdgeInsets.fromLTRB(6.0, 2.0, 6.0, 2.0),
@@ -73,7 +73,7 @@ class ThreeRowTile extends StatelessWidget {
         ));
         _utilities.add(Container(width: 10.0));
       }
-      if (box2.value.isNotEmpty) {
+      if (box2 != null && box2.value.isNotEmpty) {
         _utilities.add(Container(
           margin: const EdgeInsets.all(3.0),
           padding: EdgeInsets.fromLTRB(6.0, 2.0, 6.0, 2.0),
