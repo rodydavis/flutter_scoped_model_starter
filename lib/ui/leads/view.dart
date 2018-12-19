@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import '../../data/classes/general/phone.dart';
 import '../../data/classes/leads/lead_row.dart';
 import '../../data/models/leads/details.dart';
 import '../../data/models/leads/list.dart';
 import '../app/app_bottom_bar.dart';
-import 'edit.dart';
 import '../general/address_tile.dart';
 import '../general/phone_tile.dart';
-import '../../data/classes/general/phone.dart';
+import 'edit.dart';
 
 class LeadDetailsScreen extends StatelessWidget {
   final LeadModel leadModel;

@@ -5,10 +5,9 @@ import '../../data/classes/contacts/contact_row.dart';
 import '../../data/models/contacts/details.dart';
 import '../../data/models/contacts/list.dart';
 import '../app/app_bottom_bar.dart';
-import 'edit.dart';
 import '../general/address_tile.dart';
 import '../general/phone_tile.dart';
-import '../../data/classes/general/phone.dart';
+import 'edit.dart';
 
 class LeadDetailsScreen extends StatelessWidget {
   final ContactRow contactRow;

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../data/classes/general/phone.dart';
 import '../../data/classes/contacts/contact_row.dart';
 import '../../data/models/contacts/list.dart';
+import '../../utils/date_formatter.dart';
+import '../../utils/share.dart';
 import '../general/three_row_tile.dart';
 import 'edit.dart';
 import 'view.dart';
-import '../../utils/date_formatter.dart';
-import '../../utils/share.dart';
 
 class ContactItem extends StatelessWidget {
   final ContactRow contact;

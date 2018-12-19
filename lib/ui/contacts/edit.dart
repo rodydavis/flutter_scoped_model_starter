@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../data/models/contacts/list.dart';
 import '../../data/classes/contacts/contact_details.dart';
 import '../../data/classes/contacts/contact_row.dart';
 import '../../data/models/contacts/details.dart';
+import '../../data/models/contacts/list.dart';
+import '../app/app_input_field.dart';
+import '../phone_contacts/import.dart';
 
 class EditContactScreen extends StatefulWidget {
   final ContactDetailsModel model;
@@ -28,38 +30,43 @@ class EditContactScreen extends StatefulWidget {
 class EditContactScreenState extends State<EditContactScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _firstName, _lastName, _email;
-  ContactDetails contact;
 
   @override
   void initState() {
+    _init();
     if (!widget.isNew) {
-      if (widget.contactRow != null) _loadRow();
+      if (widget.contactRow != null) _row(widget.contactRow);
       if (widget.details != null) _loadDetails();
     }
-    _updateView();
     super.initState();
   }
 
   void _loadDetails() {
-    setState(() {
-      contact = widget.details;
-    });
+    _updateView(widget.details);
   }
 
-  void _loadRow() {
-    setState(() {
-      contact = ContactDetails(
-        firstName: widget.contactRow?.firstName,
-        lastName: widget.contactRow?.lastName,
-        email: widget.contactRow?.email,
-      );
-    });
+  void _row(ContactRow row) {
+    _updateView(ContactDetails(
+      firstName: row?.firstName,
+      lastName: row?.lastName,
+      email: row?.email,
+    ));
   }
 
-  void _updateView() {
-    _firstName = TextEditingController(text: contact?.firstName ?? "");
-    _lastName = TextEditingController(text: contact?.lastName ?? "");
-    _email = TextEditingController(text: contact?.email ?? "");
+  void _init() {
+    _firstName = TextEditingController();
+    _lastName = TextEditingController();
+    _email = TextEditingController();
+  }
+
+  void _updateView(ContactDetails info) {
+    _init();
+
+    setState(() {
+      _firstName.text = info?.firstName ?? "";
+      _lastName.text = info?.lastName ?? "";
+      _email.text = info?.email ?? "";
+    });
   }
 
   @override
@@ -76,11 +83,14 @@ class EditContactScreenState extends State<EditContactScreen> {
               IconButton(
                 tooltip: "Import Phone Contact",
                 icon: Icon(Icons.import_contacts),
-//                onPressed: () => Navigator.pushNamed(context, "/import_single")
-//                        .then((value) {
-//                      if (value != null) _updateView(phoneContact: value);
-//                    }),
-                onPressed: null,
+                onPressed: () => selectContact(context).then((contact) {
+                      print("Item: " + contact.toString());
+                      if (contact != null) {
+                        var _info = ContactDetails.fromPhoneContact(contact);
+                        print("Contact => " + _info.toJson().toString());
+                        _updateView(_info);
+                      }
+                    }),
               ),
               IconButton(
                 tooltip: "Contact Groups",
@@ -94,43 +104,22 @@ class EditContactScreenState extends State<EditContactScreen> {
           body: SingleChildScrollView(
             child: Form(
               key: _formKey,
-              onChanged: _onFormChange,
               child: Column(
                 children: <Widget>[
-                  ListTile(
-                    title: TextFormField(
-                      controller: _firstName,
-                      autofocus: true,
-                      decoration:
-                          InputDecoration(labelText: ContactFields.first_name),
-                      keyboardType: TextInputType.text,
-                      validator: (val) => val.isEmpty
-                          ? 'Please enter a ${ContactFields.first_name}'
-                          : null,
-                    ),
+                  AppInputField(
+                    name: ContactFields.first_name,
+                    autoFocus: true,
+                    required: true,
+                    controller: _firstName,
                   ),
-                  ListTile(
-                    title: TextFormField(
-                      controller: _lastName,
-                      decoration:
-                          InputDecoration(labelText: ContactFields.last_name),
-                      keyboardType: TextInputType.text,
-                      validator: (val) => val.isEmpty
-                          ? 'Please enter a ${ContactFields.last_name}'
-                          : null,
-                    ),
+                  AppInputField(
+                    name: ContactFields.last_name,
+                    required: true,
+                    controller: _lastName,
                   ),
-                  ListTile(
-                    title: TextFormField(
-                      controller: _email,
-                      decoration:
-                          InputDecoration(labelText: ContactFields.email),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (val) =>
-                          val != null && val.isNotEmpty && !val.contains("@")
-                              ? 'Please enter a valid ${ContactFields.email}'
-                              : null,
-                    ),
+                  AppInputField(
+                    name: ContactFields.email,
+                    controller: _email,
                   ),
                   Container(height: 10.0),
                   new ScopedModelDescendant<ContactDetailsModel>(
@@ -151,14 +140,12 @@ class EditContactScreenState extends State<EditContactScreen> {
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       onPressed: () async {
-                                        if (_formKey.currentState.validate()) {
-                                          print("Saving Info...");
-                                          print(contact?.toJson());
-
+                                        var _info = getInfoFromInputs();
+                                        if (_info != null) {
                                           if (widget.isNew) {
-                                            await model.add(contact);
+                                            await model.add(_info);
                                           } else {
-                                            await model.edit(contact);
+                                            await model.edit(_info);
                                           }
 
                                           if (model.fetching == false &&
@@ -190,15 +177,17 @@ class EditContactScreenState extends State<EditContactScreen> {
         ));
   }
 
-  void _onFormChange() {
-    final _newLead = ContactDetails(
-      firstName: _firstName.text ?? "",
-      lastName: _lastName.text ?? "",
-      email: _email.text ?? "",
-    );
-    setState(() {
-      contact = _newLead;
-    });
+  ContactDetails getInfoFromInputs() {
+    if (_formKey.currentState.validate()) {
+      final _info = ContactDetails(
+        firstName: _firstName.text ?? "",
+        lastName: _lastName.text ?? "",
+        email: _email.text ?? "",
+      );
+
+      return _info;
+    }
+    return null;
   }
 }
 

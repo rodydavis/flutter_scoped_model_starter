@@ -4,13 +4,13 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../data/models/contacts/list.dart';
 import '../app/app_bottom_bar.dart';
 import '../app/app_drawer.dart';
+import '../app/app_refresh_button.dart';
 import '../app/app_search_bar.dart';
 import '../app/app_sort_button.dart';
 import '../general/list_widget.dart';
 import '../general/simple_fab.dart';
 import 'edit.dart';
 import 'item.dart';
-import '../app/app_refresh_button.dart';
 
 class ContactsScreen extends StatelessWidget {
   final ContactModel model;

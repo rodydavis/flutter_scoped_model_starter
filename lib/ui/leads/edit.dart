@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../data/models/leads/list.dart';
 import '../../data/classes/leads/lead_details.dart';
 import '../../data/classes/leads/lead_row.dart';
 import '../../data/models/leads/details.dart';
-import '../phone_contacts/import.dart';
+import '../../data/models/leads/list.dart';
 import '../app/app_input_field.dart';
+import '../phone_contacts/import.dart';
 
 class EditLeadScreen extends StatefulWidget {
   final LeadDetailsModel model;
@@ -35,7 +35,7 @@ class EditLeadScreenState extends State<EditLeadScreen> {
   void initState() {
     _init();
     if (!widget.isNew) {
-      if (widget.leadRow != null) _loadRow();
+      if (widget.leadRow != null) _row(widget.leadRow);
       if (widget.details != null) _loadDetails();
     }
     super.initState();
@@ -45,11 +45,11 @@ class EditLeadScreenState extends State<EditLeadScreen> {
     _updateView(widget.details);
   }
 
-  void _loadRow() {
+  void _row(LeadRow row) {
     _updateView(LeadDetails(
-      firstName: widget.leadRow?.firstName,
-      lastName: widget.leadRow?.lastName,
-      email: widget.leadRow?.email,
+      firstName: row?.firstName,
+      lastName: row?.lastName,
+      email: row?.email,
     ));
   }
 
@@ -59,13 +59,13 @@ class EditLeadScreenState extends State<EditLeadScreen> {
     _email = TextEditingController();
   }
 
-  void _updateView(LeadDetails newLead) {
+  void _updateView(LeadDetails info) {
     _init();
 
     setState(() {
-      _firstName.text = newLead?.firstName ?? "";
-      _lastName.text = newLead?.lastName ?? "";
-      _email.text = newLead?.email ?? "";
+      _firstName.text = info?.firstName ?? "";
+      _lastName.text = info?.lastName ?? "";
+      _email.text = info?.email ?? "";
     });
   }
 
@@ -85,9 +85,9 @@ class EditLeadScreenState extends State<EditLeadScreen> {
                 onPressed: () => selectContact(context).then((contact) {
                       print("Item: " + contact.toString());
                       if (contact != null) {
-                        var _lead = LeadDetails.fromPhoneContact(contact);
-                        print("Lead => " + _lead.toJson().toString());
-                        _updateView(_lead);
+                        var _info = LeadDetails.fromPhoneContact(contact);
+                        print("Lead => " + _info.toJson().toString());
+                        _updateView(_info);
                       }
                     }),
               ),
@@ -137,12 +137,12 @@ class EditLeadScreenState extends State<EditLeadScreen> {
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       onPressed: () async {
-                                        var _newLead = getLeadFromInputs();
-                                        if (_newLead != null) {
+                                        var _info = getInfoFromInputs();
+                                        if (_info != null) {
                                           if (widget.isNew) {
-                                            await model.add(_newLead);
+                                            await model.add(_info);
                                           } else {
-                                            await model.edit(_newLead);
+                                            await model.edit(_info);
                                           }
 
                                           if (model.fetching == false &&
@@ -174,15 +174,15 @@ class EditLeadScreenState extends State<EditLeadScreen> {
         ));
   }
 
-  LeadDetails getLeadFromInputs() {
+  LeadDetails getInfoFromInputs() {
     if (_formKey.currentState.validate()) {
-      final _newLead = LeadDetails(
+      final _info = LeadDetails(
         firstName: _firstName.text ?? "",
         lastName: _lastName.text ?? "",
         email: _email.text ?? "",
       );
 
-      return _newLead;
+      return _info;
     }
     return null;
   }
