@@ -58,32 +58,30 @@ class ContactDetails {
     // middleName = contact?.middleName ?? "";
     lastName = contact?.familyName ?? "";
 
-    // // -- Phones --
-    // var _phones = contact?.phones ?? [];
-    // var _items = <Phone>[];
-    // for (var _phone in _phones) {
-    //   if (!_phone.label.contains("fax")) {
-    //     if (_phone.label.contains("home")) {
-    //       _items.add(Phone.fromString(
-    //         _phone?.value ?? "",
-    //         name: "home",
-    //       ));
-    //     }
-    //     if (_phone.label.contains("office")) {
-    //       _items.add(Phone.fromString(
-    //         _phone?.value ?? "",
-    //         name: "office",
-    //       ));
-    //     }
-    //     if (_phone.label.contains("cell") || _phone.label.contains("mobile")) {
-    //       _items.add(Phone.fromString(
-    //         _phone?.value ?? "",
-    //         name: "cell",
-    //       ));
-    //     }
-    //   }
-    // }
-    // if (_items != null) phones = _items;
+    // -- Phones --
+    var _phones = contact?.phones ?? [];
+    for (var _phone in _phones) {
+      if (!_phone.label.contains("fax")) {
+        if (_phone.label.contains("home")) {
+          homePhone = Phone.fromString(
+            _phone?.value ?? "",
+            name: "home",
+          );
+        }
+        if (_phone.label.contains("office")) {
+          officePhone = Phone.fromString(
+            _phone?.value ?? "",
+            name: "office",
+          );
+        }
+        if (_phone.label.contains("cell") || _phone.label.contains("mobile")) {
+          cellPhone = Phone.fromString(
+            _phone?.value ?? "",
+            name: "cell",
+          );
+        }
+      }
+    }
 
     // -- Emails --
     var _emails = contact?.emails ?? [];

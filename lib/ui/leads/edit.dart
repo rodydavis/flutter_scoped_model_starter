@@ -5,6 +5,8 @@ import '../../data/models/leads/list.dart';
 import '../../data/classes/leads/lead_details.dart';
 import '../../data/classes/leads/lead_row.dart';
 import '../../data/models/leads/details.dart';
+import '../phone_contacts/import.dart';
+import '../app/app_input_field.dart';
 
 class EditLeadScreen extends StatefulWidget {
   final LeadDetailsModel model;
@@ -28,38 +30,43 @@ class EditLeadScreen extends StatefulWidget {
 class EditLeadScreenState extends State<EditLeadScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _firstName, _lastName, _email;
-  LeadDetails lead;
 
   @override
   void initState() {
+    _init();
     if (!widget.isNew) {
       if (widget.leadRow != null) _loadRow();
       if (widget.details != null) _loadDetails();
     }
-    _updateView();
     super.initState();
   }
 
   void _loadDetails() {
-    setState(() {
-      lead = widget.details;
-    });
+    _updateView(widget.details);
   }
 
   void _loadRow() {
-    setState(() {
-      lead = LeadDetails(
-        firstName: widget.leadRow?.firstName,
-        lastName: widget.leadRow?.lastName,
-        email: widget.leadRow?.email,
-      );
-    });
+    _updateView(LeadDetails(
+      firstName: widget.leadRow?.firstName,
+      lastName: widget.leadRow?.lastName,
+      email: widget.leadRow?.email,
+    ));
   }
 
-  void _updateView() {
-    _firstName = TextEditingController(text: lead?.firstName ?? "");
-    _lastName = TextEditingController(text: lead?.lastName ?? "");
-    _email = TextEditingController(text: lead?.email ?? "");
+  void _init() {
+    _firstName = TextEditingController();
+    _lastName = TextEditingController();
+    _email = TextEditingController();
+  }
+
+  void _updateView(LeadDetails newLead) {
+    _init();
+
+    setState(() {
+      _firstName.text = newLead?.firstName ?? "";
+      _lastName.text = newLead?.lastName ?? "";
+      _email.text = newLead?.email ?? "";
+    });
   }
 
   @override
@@ -75,11 +82,14 @@ class EditLeadScreenState extends State<EditLeadScreen> {
               IconButton(
                 tooltip: "Import Phone Contact",
                 icon: Icon(Icons.import_contacts),
-//                onPressed: () => Navigator.pushNamed(context, "/import_single")
-//                        .then((value) {
-//                      if (value != null) _updateView(phoneContact: value);
-//                    }),
-                onPressed: null,
+                onPressed: () => selectContact(context).then((contact) {
+                      print("Item: " + contact.toString());
+                      if (contact != null) {
+                        var _lead = LeadDetails.fromPhoneContact(contact);
+                        print("Lead => " + _lead.toJson().toString());
+                        _updateView(_lead);
+                      }
+                    }),
               ),
               IconButton(
                 tooltip: "Lead Groups",
@@ -93,42 +103,22 @@ class EditLeadScreenState extends State<EditLeadScreen> {
           body: SingleChildScrollView(
             child: Form(
               key: _formKey,
-              onChanged: _onFormChange,
               child: Column(
                 children: <Widget>[
-                  ListTile(
-                    title: TextFormField(
-                      controller: _firstName,
-                      autofocus: true,
-                      decoration:
-                          InputDecoration(labelText: LeadFields.first_name),
-                      keyboardType: TextInputType.text,
-                      validator: (val) => val.isEmpty
-                          ? 'Please enter a ${LeadFields.first_name}'
-                          : null,
-                    ),
+                  AppInputField(
+                    name: LeadFields.first_name,
+                    autoFocus: true,
+                    required: true,
+                    controller: _firstName,
                   ),
-                  ListTile(
-                    title: TextFormField(
-                      controller: _lastName,
-                      decoration:
-                          InputDecoration(labelText: LeadFields.last_name),
-                      keyboardType: TextInputType.text,
-                      validator: (val) => val.isEmpty
-                          ? 'Please enter a ${LeadFields.last_name}'
-                          : null,
-                    ),
+                  AppInputField(
+                    name: LeadFields.last_name,
+                    required: true,
+                    controller: _lastName,
                   ),
-                  ListTile(
-                    title: TextFormField(
-                      controller: _email,
-                      decoration: InputDecoration(labelText: LeadFields.email),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (val) =>
-                          val != null && val.isNotEmpty && !val.contains("@")
-                              ? 'Please enter a valid ${LeadFields.email}'
-                              : null,
-                    ),
+                  AppInputField(
+                    name: LeadFields.email,
+                    controller: _email,
                   ),
                   Container(height: 10.0),
                   new ScopedModelDescendant<LeadDetailsModel>(
@@ -147,14 +137,12 @@ class EditLeadScreenState extends State<EditLeadScreen> {
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       onPressed: () async {
-                                        if (_formKey.currentState.validate()) {
-                                          print("Saving Info...");
-                                          print(lead?.toJson());
-
+                                        var _newLead = getLeadFromInputs();
+                                        if (_newLead != null) {
                                           if (widget.isNew) {
-                                            await model.add(lead);
+                                            await model.add(_newLead);
                                           } else {
-                                            await model.edit(lead);
+                                            await model.edit(_newLead);
                                           }
 
                                           if (model.fetching == false &&
@@ -186,15 +174,17 @@ class EditLeadScreenState extends State<EditLeadScreen> {
         ));
   }
 
-  void _onFormChange() {
-    final _newLead = LeadDetails(
-      firstName: _firstName.text ?? "",
-      lastName: _lastName.text ?? "",
-      email: _email.text ?? "",
-    );
-    setState(() {
-      lead = _newLead;
-    });
+  LeadDetails getLeadFromInputs() {
+    if (_formKey.currentState.validate()) {
+      final _newLead = LeadDetails(
+        firstName: _firstName.text ?? "",
+        lastName: _lastName.text ?? "",
+        email: _email.text ?? "",
+      );
+
+      return _newLead;
+    }
+    return null;
   }
 }
 

@@ -138,6 +138,7 @@ class ContactModel extends Model {
       if (_result?.isEmpty ?? true) {
         _lastPage = true;
         _paging.page -= 1;
+        if (_paging.page == 1) _contacts = [];
       } else {
         var _results = _result
             ?.map((e) => e == null
@@ -148,12 +149,11 @@ class ContactModel extends Model {
         if (nextPage) {
           _contacts.addAll(_results);
         } else {
-          _contacts = _results;
+          _contacts = _results ?? [];
         }
 
         _lastPage = false;
       }
-
       _fetching = false;
     }
     _isLoaded = true;

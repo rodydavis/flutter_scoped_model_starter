@@ -11,6 +11,7 @@ import '../general/email_tile.dart';
 import '../general/list_widget.dart';
 import '../general/phone_tile.dart';
 import '../general/profile_avatar.dart';
+import 'package:contacts_service/contacts_service.dart';
 import '../../data/classes/general/phone.dart';
 
 class ImportContactsScreen extends StatefulWidget {
@@ -368,4 +369,37 @@ class _ContactDetailsScreen extends StatelessWidget {
     if (name.contains("home")) return Icons.home;
     return Icons.phone;
   }
+}
+
+Future<Contact> selectContact(BuildContext context) async {
+  print("Selecting Single Contact...");
+  dynamic value = await Navigator.push(
+      context,
+      new MaterialPageRoute(
+        builder: (context) => new ImportContactsScreen(selectSingle: true),
+        fullscreenDialog: true,
+      ));
+
+  if (value != null) {
+    Contact _contact = value;
+    print("Phone Contact => " + _contact.toString());
+    return _contact;
+  }
+
+  return null;
+}
+
+Future<List<Contact>> selectMultipleContacts(BuildContext context) async {
+  dynamic value = await Navigator.push(
+      context,
+      new MaterialPageRoute(
+        builder: (context) => new ImportContactsScreen(selectSingle: false),
+        fullscreenDialog: true,
+      ));
+  if (value != null) {
+    List<Contact> _contacts = value;
+    return _contacts;
+  }
+
+  return [];
 }

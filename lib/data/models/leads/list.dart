@@ -137,6 +137,7 @@ class LeadModel extends Model {
       if (_result?.isEmpty ?? true) {
         _lastPage = true;
         _paging.page -= 1;
+        if (_paging.page == 1) _leads = [];
       } else {
         var _results = _result
             ?.map((e) =>
@@ -151,11 +152,9 @@ class LeadModel extends Model {
 
         _lastPage = false;
       }
-
-      _isLoaded = true;
       _fetching = false;
     }
-
+    _isLoaded = true;
     notifyListeners();
   }
 

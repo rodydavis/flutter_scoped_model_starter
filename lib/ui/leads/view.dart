@@ -47,7 +47,7 @@ class LeadDetailsScreen extends StatelessWidget {
               new ScopedModelDescendant<LeadDetailsModel>(
 //                  rebuildOnChange: true,
                   builder: (context, child, model) {
-                if (model.isLoaded) {
+                if (model.details != null) {
                   final _details = model.details;
                   return Column(
                     mainAxisSize: MainAxisSize.min,

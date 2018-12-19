@@ -166,9 +166,10 @@ class ContactsFromGroupScreen extends StatelessWidget {
             builder: (context, child, model) => RefreshIndicator(
                   onRefresh: model.refresh,
                   child: ListWidget(
+                    onEmpty: Center(child: Text("No Contacts Found")),
                     items: model.contacts,
                     child: ListView.builder(
-                      itemCount: model?.contacts?.length,
+                      itemCount: model?.contacts?.length ?? 0,
                       itemBuilder: (BuildContext context, int index) {
                         final _info = model.contacts[index];
                         if (index == model.contacts.length - 1)
@@ -214,4 +215,15 @@ class ContactsFromGroupScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+void viewGroup(BuildContext context,
+    {@required ContactModel model, @required ContactGroup group}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) =>
+          ContactsFromGroupScreen(contactModel: model, group: group),
+    ),
+  );
 }

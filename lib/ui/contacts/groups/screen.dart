@@ -49,17 +49,8 @@ class ContactGroupsScreen extends StatelessWidget {
                               _group,
                               true,
                               index: index,
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ContactsFromGroupScreen(
-                                            contactModel: contactModel,
-                                            group: _group),
-                                  ),
-                                );
-                              },
+                              onTap: () => viewGroup(context,
+                                  model: contactModel, group: _group),
 //                          onLongPressed: () =>
 //                              _editGroup(context, isNew: false, item: _group),
                             ),
@@ -121,35 +112,35 @@ class ContactGroupsScreenState extends State<_ContactGroupsScreen> {
 
   void _editGroup(BuildContext context,
       {bool isNew = true, ContactGroup item}) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => EditContactGroup(
-                isNew: isNew,
-                group: item,
-                groupDeleted: () {
-                  if (!_isDisposed)
-                    setState(() {
-                      _groups.clear();
-                    });
-                  widget.model.deleteContactGroup(id: item?.id);
-                },
-              ),
-          fullscreenDialog: true),
-    ).then((value) {
-      if (value != null) {
-        final ContactGroup _group = value;
-        widget.model
-            .editContactGroup(
-          isNew: isNew,
-          model: ContactGroup(name: _group?.name, id: _group?.id),
-        )
-            .then((_) {
-          _loadInfo();
-          // Navigator.pop(context, true);
-        });
-      }
-    });
+//    Navigator.push(
+//      context,
+//      MaterialPageRoute(
+//          builder: (context) => EditContactGroup(
+//                isNew: isNew,
+//                group: item,
+//                groupDeleted: () {
+//                  if (!_isDisposed)
+//                    setState(() {
+//                      _groups.clear();
+//                    });
+//                  widget.model.deleteContactGroup(id: item?.id);
+//                },
+//              ),
+//          fullscreenDialog: true),
+//    ).then((value) {
+//      if (value != null) {
+//        final ContactGroup _group = value;
+//        widget.model
+//            .editContactGroup(
+//          isNew: isNew,
+//          model: ContactGroup(name: _group?.name, id: _group?.id),
+//        )
+//            .then((_) {
+//          _loadInfo();
+//          // Navigator.pop(context, true);
+//        });
+//      }
+//    });
   }
 
   void _viewList(BuildContext context, {ContactGroup item}) {

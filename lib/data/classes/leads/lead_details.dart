@@ -53,43 +53,51 @@ class LeadDetails {
 
   Map<String, dynamic> toJson() => _$LeadDetailsToJson(this);
 
-  /// Parse Phone Lead
+  /// Parse Lead from Phone Contact
   LeadDetails.fromPhoneContact(Contact contact) {
-    firstName = contact?.givenName ?? "";
-    // middleName = Lead?.middleName ?? "";
-    lastName = contact?.familyName ?? "";
+    print("Importing => " + contact?.displayName);
 
-    // // -- Phones --
-    // var _phones = Lead?.phones ?? [];
-    // var _items = <Phone>[];
-    // for (var _phone in _phones) {
-    //   if (!_phone.label.contains("fax")) {
-    //     if (_phone.label.contains("home")) {
-    //       _items.add(Phone.fromString(
-    //         _phone?.value ?? "",
-    //         name: "home",
-    //       ));
-    //     }
-    //     if (_phone.label.contains("office")) {
-    //       _items.add(Phone.fromString(
-    //         _phone?.value ?? "",
-    //         name: "office",
-    //       ));
-    //     }
-    //     if (_phone.label.contains("cell") || _phone.label.contains("mobile")) {
-    //       _items.add(Phone.fromString(
-    //         _phone?.value ?? "",
-    //         name: "cell",
-    //       ));
-    //     }
-    //   }
-    // }
-    // if (_items != null) phones = _items;
+    firstName = contact?.givenName ?? "";
+    print("First Name: $firstName");
+
+    // middleName = contact?.middleName ?? "";
+
+    lastName = contact?.familyName ?? "";
+    print("Last Name: $lastName");
+
+    // -- Phones --
+    var _phones = contact?.phones ?? [];
+    for (var _phone in _phones) {
+      if (!_phone.label.contains("fax")) {
+        if (_phone.label.contains("home")) {
+          homePhone = Phone.fromString(
+            _phone?.value ?? "",
+            name: "home",
+          );
+          print("Home Phone: ${homePhone.toString()}");
+        }
+        if (_phone.label.contains("office")) {
+          officePhone = Phone.fromString(
+            _phone?.value ?? "",
+            name: "office",
+          );
+          print("Office Phone: ${officePhone.toString()}");
+        }
+        if (_phone.label.contains("cell") || _phone.label.contains("mobile")) {
+          cellPhone = Phone.fromString(
+            _phone?.value ?? "",
+            name: "cell",
+          );
+          print("Cell Phone: ${cellPhone.toString()}");
+        }
+      }
+    }
 
     // -- Emails --
     var _emails = contact?.emails ?? [];
     for (var _item in _emails) {
       email = _item.value;
+      print("Email: $email");
     }
 
     // // - Addresses --
