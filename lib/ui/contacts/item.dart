@@ -18,12 +18,12 @@ class ContactItem extends StatelessWidget {
     return ThreeRowTile(
       icon: Icon(Icons.person),
       title: Text(contact?.displayName),
-      subtitle: Text(contact?.lastActivity),
+//      subtitle: Text(contact?.lastActivity),
       onTap: () => viewLead(context, model: model, row: contact),
       onLongPress: () => editContact(context, model: model, row: contact),
-      cell: Phone.fromString(contact?.cellPhone),
-      home: Phone.fromString(contact?.homePhone),
-      office: Phone.fromString(contact?.officePhone),
+      cell: contact?.cellPhone,
+      home: contact?.homePhone,
+      office: contact?.officePhone,
       email: contact?.email,
       // box1: Utility(
       //   value: formatDate(lead?.dateCreated),

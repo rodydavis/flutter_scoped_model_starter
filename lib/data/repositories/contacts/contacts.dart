@@ -28,16 +28,15 @@ class ContactRepository {
     // -- Search By Filters --
     if (search != null && search.search.toString().isNotEmpty) {
       final response = await webClient.post(
-          kApiUrl + '/search/contacts/mobile/${paging.rows}/${paging.page}',
+          kApiUrl + '/search/contacts/${paging.rows}/${paging.page}',
           json.encode(search),
           auth: auth);
 
       _response = response;
     } else {
       // -- Get List --
-      final response = await webClient.get(
-          kApiUrl + '/contacts/mobile/${paging.rows}/${paging.page}',
-          auth: auth);
+      final response = await webClient
+          .get(kApiUrl + '/contacts/${paging.rows}/${paging.page}', auth: auth);
       _response = response;
     }
 

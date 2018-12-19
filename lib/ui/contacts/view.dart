@@ -37,15 +37,15 @@ class LeadDetailsScreen extends StatelessWidget {
               ),
               PhoneTile(
                   label: "Cell Phone",
-                  number: Phone.fromString(contactRow?.cellPhone),
+                  number: contactRow?.cellPhone,
                   icon: Icons.phone),
               PhoneTile(
                   label: "Home Phone",
-                  number: Phone.fromString(contactRow?.homePhone),
+                  number: contactRow?.homePhone,
                   icon: Icons.home),
               PhoneTile(
                   label: "Office Phone",
-                  number: Phone.fromString(contactRow?.officePhone),
+                  number: contactRow?.officePhone,
                   icon: Icons.work),
               new ScopedModelDescendant<ContactDetailsModel>(
 //                  rebuildOnChange: true,

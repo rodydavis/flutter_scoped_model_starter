@@ -15,7 +15,7 @@ class ContactFields {
   static const String date_created = 'Date Created';
   static const String date_modified = 'Date Modified';
   static const String email = 'Email Address';
-  static const String last_activity = 'Last Activity';
+//  static const String last_activity = 'Last Activity';
 }
 
 @JsonSerializable()
@@ -30,29 +30,29 @@ class ContactRow {
     this.dateCreated,
     this.dateModified,
     this.email,
-    this.lastActivity,
+//    this.lastActivity,
   });
 
-  @JsonKey(name: 'id')
+  @JsonKey(name: 'Contact_ID')
   String id;
-  @JsonKey(name: 'first_name')
+  @JsonKey(name: 'First_Name')
   String firstName;
-  @JsonKey(name: 'last_name')
+  @JsonKey(name: 'Last_Name')
   String lastName;
-  @JsonKey(name: 'cell_phone')
-  String cellPhone;
-  @JsonKey(name: 'office_phone')
-  String officePhone;
-  @JsonKey(name: 'home_phone')
-  String homePhone;
-  @JsonKey(name: 'date_created')
+  @JsonKey(name: 'Cell_Phone')
+  Phone cellPhone;
+  @JsonKey(name: 'Office_Phone')
+  Phone officePhone;
+  @JsonKey(name: 'Home_Phone')
+  Phone homePhone;
+  @JsonKey(name: 'Date_Created')
   String dateCreated;
-  @JsonKey(name: 'date_modified')
+  @JsonKey(name: 'Date_Modified')
   String dateModified;
-  @JsonKey(name: 'email')
+  @JsonKey(name: 'Email_Address')
   String email;
-  @JsonKey(name: 'last_activity')
-  String lastActivity;
+//  @JsonKey(name: 'last_activity')
+//  String lastActivity;
 
   factory ContactRow.fromJson(Map<String, dynamic> json) =>
       _$ContactRowFromJson(json);
@@ -73,13 +73,14 @@ class ContactRow {
         response = objectA.lastName.compareTo(objectB.lastName);
         break;
       case ContactFields.cell_phone:
-        response = objectA.cellPhone.compareTo(objectB.cellPhone);
+        response = objectA.cellPhone.raw().compareTo(objectB.cellPhone.raw());
         break;
       case ContactFields.office_phone:
-        response = objectA.officePhone.compareTo(objectB.officePhone);
+        response =
+            objectA.officePhone.raw().compareTo(objectB.officePhone.raw());
         break;
       case ContactFields.home_phone:
-        response = objectA.homePhone.compareTo(objectB.homePhone);
+        response = objectA.homePhone.raw().compareTo(objectB.homePhone.raw());
         break;
       case ContactFields.date_created:
         response = objectA.dateCreated.compareTo(objectB.dateCreated);
@@ -90,9 +91,9 @@ class ContactRow {
       case ContactFields.email:
         response = objectA.email.compareTo(objectB.email);
         break;
-      case ContactFields.last_activity:
-        response = objectA.lastActivity.compareTo(objectB.lastActivity);
-        break;
+//      case ContactFields.last_activity:
+//        response = objectA.lastActivity.compareTo(objectB.lastActivity);
+//        break;
     }
 
     if (response == 0) {
@@ -117,21 +118,21 @@ class ContactRow {
     if (lastName.toLowerCase().contains(search)) {
       return true;
     }
-    if (cellPhone.toLowerCase().contains(search)) {
+    if (cellPhone.raw().toLowerCase().contains(search)) {
       return true;
     }
-    if (homePhone.toLowerCase().contains(search)) {
+    if (homePhone.raw().toLowerCase().contains(search)) {
       return true;
     }
-    if (officePhone.toLowerCase().contains(search)) {
+    if (officePhone.raw().toLowerCase().contains(search)) {
       return true;
     }
     if (email.toLowerCase().contains(search)) {
       return true;
     }
-    if (lastActivity.toLowerCase().contains(search)) {
-      return true;
-    }
+//    if (lastActivity.toLowerCase().contains(search)) {
+//      return true;
+//    }
     if (dateCreated.toLowerCase().contains(search)) {
       return true;
     }

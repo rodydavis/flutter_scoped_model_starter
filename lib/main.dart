@@ -72,7 +72,7 @@ class AppTheme extends StatelessWidget {
         '/core_lead_tasks': (BuildContext context) =>
             HomePage(model: taskModel, type: TasksType.core_lead),
         '/contact_groups': (BuildContext context) => ContactGroupsScreen(
-            model: contactGroupModel, contactModel: contactModel),
+            groupModel: contactGroupModel, contactModel: contactModel),
       },
     );
   }

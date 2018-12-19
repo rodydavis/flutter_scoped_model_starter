@@ -7,12 +7,83 @@ import '../../../data/models/contacts/list.dart';
 import 'edit.dart';
 import 'item.dart';
 import 'view.dart';
+import '../../general/list_widget.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-class ContactGroupsScreen extends StatefulWidget {
-  final ContactGroupModel model;
+class ContactGroupsScreen extends StatelessWidget {
+  final ContactGroupModel groupModel;
   final ContactModel contactModel;
 
   ContactGroupsScreen({
+    this.groupModel,
+    @required this.contactModel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ScopedModel<ContactGroupModel>(
+        model: groupModel,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("Contact Groups"),
+            actions: <Widget>[
+              new ScopedModelDescendant<ContactGroupModel>(
+                  builder: (context, child, model) => IconButton(
+                        icon: Icon(Icons.refresh),
+                        onPressed: model.refreshGroups,
+                      )),
+              IconButton(
+                icon: Icon(Icons.group_add),
+//                onPressed: () => _editGroup(context, isNew: true),
+                onPressed: null,
+              ),
+            ],
+          ),
+          body: new ScopedModelDescendant<ContactGroupModel>(
+              builder: (context, child, model) => ListWidget(
+                  items: model?.groups,
+                  onEmpty: Center(
+                    child: Text("No Groups Found"),
+                  ),
+                  child: RefreshIndicator(
+                      onRefresh: model.refreshGroups,
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
+                        itemCount: model?.groups?.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final _group = model?.groups[index];
+                          return SafeArea(
+                            child: WrapItem(
+                              _group,
+                              true,
+                              index: index,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ContactsFromGroupScreen(
+                                            contactModel: contactModel,
+                                            group: _group),
+                                  ),
+                                );
+                              },
+//                          onLongPressed: () =>
+//                              _editGroup(context, isNew: false, item: _group),
+                            ),
+                          );
+                        },
+                      )))),
+        ));
+  }
+}
+
+class _ContactGroupsScreen extends StatefulWidget {
+  final ContactGroupModel model;
+  final ContactModel contactModel;
+
+  _ContactGroupsScreen({
     this.model,
     @required this.contactModel,
   });
@@ -23,7 +94,7 @@ class ContactGroupsScreen extends StatefulWidget {
   }
 }
 
-class ContactGroupsScreenState extends State<ContactGroupsScreen> {
+class ContactGroupsScreenState extends State<_ContactGroupsScreen> {
   List<ContactGroup> _groups;
 
   bool _isDisposed = false;
@@ -77,36 +148,36 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
   }
 
   void _viewList(BuildContext context, {ContactGroup item}) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ContactGroupList(
-              model: widget.model,
-              contactModel: widget.contactModel,
-              group: item,
-              groupDeleted: () {
-                if (!_isDisposed)
-                  setState(() {
-                    _groups.clear();
-                  });
-                widget.model.deleteContactGroup(id: item?.id);
-              },
-            ),
-      ),
-    ).then((value) {
-      if (value != null) {
-        final ContactGroup _group = value;
-        widget.model
-            .editContactGroup(
-          isNew: false,
-          model: ContactGroup(name: _group?.name, id: _group?.id),
-        )
-            .then((_) {
-          _loadInfo();
-          // Navigator.pop(context, true);
-        });
-      }
-    });
+//    Navigator.push(
+//      context,
+//      MaterialPageRoute(
+//        builder: (context) => ContactGroupList(
+//              model: widget.model,
+//              contactModel: widget.contactModel,
+//              group: item,
+//              groupDeleted: () {
+//                if (!_isDisposed)
+//                  setState(() {
+//                    _groups.clear();
+//                  });
+//                widget.model.deleteContactGroup(id: item?.id);
+//              },
+//            ),
+//      ),
+//    ).then((value) {
+//      if (value != null) {
+//        final ContactGroup _group = value;
+//        widget.model
+//            .editContactGroup(
+//          isNew: false,
+//          model: ContactGroup(name: _group?.name, id: _group?.id),
+//        )
+//            .then((_) {
+//          _loadInfo();
+//          // Navigator.pop(context, true);
+//        });
+//      }
+//    });
   }
 
   void _loadInfo({bool force = false}) {
@@ -117,7 +188,7 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
         });
     }
 
-    widget.model.loadContactGroups().then((_) {
+    widget.model.getGroups().then((_) {
       if (!_isDisposed)
         setState(() {
           _groups = widget.model?.groups ?? [];

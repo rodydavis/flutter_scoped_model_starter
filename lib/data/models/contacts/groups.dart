@@ -10,12 +10,13 @@ import '../../classes/app/sort.dart';
 
 class ContactGroupModel extends Model {
   final AuthModel auth;
+  final String id;
 
-  ContactGroupModel({@required this.auth});
+  ContactGroupModel({@required this.auth, this.id});
 
   List<ContactGroup> _groups;
 
-  List<ContactGroup> get groups => _groups ?? [];
+  List<ContactGroup> get groups => _groups;
 
   bool _isLoaded = false;
 
@@ -25,24 +26,15 @@ class ContactGroupModel extends Model {
 
   bool get fetching => _fetching;
 
-  String _id = "";
-
-  String get id => _id;
-
-  void setGroupID(String value) {
-    _id = value;
-    notifyListeners();
-  }
-
-  Future loadContactGroups({bool force = false}) async {
+  Future getGroups({bool force = false}) async {
     _isLoaded = false;
-    _fetching = true;
     notifyListeners();
 
     if (!_fetching) {
+      _fetching = true;
       var _response = await ContactGroupRepository().getContactGroups(auth);
       if (force) {
-        _groups.clear();
+        if (_groups != null && _groups.isNotEmpty) _groups.clear();
         notifyListeners();
       }
 
@@ -60,6 +52,10 @@ class ContactGroupModel extends Model {
 
     _isLoaded = true;
     notifyListeners();
+  }
+
+  Future refreshGroups() async {
+    await getGroups(force: true);
   }
 
   Future editContactGroup({
@@ -82,7 +78,7 @@ class ContactGroupModel extends Model {
     _groups.clear();
     notifyListeners();
 
-    loadContactGroups(force: true);
+    getGroups(force: true);
 
     _isLoaded = true;
     _fetching = false;
@@ -100,7 +96,7 @@ class ContactGroupModel extends Model {
     bool _valid =
         await ContactGroupRepository().deleteContactGroup(auth, id: id);
 
-    loadContactGroups(force: true);
+    getGroups(force: true);
 
     _isLoaded = true;
     _fetching = false;
@@ -195,8 +191,7 @@ class ContactGroupModel extends Model {
     await _loadList();
   }
 
-  Future loadData(String id) async {
-    setGroupID(id);
+  Future getContacts() async {
     await _loadList();
   }
 
@@ -207,7 +202,7 @@ class ContactGroupModel extends Model {
     if (!_fetching) {
       _fetching = true;
       var _items = await ContactGroupRepository()
-          .getContactsFromGroup(auth, id: _id, paging: _paging);
+          .getContactsFromGroup(auth, id: id, paging: _paging);
 
       List<dynamic> _result = _items?.result;
 

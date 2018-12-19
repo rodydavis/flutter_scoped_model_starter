@@ -5,6 +5,7 @@ import '../../../constants.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/foundation.dart';
 import '../../classes/contacts/contact_details.dart';
+import 'list.dart';
 
 class ContactDetailsModel extends Model {
   final String id;

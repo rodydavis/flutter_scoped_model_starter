@@ -105,3 +105,30 @@ class EditContactGroupState extends State<EditContactGroup> {
     );
   }
 }
+//
+//void createGroup(BuildContext context, {@required ContactModel model}) {
+//  Navigator.push(
+//      context,
+//      new MaterialPageRoute(
+//        builder: (context) => new EditContactScreen(
+//          model: ContactDetailsModel(auth: model?.auth),
+//        ),
+//        fullscreenDialog: true,
+//      ));
+//}
+//
+//void editGroup(BuildContext context,
+//    {@required ContactModel model,
+//      ContactDetails details,
+//      @required ContactRow row}) {
+//  Navigator.push(
+//      context,
+//      new MaterialPageRoute(
+//        builder: (context) => new EditContactScreen(
+//            model: ContactDetailsModel(auth: model?.auth, id: row?.id),
+//            isNew: false,
+//            details: details,
+//            contactRow: row),
+//        fullscreenDialog: true,
+//      ));
+//}
