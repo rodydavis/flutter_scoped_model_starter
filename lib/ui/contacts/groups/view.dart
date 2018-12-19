@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../data/classes/app/paging.dart';
 import '../../../data/classes/contacts/contact_row.dart';
 import '../../../data/models/auth_model.dart';
-import '../../../data/models/contact_model.dart';
+import '../../../data/models/contacts/groups.dart';
+import '../../../data/models/contacts/list.dart';
 import '../item.dart';
 import 'edit.dart';
 import '../../../data/classes/unify/contact_group.dart';
@@ -11,14 +12,14 @@ import '../../../data/classes/unify/contact_group.dart';
 class ContactGroupList extends StatefulWidget {
   final ContactGroup group;
   final VoidCallback groupDeleted;
-  final ContactModel model;
-  final AuthModel auth;
+  final ContactGroupModel model;
+  final ContactModel contactModel;
 
   ContactGroupList({
     this.group,
     this.groupDeleted,
     @required this.model,
-    @required this.auth,
+    @required this.contactModel,
   });
 
   @override
@@ -64,14 +65,7 @@ class ContactGroupListState extends State<ContactGroupList> {
       setState(() {
         _contacts = null;
       });
-    widget.model
-        .getContactsForContactGroup(
-      context,
-      auth: widget.auth,
-      paging: _paging,
-      id: widget.group?.id ?? "",
-    )
-        .then((items) {
+    widget.model.loadData(widget.group?.id ?? "").then((items) {
       final List<ContactRow> _items = items;
       if (!_isDisposed)
         setState(() {
@@ -123,11 +117,7 @@ class ContactGroupListState extends State<ContactGroupList> {
         itemCount: _contacts?.length ?? 0,
         itemBuilder: (BuildContext context, int index) {
           final _item = _contacts[index];
-          return ContactItem(
-            auth: widget.auth,
-            item: _item,
-            model: widget.model,
-          );
+          return ContactItem(contact: _item, model: widget.contactModel);
         },
       ),
     );

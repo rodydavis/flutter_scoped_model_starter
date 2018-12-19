@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../../../data/classes/unify/contact_group.dart';
 import '../../../data/models/auth_model.dart';
-import '../../../data/models/contact_model.dart';
+import '../../../data/models/contacts/groups.dart';
+import '../../../data/models/contacts/list.dart';
 import 'edit.dart';
 import 'item.dart';
 import 'view.dart';
 
 class ContactGroupsScreen extends StatefulWidget {
-  final ContactModel model;
-  final AuthModel auth;
+  final ContactGroupModel model;
+  final ContactModel contactModel;
 
   ContactGroupsScreen({
     this.model,
-    @required this.auth,
+    @required this.contactModel,
   });
 
   @override
@@ -55,11 +56,7 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
                     setState(() {
                       _groups.clear();
                     });
-                  widget.model.deleteContactGroup(
-                    context,
-                    id: item?.id,
-                    auth: widget.auth,
-                  );
+                  widget.model.deleteContactGroup(id: item?.id);
                 },
               ),
           fullscreenDialog: true),
@@ -68,8 +65,6 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
         final ContactGroup _group = value;
         widget.model
             .editContactGroup(
-          context,
-          auth: widget.auth,
           isNew: isNew,
           model: ContactGroup(name: _group?.name, id: _group?.id),
         )
@@ -86,19 +81,15 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => ContactGroupList(
-              auth: widget.auth,
               model: widget.model,
+              contactModel: widget.contactModel,
               group: item,
               groupDeleted: () {
                 if (!_isDisposed)
                   setState(() {
                     _groups.clear();
                   });
-                widget.model.deleteContactGroup(
-                  context,
-                  id: item?.id,
-                  auth: widget.auth,
-                );
+                widget.model.deleteContactGroup(id: item?.id);
               },
             ),
       ),
@@ -107,8 +98,6 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
         final ContactGroup _group = value;
         widget.model
             .editContactGroup(
-          context,
-          auth: widget.auth,
           isNew: false,
           model: ContactGroup(name: _group?.name, id: _group?.id),
         )
@@ -128,12 +117,7 @@ class ContactGroupsScreenState extends State<ContactGroupsScreen> {
         });
     }
 
-    widget.model
-        .loadContactGroups(
-      context,
-      auth: widget.auth,
-    )
-        .then((_) {
+    widget.model.loadContactGroups().then((_) {
       if (!_isDisposed)
         setState(() {
           _groups = widget.model?.groups ?? [];

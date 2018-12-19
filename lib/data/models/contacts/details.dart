@@ -1,16 +1,16 @@
-import '../../classes/leads/lead_details.dart';
-import '../../repositories/leads/leads.dart';
+import '../../repositories/contacts/contacts.dart';
 import '../auth_model.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:contacts_service/contacts_service.dart';
 import '../../../constants.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/foundation.dart';
+import '../../classes/contacts/contact_details.dart';
 
-class LeadDetailsModel extends Model {
+class ContactDetailsModel extends Model {
   final String id;
   final AuthModel auth;
 
-  LeadDetailsModel({this.id, @required this.auth});
+  ContactDetailsModel({this.id, @required this.auth});
 
   String _error = "";
   String get error => _error;
@@ -23,16 +23,16 @@ class LeadDetailsModel extends Model {
 
   bool get fetching => _fetching;
 
-  LeadDetails _details;
+  ContactDetails _details;
 
-  LeadDetails get details => _details;
+  ContactDetails get details => _details;
 
   Future import(Contact value) async {
     _fetching = true;
     notifyListeners();
 
-    var _lead = LeadDetails.fromPhoneContact(value);
-    var _result = await LeadRepository().saveLead(auth, lead: _lead);
+    var _info = ContactDetails.fromPhoneContact(value);
+    var _result = await ContactRepository().saveData(auth, contact: _info);
     if (_result) {
 //      refresh();
     }
@@ -41,23 +41,23 @@ class LeadDetailsModel extends Model {
     notifyListeners();
   }
 
-  Future add(LeadDetails value) async {
+  Future add(ContactDetails value) async {
     _fetching = true;
     notifyListeners();
 
     try {
-      var _result = await LeadRepository().saveLead(auth, lead: value);
+      var _result = await ContactRepository().saveData(auth, contact: value);
       if (_result) {
 //        refresh();
         _error = "";
       } else {
-        _error = "Error Creating Lead";
+        _error = "Error Creating Contact";
       }
     } catch (e) {
       if (devMode) {
         _error = e;
       } else {
-        _error = "Error Creating Lead (2)";
+        _error = "Error Creating Contact (2)";
       }
     }
 
@@ -65,24 +65,25 @@ class LeadDetailsModel extends Model {
     notifyListeners();
   }
 
-  Future edit(LeadDetails value) async {
+  Future edit(ContactDetails value) async {
     _fetching = true;
     notifyListeners();
 
     try {
-      var _result = await LeadRepository().saveLead(auth, id: id, lead: value);
+      var _result =
+          await ContactRepository().saveData(auth, id: id, contact: value);
       if (_result) {
         _details = value;
 //        refresh();
         _error = "";
       } else {
-        _error = "Error Saving Lead";
+        _error = "Error Saving Contact";
       }
     } catch (e) {
       if (devMode) {
         _error = e;
       } else {
-        _error = "Error Saving Lead (2)";
+        _error = "Error Saving Contact (2)";
       }
     }
 
@@ -95,18 +96,18 @@ class LeadDetailsModel extends Model {
     notifyListeners();
 
     try {
-      var _result = await LeadRepository().deleteLead(auth, id: id);
+      var _result = await ContactRepository().deleteContact(auth, id: id);
       if (_result) {
 //        refresh();
         _error = "";
       } else {
-        _error = "Error Deleting Lead";
+        _error = "Error Deleting Contact";
       }
     } catch (e) {
       if (devMode) {
         _error = e;
       } else {
-        _error = "Error Deleting Lead (2)";
+        _error = "Error Deleting Contact (2)";
       }
     }
 
@@ -124,15 +125,33 @@ class LeadDetailsModel extends Model {
     notifyListeners();
     if (!_fetching) {
       _fetching = true;
-      var _result = await LeadRepository().getLead(auth, id: id);
+      var _result = await ContactRepository().getInfo(auth, id: id);
       try {
-        var _info = LeadDetails.fromJson(_result?.result);
+        var _info = ContactDetails.fromJson(_result?.result);
         if (_info != null) _details = _info;
       } catch (e) {
         if (devMode) _error = e;
       }
-      _isLoaded = true;
+
       _fetching = false;
+    }
+    _isLoaded = true;
+    notifyListeners();
+  }
+
+  void importItems({@required List<ContactDetails> items}) async {
+    _fetching = true;
+    notifyListeners();
+
+    if (!_fetching) {
+      print("Adding Items => ${items?.toString()}");
+      var _result = await ContactRepository().importData(auth, contacts: items);
+      notifyListeners();
+      print("Status: $_result");
+      if (_result) {
+//      refresh(context);
+      }
+      _fetching = true;
     }
 
     notifyListeners();

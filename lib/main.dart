@@ -3,7 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import 'constants.dart';
 import 'data/models/auth_model.dart';
-import 'data/models/contact_model.dart';
+import 'data/models/contacts/list.dart';
 import 'data/models/leads/list.dart';
 import 'data/models/task_model.dart';
 import 'data/models/theme_model.dart';
@@ -12,10 +12,11 @@ import 'ui/app/home/screen.dart';
 import 'ui/app/settings/screen.dart';
 import 'ui/app/splash_screen.dart';
 import 'ui/auth/login.dart';
-import 'ui/contacts/groups/screen.dart';
 import 'ui/contacts/screen.dart';
 import 'ui/leads/screen.dart';
 import 'ui/phone_contacts/import.dart';
+import 'data/models/contacts/groups.dart';
+import 'ui/contacts/groups/screen.dart';
 
 // STARTER: import - do not remove comment
 
@@ -24,7 +25,8 @@ void main() => runApp(MyApp());
 // -- Models --
 final AuthModel authModel = AuthModel();
 final ThemeModel themeModel = ThemeModel();
-final ContactModel contactModel = ContactModel();
+final ContactModel contactModel = ContactModel(auth: authModel);
+final ContactGroupModel contactGroupModel = ContactGroupModel(auth: authModel);
 final TaskModel taskModel = TaskModel();
 final LeadModel leadModel = LeadModel(auth: authModel);
 
@@ -58,7 +60,7 @@ class AppTheme extends StatelessWidget {
         '/settings': (BuildContext context) => SettingsPage(),
         // STARTER: routes - do not remove comment
         '/contacts': (BuildContext context) =>
-            ContactScreen(model: contactModel),
+            ContactsScreen(model: contactModel),
         '/leads': (BuildContext context) => LeadsScreen(model: leadModel),
         '/import': (BuildContext context) => ImportContactsScreen(),
         '/import_single': (BuildContext context) =>
@@ -69,8 +71,8 @@ class AppTheme extends StatelessWidget {
             HomePage(model: taskModel, type: TasksType.lead),
         '/core_lead_tasks': (BuildContext context) =>
             HomePage(model: taskModel, type: TasksType.core_lead),
-        '/contact_groups': (BuildContext context) =>
-            ContactGroupsScreen(model: contactModel, auth: authModel),
+        '/contact_groups': (BuildContext context) => ContactGroupsScreen(
+            model: contactGroupModel, contactModel: contactModel),
       },
     );
   }

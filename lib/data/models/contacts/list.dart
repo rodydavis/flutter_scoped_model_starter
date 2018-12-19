@@ -1,19 +1,28 @@
-import 'package:flutter/foundation.dart';
 import 'package:scoped_model/scoped_model.dart';
-
+import '../../classes/unify/contact_group.dart';
+import '../../classes/contacts/contact_row.dart';
+import 'package:flutter/foundation.dart';
+import '../auth_model.dart';
+import 'package:flutter/material.dart';
 import '../../classes/app/paging.dart';
 import '../../classes/app/sort.dart';
-import '../../classes/leads/lead_row.dart';
-import '../../repositories/leads/leads.dart';
-import '../auth_model.dart';
+import '../../repositories/contacts/contacts.dart';
 import '../../../constants.dart';
 
-class LeadModel extends Model {
+class ContactModel extends Model {
   final AuthModel auth;
 
-  LeadModel({@required this.auth});
+  ContactModel({@required this.auth});
 
-  String get title => "Leads";
+  String get title => "Contacts";
+
+  bool _isLoaded = false;
+
+  bool get isLoaded => _isLoaded;
+
+  bool _fetching = false;
+
+  bool get fetching => _fetching;
 
   int _lastUpdated = 0;
 
@@ -48,10 +57,10 @@ class LeadModel extends Model {
     print("Searching... $value");
 
     // -- Local Search --
-    List<LeadRow> _results = [];
+    List<ContactRow> _results = [];
 
-    if (_leads != null && _leads.isNotEmpty) {
-      for (var _item in _leads) {
+    if (_contacts != null && _contacts.isNotEmpty) {
+      for (var _item in _contacts) {
         if (_item.matchesSearch(value)) {
           _results.add(_item);
         }
@@ -66,10 +75,10 @@ class LeadModel extends Model {
   Sort _sort = Sort(
     initialized: true,
     ascending: true,
-    field: LeadFields.last_name,
+    field: ContactFields.last_name,
     fields: [
-      LeadFields.last_name,
-      LeadFields.first_name,
+      ContactFields.last_name,
+      ContactFields.first_name,
     ],
   );
 
@@ -81,32 +90,27 @@ class LeadModel extends Model {
   }
 
   void _sortList(String field, bool ascending) {
-    _leads?.sort((a, b) => a.compareTo(b, field, ascending));
+    _contacts?.sort((a, b) => a.compareTo(b, field, ascending));
     notifyListeners();
   }
 
-  // -- Data --
-  bool _isLoaded = false;
+  List<ContactRow> _contacts, _filtered;
 
-  get isLoaded => _isLoaded;
-
-  List<LeadRow> _leads, _filtered;
-
-  List<LeadRow> get leads {
+  List<ContactRow> get contacts {
     // -- Searching --
     if (_isSearching) {
       if (_filtered == null) {
-        _filtered = _leads;
+        _filtered = _contacts;
       }
       _sortList(_sort?.field, _sort?.ascending);
       return _filtered;
     }
 
-    if (_leads == null || !_isLoaded) {
+    if (_contacts == null || !_isLoaded) {
       _loadList();
     }
     _sortList(_sort?.field, _sort?.ascending);
-    return _leads;
+    return _contacts;
   }
 
   Paging _paging = Paging(rows: 100, page: 1);
@@ -121,14 +125,13 @@ class LeadModel extends Model {
     await _loadList();
   }
 
-  bool _fetching = false;
   Future _loadList({bool nextPage = false}) async {
     _isLoaded = false;
     notifyListeners();
 
     if (!_fetching) {
       _fetching = true;
-      var _items = await LeadRepository().loadList(auth, paging: _paging);
+      var _items = await ContactRepository().loadList(auth, paging: _paging);
 
       List<dynamic> _result = _items?.result;
 
@@ -137,23 +140,23 @@ class LeadModel extends Model {
         _paging.page -= 1;
       } else {
         var _results = _result
-            ?.map((e) =>
-                e == null ? null : LeadRow.fromJson(e as Map<String, dynamic>))
+            ?.map((e) => e == null
+                ? null
+                : ContactRow.fromJson(e as Map<String, dynamic>))
             ?.toList();
 
         if (nextPage) {
-          _leads.addAll(_results);
+          _contacts.addAll(_results);
         } else {
-          _leads = _results;
+          _contacts = _results;
         }
 
         _lastPage = false;
       }
 
-      _isLoaded = true;
       _fetching = false;
     }
-
+    _isLoaded = true;
     notifyListeners();
   }
 

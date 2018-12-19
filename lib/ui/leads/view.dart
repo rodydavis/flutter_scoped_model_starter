@@ -19,7 +19,7 @@ class LeadDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModel<LeadDetailsModel>(
-        model: LeadDetailsModel(id: leadRow.id, authModel: leadModel?.auth),
+        model: LeadDetailsModel(id: leadRow.id, auth: leadModel?.auth),
         child: Scaffold(
           appBar: AppBar(
             title: Text("Details"),

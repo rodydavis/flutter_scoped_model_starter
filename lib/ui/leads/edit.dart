@@ -203,7 +203,7 @@ void createLead(BuildContext context, {@required LeadModel model}) {
       context,
       new MaterialPageRoute(
         builder: (context) => new EditLeadScreen(
-              model: LeadDetailsModel(authModel: model?.auth),
+              model: LeadDetailsModel(auth: model?.auth),
             ),
         fullscreenDialog: true,
       ));
@@ -217,7 +217,7 @@ void editLead(BuildContext context,
       context,
       new MaterialPageRoute(
         builder: (context) => new EditLeadScreen(
-            model: LeadDetailsModel(authModel: model?.auth, id: leadRow?.id),
+            model: LeadDetailsModel(auth: model?.auth, id: leadRow?.id),
             isNew: false,
             details: details,
             leadRow: leadRow),

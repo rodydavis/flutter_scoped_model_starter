@@ -3,15 +3,14 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import '../../constants.dart';
-import '../../utils/null_or_empty.dart';
-import '../classes/app/paging.dart';
-import '../classes/contacts/contact_details.dart';
-import '../classes/general/search.dart';
-import '../classes/unify/response.dart';
-import '../models/auth_model.dart';
-import '../web_client.dart';
-import '../classes/unify/contact_group.dart';
+import '../../../constants.dart';
+import '../../classes/app/paging.dart';
+import '../../classes/general/search.dart';
+import '../../classes/unify/response.dart';
+import '../../models/auth_model.dart';
+import '../../web_client.dart';
+import '../../classes/contacts/contact_details.dart';
+import '../../../utils/null_or_empty.dart';
 
 class ContactRepository {
   final WebClient webClient;
@@ -29,7 +28,7 @@ class ContactRepository {
     // -- Search By Filters --
     if (search != null && search.search.toString().isNotEmpty) {
       final response = await webClient.post(
-          kApiUrl + '/search/contacts/${paging.rows}/${paging.page}',
+          kApiUrl + '/search/contacts/mobile/${paging.rows}/${paging.page}',
           json.encode(search),
           auth: auth);
 

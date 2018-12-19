@@ -3,12 +3,12 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import '../../constants.dart';
-import '../classes/app/paging.dart';
-import '../classes/unify/contact_group.dart';
-import '../classes/unify/response.dart';
-import '../models/auth_model.dart';
-import '../web_client.dart';
+import '../../../constants.dart';
+import '../../classes/app/paging.dart';
+import '../../classes/unify/contact_group.dart';
+import '../../classes/unify/response.dart';
+import '../../models/auth_model.dart';
+import '../../web_client.dart';
 
 class ContactGroupRepository {
   final WebClient webClient;

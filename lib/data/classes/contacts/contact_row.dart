@@ -33,7 +33,7 @@ class ContactRow {
     this.lastActivity,
   });
 
-  @JsonKey(name: 'contact_id')
+  @JsonKey(name: 'id')
   String id;
   @JsonKey(name: 'first_name')
   String firstName;

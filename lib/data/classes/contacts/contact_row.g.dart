@@ -8,7 +8,7 @@ part of 'contact_row.dart';
 
 ContactRow _$ContactRowFromJson(Map<String, dynamic> json) {
   return ContactRow(
-      id: json['contact_id'] as String,
+      id: json['id'] as String,
       firstName: json['first_name'] as String,
       lastName: json['last_name'] as String,
       cellPhone: json['cell_phone'] as String,
@@ -22,7 +22,7 @@ ContactRow _$ContactRowFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ContactRowToJson(ContactRow instance) =>
     <String, dynamic>{
-      'contact_id': instance.id,
+      'id': instance.id,
       'first_name': instance.firstName,
       'last_name': instance.lastName,
       'cell_phone': instance.cellPhone,
