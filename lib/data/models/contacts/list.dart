@@ -126,7 +126,7 @@ class ContactModel extends Model {
     await _loadList();
   }
 
-  Future _loadList({bool nextPage = false}) async {
+  Future _loadList({bool nextPage = false, String query = ""}) async {
     _isLoaded = false;
     notifyListeners();
 
@@ -170,20 +170,15 @@ class ContactModel extends Model {
   }
 
   void importItems({@required List<ContactDetails> items}) async {
-    _fetching = true;
-    notifyListeners();
-
     if (!_fetching) {
+      _fetching = true;
       print("Adding Items => ${items?.toString()}");
       var _result = await ContactRepository().importData(auth, contacts: items);
       notifyListeners();
       print("Status: $_result");
-      if (_result) {
-//      refresh(context);
-      }
-      _fetching = true;
+      if (_result) refresh();
+      _fetching = false;
     }
-
     notifyListeners();
   }
 

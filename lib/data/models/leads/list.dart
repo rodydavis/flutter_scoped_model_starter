@@ -7,6 +7,7 @@ import '../../classes/leads/lead_row.dart';
 import '../../repositories/leads/leads.dart';
 import '../auth_model.dart';
 import '../../../constants.dart';
+import '../../classes/leads/lead_details.dart';
 
 class LeadModel extends Model {
   final AuthModel auth;
@@ -124,7 +125,7 @@ class LeadModel extends Model {
   bool get fetching => _fetching;
   bool _fetching = false;
 
-  Future _loadList({bool nextPage = false}) async {
+  Future _loadList({bool nextPage = false, String query = ""}) async {
     _isLoaded = false;
     notifyListeners();
 
@@ -164,6 +165,19 @@ class LeadModel extends Model {
       _paging.page += 1;
       _loadList(nextPage: true);
     }
+  }
+
+  void importItems({@required List<LeadDetails> items}) async {
+    if (!_fetching) {
+      _fetching = true;
+      print("Adding Items => ${items?.toString()}");
+      var _result = await LeadRepository().importData(auth, leads: items);
+      notifyListeners();
+      print("Status: $_result");
+      if (_result) refresh();
+      _fetching = false;
+    }
+    notifyListeners();
   }
 
   void cancel() {

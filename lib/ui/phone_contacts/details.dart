@@ -10,7 +10,8 @@ import '../general/phone_tile.dart';
 
 class ContactDetailsScreen extends StatelessWidget {
   final Contact contact;
-  ContactDetailsScreen({this.contact});
+  final bool selected;
+  ContactDetailsScreen({this.contact, this.selected = false});
   @override
   Widget build(BuildContext context) {
     var _details = <Widget>[
@@ -41,6 +42,12 @@ class ContactDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Details"),
+        actions: <Widget>[
+          IconButton(
+            icon: selected ? Icon(Icons.close) : Icon(Icons.check),
+            onPressed: () => Navigator.pop(context, !selected),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -106,10 +113,13 @@ class ContactDetailsScreen extends StatelessWidget {
   }
 }
 
-void viewContact(BuildContext context, {Contact contact}) {
-  Navigator.push(
+Future<bool> viewContact(BuildContext context,
+    {Contact contact, bool selected = false}) async {
+  bool _select = await Navigator.push(
     context,
     MaterialPageRoute(
-        builder: (context) => ContactDetailsScreen(contact: contact)),
+        builder: (context) =>
+            ContactDetailsScreen(contact: contact, selected: selected)),
   );
+  return _select;
 }

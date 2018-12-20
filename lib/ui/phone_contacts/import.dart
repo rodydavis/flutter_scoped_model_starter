@@ -20,31 +20,6 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
   bool _isSearching = false;
   String _search = "";
 
-//  void _loadContacts({bool search = false, String query = ""}) async {
-//    try {
-//      var contacts =
-//          await ContactsService.getContacts(query: search ? query : null);
-//      // final _items = contacts
-//      //     .map((Contact item) => ContactSelect(contact: item, selected: false))
-//      //     .toList();
-//      var _items = <ContactSelect>[];
-//      if (contacts != null && contacts.isNotEmpty)
-//        for (var _item in contacts) {
-//          if (!isNullOrEmpty(_item?.displayName)) {
-//            _items.add(ContactSelect(contact: _item, selected: false));
-//          }
-//        }
-//
-//      setState(() {
-//        if (!search) _contacts = _items;
-//        _filteredContacts = _items;
-//      });
-//    } catch (e) {
-//      print(e);
-//    }
-//    _updateCount();
-//  }
-
   void _selectAll({bool deselect = false}) {
     if (deselect) {
       setState(() {
@@ -60,19 +35,6 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
     }
   }
 
-//  void _updateCount() {
-//    int _count = 0;
-//    if (_contacts != null && _contacts.isNotEmpty)
-//      for (var _item in _contacts) {
-//        if (_item?.selected == true) {
-//          _count++;
-//        }
-//      }
-//    setState(() {
-//      _selectedContacts = _count;
-//    });
-//  }
-
   void _importSelectedContacts(BuildContext context) {
     Navigator.pop(context, _selectedItems);
   }
@@ -86,25 +48,15 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
         (_contactItems?.length == _selectedItems?.length) &&
             _contactItems.isNotEmpty;
     final _list = _selectedItems;
-//    String _text = "";
-//    if (_allSelected) {
-//      _text = "All Contacts Selected";
-//    } else if (_selectedContacts == 0) {
-//      _text = "No Contacts Selected";
-//    } else if (_selectedContacts == 1) {
-//      _text = "Contact $_selectedContacts Selected";
-//    } else {
-//      _text = "Contacts $_selectedContacts Selected";
-//    }
-
-    // List<ContactSelect> items = _isSearching ? _filteredContacts : _contacts;
     return Scaffold(
       appBar: AppBar(
         title: AppSearchBar(
           name: "Phone Contacts",
           isSearching: _isSearching,
           onSearchChanged: (String value) {
-            _search = value;
+            setState(() {
+              _search = value;
+            });
           },
         ),
         actions: <Widget>[
@@ -157,31 +109,23 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
                         : Text(_item?.company),
                     trailing: IconButton(
                       icon: Icon(Icons.info),
-                      onPressed: () => viewContact(context, contact: _item),
+                      onPressed: () => viewContact(context,
+                                  contact: _item, selected: _selected)
+                              .then((selected) {
+                            if (selected != null)
+                              _toggleItem(_item,
+                                  selected: _selected, list: _list);
+                          }),
                     ),
-                    onLongPress: () => viewContact(context, contact: _item),
-                    onTap: () {
-                      print("$_selected Item => " + _item?.displayName);
-                      if (_selected) {
-                        var toRemove = [];
-                        for (var _row in _list) {
-                          if (_item.displayName == _row.displayName)
-                            toRemove.add(_row);
-                        }
-                        setState(() {
-                          _selectedItems
-                              .removeWhere((e) => toRemove.contains(e));
-                        });
-                      } else {
-                        if (widget.selectSingle) {
-                          _selectedItems.clear();
-                        }
-                        setState(() {
-                          _selectedItems.add(_item);
-                        });
-                      }
-                      print(_list);
-                    },
+                    onLongPress: () => viewContact(context,
+                                contact: _item, selected: _selected)
+                            .then((selected) {
+                          if (selected != null)
+                            _toggleItem(_item,
+                                selected: _selected, list: _list);
+                        }),
+                    onTap: () =>
+                        _toggleItem(_item, selected: _selected, list: _list),
                     selected: _selected ?? false,
                   );
                 },
@@ -192,17 +136,25 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
       bottomNavigationBar: AppBottomBar(
         // showSort: false,
         buttons: [
-          IconButton(
-            tooltip: _allSelected ? "Deselect All" : "Select All",
-            icon: Icon(
-              Icons.select_all,
-              color: _allSelected ? Colors.blue : null,
-            ),
-            onPressed: widget.selectSingle || _isSearching
-                ? null
-                : () =>
-                    _allSelected ? _selectAll(deselect: true) : _selectAll(),
-          ),
+          widget.selectSingle
+              ? Container(height: 48.0)
+              : _allSelected
+                  ? IconButton(
+                      tooltip: "Deselect All",
+                      icon: Icon(
+                        Icons.select_all,
+                        color: Colors.blue,
+                      ),
+                      onPressed: () => _selectAll(deselect: true),
+                    )
+                  : IconButton(
+                      tooltip: "Select All",
+                      icon: Icon(
+                        Icons.select_all,
+                        color: null,
+                      ),
+                      onPressed: () => _selectAll(),
+                    ),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -219,16 +171,27 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
             ),
     );
   }
-}
 
-class ContactSelect {
-  final Contact contact;
-  bool selected;
-
-  ContactSelect({
-    this.contact,
-    this.selected = false,
-  });
+  void _toggleItem(Contact item, {bool selected = false, List<Contact> list}) {
+    print("$selected Item => " + item?.displayName);
+    if (selected) {
+      var toRemove = [];
+      for (var _row in list) {
+        if (item.displayName == _row.displayName) toRemove.add(_row);
+      }
+      setState(() {
+        _selectedItems.removeWhere((e) => toRemove.contains(e));
+      });
+    } else {
+      if (widget.selectSingle) {
+        _selectedItems.clear();
+      }
+      setState(() {
+        _selectedItems.add(item);
+      });
+    }
+    print(list);
+  }
 }
 
 Future<Contact> selectContact(BuildContext context) async {

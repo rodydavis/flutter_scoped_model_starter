@@ -91,16 +91,16 @@ class LeadRepository {
     }
   }
 
-  // Future<bool> importData(AuthModel auth,
-  //     {@required List<ContactDetails> leads}) async {
-  //   var data = json.encode(leads);
-  //   print(data);
-  //   var response;
+  Future<bool> importData(AuthModel auth,
+      {@required List<LeadDetails> leads}) async {
+    var data = json.encode(leads);
+    print(data);
+    var response;
 
-  //   response =
-  //       await webClient.post(kApiUrl + '/leads/batch/import', data, auth: auth);
-  //   print(response);
-  //   if (response["Status"].toString().contains("Success")) return true;
-  //   return false;
-  // }
+    response =
+        await webClient.post(kApiUrl + '/leads/batch/import', data, auth: auth);
+    print(response);
+    if (response["Status"].toString().contains("Success")) return true;
+    return false;
+  }
 }

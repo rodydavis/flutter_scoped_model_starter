@@ -11,6 +11,8 @@ import '../general/list_widget.dart';
 import '../general/simple_fab.dart';
 import 'edit.dart';
 import 'item.dart';
+import '../phone_contacts/import.dart';
+import '../../data/classes/leads/lead_details.dart';
 
 class LeadsScreen extends StatelessWidget {
   final LeadModel model;
@@ -66,6 +68,25 @@ class LeadsScreen extends StatelessWidget {
                         isRefreshing: model.fetching,
                         onRefresh: model.refresh,
                         onCancel: model.cancel,
+                      )),
+              new ScopedModelDescendant<LeadModel>(
+                  builder: (context, child, model) => IconButton(
+                        tooltip: "Import Phone Contacts",
+                        icon: Icon(Icons.import_contacts),
+                        onPressed: () =>
+                            selectMultipleContacts(context).then((contacts) {
+                              List<LeadDetails> _items = [];
+                              if (contacts != null) {
+                                for (var _item in contacts) {
+                                  var _details =
+                                      LeadDetails.fromPhoneContact(_item);
+                                  _items.add(_details);
+                                }
+                              }
+                              if (_items.isNotEmpty) {
+                                model.importItems(items: _items);
+                              }
+                            }),
                       )),
             ],
           ),
