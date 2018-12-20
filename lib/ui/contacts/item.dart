@@ -71,25 +71,22 @@ void shareContact(BuildContext context, {ContactRow contact}) async {
     print("VCF Data: $str");
 
     Directory dir = await getApplicationDocumentsDirectory();
-    File testFile = new File("${dir.path}/flutter/test.txt");
 
-    var _fileContents = testFile?.readAsStringSync();
-
-    print("Old File => " + _fileContents);
-
-    print("File Created...");
+    final testFile = new File('${dir.path}/flutter/contact.txt');
 
     testFile.writeAsStringSync(str);
 
-    print("File Updated...");
+    var _bytes = testFile?.readAsBytesSync();
 
-    var _newContents = testFile?.readAsStringSync();
-
-    print("New File => " + _newContents);
+    print("New File Bytes => " + _bytes.toString());
 
 //    File _vcf = new File(testFile.path.replaceAll(".txt", ".vcf"));
 
-    ShareExtend.share(testFile.path, "file");
+    final _vcf = new File('${dir.path}/flutter/contact.vcf');
+
+    _vcf.writeAsBytesSync(_bytes);
+
+    ShareExtend.share(_vcf.path, "file");
 
 //    if (!await testFile.exists()) {
 //      await testFile.create(recursive: true);
