@@ -17,97 +17,86 @@ class ImportContactsScreen extends StatefulWidget {
 }
 
 class ImportContactsScreenState extends State<ImportContactsScreen> {
-  List<ContactSelect> _contacts = [];
-  List<ContactSelect> _filteredContacts = [];
   bool _isSearching = false;
-  int _selectedContacts = 0;
+  String _search = "";
 
-  @override
-  void initState() {
-    // Get all contacts
-    _loadContacts();
-    super.initState();
-  }
-
-  void _loadContacts({bool search = false, String query = ""}) async {
-    try {
-      var contacts =
-          await ContactsService.getContacts(query: search ? query : null);
-      // final _items = contacts
-      //     .map((Contact item) => ContactSelect(contact: item, selected: false))
-      //     .toList();
-      var _items = <ContactSelect>[];
-      if (contacts != null && contacts.isNotEmpty)
-        for (var _item in contacts) {
-          if (!isNullOrEmpty(_item?.displayName)) {
-            _items.add(ContactSelect(contact: _item, selected: false));
-          }
-        }
-
-      setState(() {
-        if (!search) _contacts = _items;
-        _filteredContacts = _items;
-      });
-    } catch (e) {
-      print(e);
-    }
-    _updateCount();
-  }
+//  void _loadContacts({bool search = false, String query = ""}) async {
+//    try {
+//      var contacts =
+//          await ContactsService.getContacts(query: search ? query : null);
+//      // final _items = contacts
+//      //     .map((Contact item) => ContactSelect(contact: item, selected: false))
+//      //     .toList();
+//      var _items = <ContactSelect>[];
+//      if (contacts != null && contacts.isNotEmpty)
+//        for (var _item in contacts) {
+//          if (!isNullOrEmpty(_item?.displayName)) {
+//            _items.add(ContactSelect(contact: _item, selected: false));
+//          }
+//        }
+//
+//      setState(() {
+//        if (!search) _contacts = _items;
+//        _filteredContacts = _items;
+//      });
+//    } catch (e) {
+//      print(e);
+//    }
+//    _updateCount();
+//  }
 
   void _selectAll({bool deselect = false}) {
-    if (_contacts != null && _contacts.isNotEmpty)
-      for (var _item in _contacts) {
-        setState(() {
-          if (deselect) {
-            _item?.selected = false;
-          } else {
-            _item?.selected = true;
-          }
-        });
-      }
-    _updateCount();
-  }
-
-  void _updateCount() {
-    int _count = 0;
-    if (_contacts != null && _contacts.isNotEmpty)
-      for (var _item in _contacts) {
-        if (_item?.selected == true) {
-          _count++;
-        }
-      }
-    setState(() {
-      _selectedContacts = _count;
-    });
-  }
-
-  void _importSelectedContacts(BuildContext context) {
-    if (widget.selectSingle) {
-      Contact _value;
-      if (_contacts != null && _contacts.isNotEmpty) {
-        for (var _item in _contacts) {
-          if (_item?.selected == true) {
-            _value = _item?.contact;
-          }
-        }
-      }
-      Navigator.pop(context, _value);
+    if (deselect) {
+      setState(() {
+        _selectedItems.clear();
+      });
     } else {
-      List<Contact> _items = [];
-      if (_contacts != null && _contacts.isNotEmpty) {
-        for (var _item in _contacts) {
-          if (_item?.selected == true) {
-            _items.add(_item?.contact);
-          }
+      if (_contactItems != null && _contactItems.isNotEmpty)
+        for (var _item in _contactItems) {
+          setState(() {
+            if (!_selectedItems.contains(_item)) _selectedItems.add(_item);
+          });
         }
-      }
-      Navigator.pop(context, _items);
     }
   }
+
+//  void _updateCount() {
+//    int _count = 0;
+//    if (_contacts != null && _contacts.isNotEmpty)
+//      for (var _item in _contacts) {
+//        if (_item?.selected == true) {
+//          _count++;
+//        }
+//      }
+//    setState(() {
+//      _selectedContacts = _count;
+//    });
+//  }
+
+  void _importSelectedContacts(BuildContext context) {
+    Navigator.pop(context, _selectedItems);
+  }
+
+  List<Contact> _selectedItems = [];
+  List<Contact> _contactItems = [];
 
   @override
   Widget build(BuildContext context) {
-    final bool _allSelected = _selectedContacts == _contacts?.length;
+    final bool _allSelected =
+        (_contactItems?.length == _selectedItems?.length) &&
+            _contactItems.isNotEmpty;
+    final _list = _selectedItems;
+//    String _text = "";
+//    if (_allSelected) {
+//      _text = "All Contacts Selected";
+//    } else if (_selectedContacts == 0) {
+//      _text = "No Contacts Selected";
+//    } else if (_selectedContacts == 1) {
+//      _text = "Contact $_selectedContacts Selected";
+//    } else {
+//      _text = "Contacts $_selectedContacts Selected";
+//    }
+
     // List<ContactSelect> items = _isSearching ? _filteredContacts : _contacts;
     return Scaffold(
       appBar: AppBar(
@@ -115,13 +104,7 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
           name: "Phone Contacts",
           isSearching: _isSearching,
           onSearchChanged: (String value) {
-            if (!isNullOrEmpty(value)) {
-              _loadContacts(search: true, query: value);
-            } else {
-              setState(() {
-                _filteredContacts = _contacts;
-              });
-            }
+            _search = value;
           },
         ),
         actions: <Widget>[
@@ -130,84 +113,82 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
             onSearchPressed: () {
               setState(() {
                 _isSearching = !_isSearching;
-                _filteredContacts = _contacts;
               });
             },
           )
         ],
       ),
-      body: ListWidget(
-          items: _isSearching ? _filteredContacts : _contacts,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 10.0),
-                child: Text(
-                  _getLabelText(all: _allSelected, count: _selectedContacts),
-                  style: Theme.of(context).textTheme.title,
-                ),
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount:
-                    (_isSearching ? _filteredContacts : _contacts)?.length ?? 0,
+      body: StreamBuilder(
+          stream: ContactsService.getContacts(
+                  query: _isSearching && _search.isNotEmpty ? _search : null)
+              .asStream(),
+          builder: (BuildContext context,
+              AsyncSnapshot<Iterable<Contact>> snapshot) {
+            if (snapshot.hasData) {
+              final List<Contact> _items = snapshot.data.toList();
+
+              if (_items.isEmpty) {
+                return Center(child: Text("No Contacts Found"));
+              }
+              _contactItems = _items;
+//              final _itemsSelected = _selectedItems;
+              return ListView.builder(
+                itemCount: _items?.length,
                 itemBuilder: (BuildContext context, int index) {
-                  var _item =
-                      (_isSearching ? _filteredContacts : _contacts)[index];
-                  final _contact = _item.contact;
-                  final _selected = _item?.selected ?? false;
+                  final _item = _items[index];
+                  bool _selected = false;
+                  for (var _row in _list) {
+                    if (_item.displayName == _row.displayName) _selected = true;
+                  }
+
                   return ListTile(
-                    selected: _item?.selected,
                     leading: AvatarWidget(
                       imageURL: "",
                       noImageText: convertNamesToLetters(
-                        _contact?.givenName,
-                        _contact?.familyName,
+                        _item?.givenName,
+                        _item?.familyName,
                       ),
                     ),
-                    title: Text(isNullOrEmpty(_contact?.displayName)
+                    title: Text(isNullOrEmpty(_item?.displayName)
                         ? "No Name Found"
-                        : _contact?.displayName),
-                    subtitle: isNullOrEmpty(_contact?.company)
+                        : _item?.displayName),
+                    subtitle: isNullOrEmpty(_item?.company)
                         ? null
-                        : Text(_contact?.company),
+                        : Text(_item?.company),
                     trailing: IconButton(
                       icon: Icon(Icons.info),
-                      onPressed: () => viewContact(context, contact: _contact),
+                      onPressed: () => viewContact(context, contact: _item),
                     ),
+                    onLongPress: () => viewContact(context, contact: _item),
                     onTap: () {
-                      if (widget.selectSingle) {
-                        _selectAll(deselect: true);
+                      print("$_selected Item => " + _item?.displayName);
+                      if (_selected) {
+                        var toRemove = [];
+                        for (var _row in _list) {
+                          if (_item.displayName == _row.displayName)
+                            toRemove.add(_row);
+                        }
                         setState(() {
-                          _item?.selected = !_selected;
+                          _selectedItems
+                              .removeWhere((e) => toRemove.contains(e));
                         });
                       } else {
-                        print("Selected => ${_item?.contact?.displayName}");
-
-                        setState(() {
-                          _item?.selected = !_selected;
-                        });
-
-                        if (_isSearching) {
-                          for (var _newItem in _contacts) {
-                            if (_newItem.contact.displayName ==
-                                _item.contact.displayName) {
-                              setState(() {
-                                _newItem?.selected = !_selected;
-                              });
-                            }
-                          }
+                        if (widget.selectSingle) {
+                          _selectedItems.clear();
                         }
+                        setState(() {
+                          _selectedItems.add(_item);
+                        });
                       }
-                      _updateCount();
+                      print(_list);
                     },
-                    onLongPress: () => viewContact(context, contact: _contact),
+                    selected: _selected ?? false,
                   );
                 },
-              ),
-            ],
-          )),
+              );
+            }
+            return Center(child: CircularProgressIndicator());
+          }),
       bottomNavigationBar: AppBottomBar(
         // showSort: false,
         buttons: [
@@ -222,31 +203,21 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
                 : () =>
                     _allSelected ? _selectAll(deselect: true) : _selectAll(),
           ),
-          IconButton(
-            tooltip: "Refresh",
-            icon: Icon(Icons.refresh),
-            onPressed: () => _loadContacts(),
-          ),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: _selectedContacts == 0
+      floatingActionButton: _selectedItems?.isEmpty ?? true
           ? null
           : FloatingActionButton(
               tooltip: "Import Contacts",
-              child: Icon(Icons.save),
+              child: widget.selectSingle
+                  ? Icon(Icons.file_download)
+                  : Text(_selectedItems.length.toString()),
               heroTag: "Import",
               backgroundColor: Theme.of(context).primaryColor,
               onPressed: () => _importSelectedContacts(context),
             ),
     );
-  }
-
-  String _getLabelText({bool all, int count}) {
-    if (all) return "All Contacts Selected";
-    if (count == 0) return "No Contacts Selected";
-    if (count == 1) return "Contact $count Selected";
-    return "Contacts $count Selected";
   }
 }
 
