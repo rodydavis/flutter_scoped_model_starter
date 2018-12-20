@@ -11,6 +11,7 @@ import '../app/buttons/app_share_button.dart';
 import 'package:share_extend/share_extend.dart';
 import '../general/three_row_tile.dart';
 import '../../utils/null_or_empty.dart';
+import '../../utils/vcf_card.dart';
 import 'edit.dart';
 import 'view.dart';
 
@@ -43,77 +44,7 @@ class ContactItem extends StatelessWidget {
       onDelete: () => showConfirmationPopup(context,
           detail: "Are you sure you want to delete?"),
       onEdit: () => editContact(context, model: model, row: contact),
-      onShare: () => shareContact(context, contact: contact),
+      onShare: () => shareContact(context),
     );
   }
 }
-
-void shareContact(BuildContext context, {ContactRow contact}) async {
-  try {
-    String str = "BEGIN:VCARD\n" +
-        "VERSION:4.0\n" +
-        "N:${contact?.lastName};${contact?.firstName};;;\n" +
-        "FN:${(contact?.firstName ?? "") + " " + contact?.lastName}\n" +
-        "ORG:Unify CRM\n" +
-        "TITLE:Unify Contact\n";
-    if (!isNullOrEmpty(contact?.cellPhone?.raw()))
-      str +=
-          "TEL;TYPE=cell,voice;VALUE=uri:tel:+${contact?.cellPhone?.toString()}\n";
-    if (!isNullOrEmpty(contact?.homePhone?.raw()))
-      str +=
-          "TEL;TYPE=home,voice;VALUE=uri:tel:+${contact?.homePhone?.toString()}\n";
-    if (!isNullOrEmpty(contact?.officePhone?.raw()))
-      str +=
-          "TEL;TYPE=work,voice;VALUE=uri:tel:+${contact?.officePhone?.toString()}\n";
-    if (!isNullOrEmpty(contact?.email)) str += "EMAIL:${contact?.email}\n";
-    str += "REV:20080424T195243Z\n" + "END:VCARD";
-
-    print("VCF Data: $str");
-
-    Directory dir = await getApplicationDocumentsDirectory();
-
-    final testFile = new File('${dir.path}/flutter/contact.txt');
-
-    testFile.writeAsStringSync(str);
-
-    var _bytes = testFile?.readAsBytesSync();
-
-    print("New File Bytes => " + _bytes.toString());
-
-//    File _vcf = new File(testFile.path.replaceAll(".txt", ".vcf"));
-
-    final _vcf = new File('${dir.path}/flutter/contact.vcf');
-
-    _vcf.writeAsBytesSync(_bytes);
-
-    ShareExtend.share(_vcf.path, "file");
-
-//    if (!await testFile.exists()) {
-//      await testFile.create(recursive: true);
-//      testFile.writeAsStringSync(str);
-//
-////      shareFile(context, file: testFile);
-//    }
-
-  } catch (e) {
-    print(e);
-  }
-}
-//
-//Future<File> writeData(String data) async {
-//  final file = await _localFile;
-//
-//  // Write the file
-//  return file.writeAsString('$data');
-//}
-//
-//Future<File> get _localFile async {
-//  final path = await _localPath;
-//  return new File('$path/contact.vcf');
-//}
-//
-//Future<String> get _localPath async {
-//  final directory = await getApplicationDocumentsDirectory();
-//
-//  return directory.path;
-//}
