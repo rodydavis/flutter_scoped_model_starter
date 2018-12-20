@@ -49,7 +49,10 @@ class ContactsFromGroupScreen extends StatelessWidget {
                         final _info = model.contacts[index];
                         if (index == model.contacts.length - 1)
                           model.fetchNext();
-                        return ContactItem(model: contactModel, contact: _info);
+                        return ContactItem(
+                            model: contactModel,
+                            contact: _info,
+                            groupModel: model);
                       },
                     ),
                   ),

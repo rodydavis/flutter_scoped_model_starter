@@ -13,10 +13,13 @@ import '../phone_contacts/import.dart';
 import 'edit.dart';
 import '../../data/classes/contacts/contact_details.dart';
 import 'item.dart';
+import '../../data/models/contacts/groups.dart';
 
 class ContactsScreen extends StatelessWidget {
   final ContactModel model;
-  ContactsScreen({this.model});
+  final ContactGroupModel groupModel;
+
+  ContactsScreen({this.model, @required this.groupModel});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,10 @@ class ContactsScreen extends StatelessWidget {
                           final _info = model.contacts[index];
                           if (index == model.contacts.length - 1)
                             model.fetchNext();
-                          return ContactItem(model: model, contact: _info);
+                          return ContactItem(
+                              model: model,
+                              contact: _info,
+                              groupModel: groupModel);
                         },
                       ),
                     ),
@@ -107,7 +113,8 @@ class ContactsScreen extends StatelessWidget {
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           floatingActionButton: SimpleFAB(
             child: Icon(Icons.add),
-            onPressed: () => createContact(context, model: model),
+            onPressed: () =>
+                createContact(context, model: model, groupModel: groupModel),
           )),
     );
   }

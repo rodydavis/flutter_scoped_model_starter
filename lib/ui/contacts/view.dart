@@ -1,28 +1,30 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../data/classes/contacts/contact_row.dart';
 import '../../data/models/contacts/details.dart';
+import '../../data/models/contacts/groups.dart';
 import '../../data/models/contacts/list.dart';
+import '../../utils/null_or_empty.dart';
+import '../../utils/vcf_card.dart';
 import '../app/app_bottom_bar.dart';
+import '../app/buttons/app_delete_button.dart';
+import '../app/buttons/app_share_button.dart';
 import '../general/address_tile.dart';
 import '../general/phone_tile.dart';
 import 'edit.dart';
-import '../app/buttons/app_delete_button.dart';
-import '../app/buttons/app_share_button.dart';
-import 'package:contacts_service/contacts_service.dart';
-import '../app/buttons/app_share_button.dart';
-import '../../utils/vcf_card.dart';
-import '../../data/classes/contacts/contact_details.dart';
-import '../../utils/null_or_empty.dart';
+import 'groups/manage.dart';
 
 class LeadDetailsScreen extends StatelessWidget {
   final ContactRow contactRow;
   final ContactModel contactModel;
+  final ContactGroupModel groupModel;
 
   LeadDetailsScreen({
     @required this.contactRow,
     @required this.contactModel,
+    @required this.groupModel,
   });
 
   @override
@@ -147,11 +149,21 @@ class LeadDetailsScreen extends StatelessWidget {
                         await model.delete();
                         Navigator.pop(context);
                       })),
-              IconButton(
-                tooltip: "Lead Groups",
-                icon: Icon(Icons.people),
-                onPressed: () => null,
-              ),
+              new ScopedModelDescendant<ContactDetailsModel>(
+                  builder: (context, child, model) => IconButton(
+                        tooltip: "Contact Groups",
+                        icon: Icon(Icons.group),
+                        onPressed: () async {
+                          var _groups = await manageGroups(context,
+                              initial: model.details?.contactGroups ?? [],
+                              model: groupModel);
+                          if (_groups != null) {
+                            var _details = model?.details;
+                            _details.contactGroups = _groups;
+                            await model.edit(_details);
+                          }
+                        },
+                      )),
               IconButton(
                 tooltip: "Add Follow Up",
                 icon: Icon(Icons.event_available),
@@ -178,6 +190,7 @@ class LeadDetailsScreen extends StatelessWidget {
                     onPressed: () => editContact(context,
                         model: contactModel,
                         details: model.details,
+                        groupModel: groupModel,
                         row: contactRow),
                     child: Icon(Icons.edit, color: Colors.white),
                     tooltip: 'Edit Item',
@@ -187,13 +200,16 @@ class LeadDetailsScreen extends StatelessWidget {
 }
 
 void viewContact(BuildContext context,
-    {@required ContactModel model, @required ContactRow row}) {
+    {@required ContactModel model,
+    @required ContactRow row,
+    @required ContactGroupModel groupModel}) {
   Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new LeadDetailsScreen(
               contactRow: row,
               contactModel: model,
+              groupModel: groupModel,
             ),
         fullscreenDialog: false,
       ));

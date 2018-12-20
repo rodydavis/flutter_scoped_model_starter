@@ -1,26 +1,27 @@
-import 'dart:io';
-
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../data/classes/contacts/contact_row.dart';
+import '../../data/models/contacts/groups.dart';
 import '../../data/models/contacts/list.dart';
 import '../../utils/date_formatter.dart';
-import '../../utils/popUp.dart';
-import '../app/buttons/app_share_button.dart';
-import 'package:share_extend/share_extend.dart';
-import '../general/three_row_tile.dart';
 import '../../utils/null_or_empty.dart';
+import '../../utils/popUp.dart';
 import '../../utils/vcf_card.dart';
-import 'package:contacts_service/contacts_service.dart';
+import '../app/buttons/app_share_button.dart';
+import '../general/three_row_tile.dart';
 import 'edit.dart';
 import 'view.dart';
 
 class ContactItem extends StatelessWidget {
   final ContactRow contact;
   final ContactModel model;
+  final ContactGroupModel groupModel;
 
-  ContactItem({@required this.contact, @required this.model});
+  ContactItem(
+      {@required this.contact,
+      @required this.model,
+      @required this.groupModel});
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +29,10 @@ class ContactItem extends StatelessWidget {
       icon: Icon(Icons.person),
       title: Text(contact?.displayName),
 //      subtitle: Text(contact?.lastActivity),
-      onTap: () => viewContact(context, model: model, row: contact),
-      onLongPress: () => editContact(context, model: model, row: contact),
+      onTap: () => viewContact(context,
+          model: model, row: contact, groupModel: groupModel),
+      onLongPress: () => editContact(context,
+          model: model, row: contact, groupModel: groupModel),
       cell: contact?.cellPhone,
       home: contact?.homePhone,
       office: contact?.officePhone,
@@ -44,7 +47,8 @@ class ContactItem extends StatelessWidget {
       ),
       onDelete: () => showConfirmationPopup(context,
           detail: "Are you sure you want to delete?"),
-      onEdit: () => editContact(context, model: model, row: contact),
+      onEdit: () => editContact(context,
+          model: model, row: contact, groupModel: groupModel),
       onShare: () => shareContact(context, contact: contact),
     );
   }

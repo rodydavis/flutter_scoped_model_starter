@@ -60,7 +60,7 @@ class AppTheme extends StatelessWidget {
         '/settings': (BuildContext context) => SettingsPage(),
         // STARTER: routes - do not remove comment
         '/contacts': (BuildContext context) =>
-            ContactsScreen(model: contactModel),
+            ContactsScreen(model: contactModel, groupModel: contactGroupModel),
         '/leads': (BuildContext context) => LeadsScreen(model: leadModel),
         '/import_multiple': (BuildContext context) => ImportContactsScreen(),
         '/import_single': (BuildContext context) =>

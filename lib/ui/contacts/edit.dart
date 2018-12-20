@@ -118,8 +118,6 @@ class EditContactScreenState extends State<EditContactScreen> {
               IconButton(
                 tooltip: "Contact Groups",
                 icon: Icon(Icons.group),
-//                onPressed: () =>
-//                    _manageContactGroups(context, model: widget.model),
                 onPressed: () async {
                   var _groups = await manageGroups(context,
                       initial: groups ?? [], model: widget.groupModel);
@@ -275,14 +273,15 @@ class EditContactScreenState extends State<EditContactScreen> {
   }
 }
 
-void createContact(BuildContext context, {@required ContactModel model}) {
+void createContact(BuildContext context,
+    {@required ContactModel model, @required ContactGroupModel groupModel}) {
   Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new EditContactScreen(
               isNew: true,
               model: ContactDetailsModel(auth: model?.auth),
-              groupModel: ContactGroupModel(auth: model?.auth),
+              groupModel: groupModel,
             ),
         fullscreenDialog: true,
       ));
@@ -290,6 +289,7 @@ void createContact(BuildContext context, {@required ContactModel model}) {
 
 void editContact(BuildContext context,
     {@required ContactModel model,
+    @required ContactGroupModel groupModel,
     ContactDetails details,
     @required ContactRow row}) {
   Navigator.push(
@@ -300,7 +300,7 @@ void editContact(BuildContext context,
               isNew: false,
               details: details,
               contactRow: row,
-              groupModel: ContactGroupModel(auth: model?.auth),
+              groupModel: groupModel,
             ),
         fullscreenDialog: true,
       ));
