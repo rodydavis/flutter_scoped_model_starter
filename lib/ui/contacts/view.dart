@@ -14,6 +14,7 @@ import 'package:contacts_service/contacts_service.dart';
 import '../app/buttons/app_share_button.dart';
 import '../../utils/vcf_card.dart';
 import '../../data/classes/contacts/contact_details.dart';
+import '../../utils/null_or_empty.dart';
 
 class LeadDetailsScreen extends StatelessWidget {
   final ContactRow contactRow;
@@ -36,35 +37,56 @@ class LeadDetailsScreen extends StatelessWidget {
                   builder: (context, child, model) => IconButton(
                         icon: Icon(Icons.share),
                         onPressed: () {
+                          var _phones = <Item>[];
+
+                          if (!isNullOrEmpty(
+                              model?.details?.cellPhone?.raw())) {
+                            _phones.add(Item(
+                                label: "cell",
+                                value: model.details?.cellPhone?.toString()));
+                          }
+
+                          if (!isNullOrEmpty(
+                              model?.details?.homePhone?.raw())) {
+                            _phones.add(Item(
+                                label: "home",
+                                value: model.details?.homePhone?.toString()));
+                          }
+
+                          if (!isNullOrEmpty(
+                              model?.details?.officePhone?.raw())) {
+                            _phones.add(Item(
+                                label: "work",
+                                value: model.details?.officePhone?.toString()));
+                          }
+
+                          var _emails = <Item>[];
+
+                          if (!isNullOrEmpty(model.details?.email)) {
+                            _emails.add(Item(
+                                label: "home", value: model.details?.email));
+                          }
+
+                          var _addresses = <PostalAddress>[];
+
+                          if (!isNullOrEmpty(model.details?.address?.raw())) {
+                            _addresses.add(PostalAddress(
+                              label: "home",
+                              street: model.details?.address?.street,
+                              city: model.details?.address?.city,
+                              region: model.details?.address?.state,
+                              postcode: model.details?.address?.zip,
+                              country: "USA",
+                            ));
+                          }
+
                           final Contact _info = Contact(
                             givenName: model.details?.firstName,
                             familyName: model.details?.lastName,
                             company: "Unify Contact",
-                            phones: [
-                              Item(
-                                  label: "home",
-                                  value: model.details?.homePhone?.toString()),
-                              Item(
-                                  label: "cell",
-                                  value: model.details?.cellPhone?.toString()),
-                              Item(
-                                  label: "work",
-                                  value:
-                                      model.details?.officePhone?.toString()),
-                            ],
-                            emails: [
-                              Item(label: "home", value: model.details?.email),
-                            ],
-                            postalAddresses: [
-                              PostalAddress(
-                                label: "home",
-                                street: model.details?.address?.street,
-                                city: model.details?.address?.city,
-                                region: model.details?.address?.state,
-                                postcode: model.details?.address?.zip,
-                                country: "USA",
-                              ),
-                            ],
+                            phones: _phones,
+                            emails: _emails,
+                            postalAddresses: _addresses,
                           );
                           generateVCARD(context, contact: _info).then((file) {
                             if (file != null) {

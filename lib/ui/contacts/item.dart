@@ -51,18 +51,32 @@ class ContactItem extends StatelessWidget {
 }
 
 void shareContact(BuildContext context, {ContactRow contact}) async {
+  var _phones = <Item>[];
+
+  if (!isNullOrEmpty(contact?.cellPhone?.raw())) {
+    _phones.add(Item(label: "cell", value: contact?.cellPhone?.toString()));
+  }
+
+  if (!isNullOrEmpty(contact?.homePhone?.raw())) {
+    _phones.add(Item(label: "home", value: contact?.homePhone?.toString()));
+  }
+
+  if (!isNullOrEmpty(contact?.officePhone?.raw())) {
+    _phones.add(Item(label: "work", value: contact?.officePhone?.toString()));
+  }
+
+  var _emails = <Item>[];
+
+  if (!isNullOrEmpty(contact?.email)) {
+    _emails.add(Item(label: "home", value: contact?.email));
+  }
+
   final Contact _info = Contact(
     givenName: contact?.firstName,
     familyName: contact?.lastName,
     company: "Unify Contact",
-    phones: [
-      Item(label: "home", value: contact?.homePhone?.toString()),
-      Item(label: "cell", value: contact?.cellPhone?.toString()),
-      Item(label: "work", value: contact?.officePhone?.toString()),
-    ],
-    emails: [
-      Item(label: "home", value: contact?.email),
-    ],
+    phones: _phones,
+    emails: _emails,
   );
   var _file = await generateVCARD(context, contact: _info);
   if (_file != null) {

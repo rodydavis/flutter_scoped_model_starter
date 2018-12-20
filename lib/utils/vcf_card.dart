@@ -11,11 +11,16 @@ Future<File> generateVCARD(BuildContext context, {Contact contact}) async {
     try {
       String str = "";
       str += "BEGIN:VCARD\n";
+
       str += "VERSION:4.0\n";
+
       str += "N:${_info?.familyName};${_info?.givenName};;;\n";
+
       str += "FN:${(_info?.givenName ?? "") + " " + _info?.familyName}\n";
+
       if (_info?.company != null && _info.company.isNotEmpty)
         str += "ORG:${_info?.company}\n";
+
       if (_info?.jobTitle != null && _info.jobTitle.isNotEmpty)
         str += "TITLE:${_info?.jobTitle}\n";
 
@@ -51,7 +56,9 @@ Future<File> generateVCARD(BuildContext context, {Contact contact}) async {
         }
       }
 
-      str += "REV:20080424T195243Z\n" + "END:VCARD";
+      str += "REV:20080424T195243Z\n";
+
+      str += "END:VCARD";
 
       // -- Write to File --
       var _path = "contact";
