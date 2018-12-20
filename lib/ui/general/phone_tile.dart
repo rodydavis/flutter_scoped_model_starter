@@ -112,15 +112,17 @@ class _PhoneInputTileState extends State<PhoneInputTile> {
         onPressed: () async {
           final ContactPicker _contactPicker = new ContactPicker();
           Contact contact = await _contactPicker.selectContact();
-          var _value = contact?.phoneNumber?.number;
-          var _newPhone = Phone.fromString(_value);
-          _clear();
-          setState(() {
-            _areaCode.text = _newPhone?.areaCode;
-            _prefix.text = _newPhone?.prefix;
-            _number.text = _newPhone?.number;
-            _ext.text = _newPhone?.ext;
-          });
+          if (contact != null) {
+            var _value = contact?.phoneNumber?.number;
+            var _newPhone = Phone.fromString(_value);
+            _clear();
+            setState(() {
+              _areaCode.text = _newPhone?.areaCode;
+              _prefix.text = _newPhone?.prefix;
+              _number.text = _newPhone?.number;
+              _ext.text = _newPhone?.ext;
+            });
+          }
         });
     if (!_isEditing)
       return ListTile(
