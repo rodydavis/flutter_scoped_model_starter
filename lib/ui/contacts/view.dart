@@ -10,6 +10,10 @@ import '../general/phone_tile.dart';
 import 'edit.dart';
 import '../app/buttons/app_delete_button.dart';
 import '../app/buttons/app_share_button.dart';
+import 'package:contacts_service/contacts_service.dart';
+import '../app/buttons/app_share_button.dart';
+import '../../utils/vcf_card.dart';
+import '../../data/classes/contacts/contact_details.dart';
 
 class LeadDetailsScreen extends StatelessWidget {
   final ContactRow contactRow;
@@ -29,8 +33,44 @@ class LeadDetailsScreen extends StatelessWidget {
             title: Text("Details"),
             actions: <Widget>[
               new ScopedModelDescendant<ContactDetailsModel>(
-                  builder: (context, child, model) => ShareButton(
-                        data: model.details.toString(),
+                  builder: (context, child, model) => IconButton(
+                        icon: Icon(Icons.share),
+                        onPressed: () {
+                          final Contact _info = Contact(
+                            givenName: model.details?.firstName,
+                            familyName: model.details?.lastName,
+                            company: "Unify Contact",
+                            phones: [
+                              Item(
+                                  label: "home",
+                                  value: model.details?.homePhone?.toString()),
+                              Item(
+                                  label: "cell",
+                                  value: model.details?.cellPhone?.toString()),
+                              Item(
+                                  label: "work",
+                                  value:
+                                      model.details?.officePhone?.toString()),
+                            ],
+                            emails: [
+                              Item(label: "home", value: model.details?.email),
+                            ],
+                            postalAddresses: [
+                              PostalAddress(
+                                label: "home",
+                                street: model.details?.address?.street,
+                                city: model.details?.address?.city,
+                                region: model.details?.address?.state,
+                                postcode: model.details?.address?.zip,
+                              ),
+                            ],
+                          );
+                          generateVCARD(context, contact: _info).then((file) {
+                            if (file != null) {
+                              shareFile(context, file: file);
+                            }
+                          });
+                        },
                       )),
             ],
           ),
@@ -123,7 +163,7 @@ class LeadDetailsScreen extends StatelessWidget {
   }
 }
 
-void viewLead(BuildContext context,
+void viewContact(BuildContext context,
     {@required ContactModel model, @required ContactRow row}) {
   Navigator.push(
       context,

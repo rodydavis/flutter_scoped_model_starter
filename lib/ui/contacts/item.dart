@@ -24,23 +24,11 @@ class ContactItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Contact _info = Contact(
-      givenName: contact?.firstName,
-      familyName: contact?.lastName,
-      phones: [
-        Item(label: "home", value: contact?.homePhone?.toString()),
-        Item(label: "cell", value: contact?.cellPhone?.toString()),
-        Item(label: "work", value: contact?.officePhone?.toString()),
-      ],
-      emails: [
-        Item(label: "home", value: contact?.email),
-      ],
-    );
     return ThreeRowTile(
       icon: Icon(Icons.person),
       title: Text(contact?.displayName),
 //      subtitle: Text(contact?.lastActivity),
-      onTap: () => viewLead(context, model: model, row: contact),
+      onTap: () => viewContact(context, model: model, row: contact),
       onLongPress: () => editContact(context, model: model, row: contact),
       cell: contact?.cellPhone,
       home: contact?.homePhone,
@@ -57,7 +45,27 @@ class ContactItem extends StatelessWidget {
       onDelete: () => showConfirmationPopup(context,
           detail: "Are you sure you want to delete?"),
       onEdit: () => editContact(context, model: model, row: contact),
-      onShare: () => shareContact(context, contact: _info),
+      onShare: () => shareContact(context, contact: contact),
     );
+  }
+}
+
+void shareContact(BuildContext context, {ContactRow contact}) async {
+  final Contact _info = Contact(
+    givenName: contact?.firstName,
+    familyName: contact?.lastName,
+    company: "Unify Contact",
+    phones: [
+      Item(label: "home", value: contact?.homePhone?.toString()),
+      Item(label: "cell", value: contact?.cellPhone?.toString()),
+      Item(label: "work", value: contact?.officePhone?.toString()),
+    ],
+    emails: [
+      Item(label: "home", value: contact?.email),
+    ],
+  );
+  var _file = await generateVCARD(context, contact: _info);
+  if (_file != null) {
+    shareFile(context, file: _file);
   }
 }
