@@ -124,6 +124,24 @@ class LeadDetailsScreen extends StatelessWidget {
                   builder: (context, child, model) {
                 if (model.details != null) {
                   final _details = model.details;
+                  var _groupTiles = <Widget>[];
+
+                  if (_details?.contactGroups != null &&
+                      _details.contactGroups.isNotEmpty) {
+                    for (var _item in _details.contactGroups) {
+                      _groupTiles.add(ListTile(
+                        title: Text(_item?.name ?? "No Name Found"),
+                        trailing: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () async {
+                              var _groups = _details.contactGroups;
+                              _groups.remove(_item);
+                              await model.edit(_details);
+                            }),
+                      ));
+                    }
+                  }
+
                   return Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -132,6 +150,12 @@ class LeadDetailsScreen extends StatelessWidget {
                         label: "Current Address",
                         icon: Icons.map,
                       ),
+                      _groupTiles.isNotEmpty
+                          ? ExpansionTile(
+                              title: Text("Contact Groups"),
+                              children: _groupTiles,
+                            )
+                          : Container(),
                     ],
                   );
                 }
