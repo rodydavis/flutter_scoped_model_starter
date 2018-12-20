@@ -41,15 +41,15 @@ Future<File> generateVCARD(BuildContext context, {Contact contact}) async {
         }
       }
 
-//      if (_info?.postalAddresses != null && _info.postalAddresses.isNotEmpty) {
-//        int _index = 1;
-//        for (var _item in _info.postalAddresses) {
-//          str +=
-//          "EMAIL;PREF=${_index.toString()};TYPE=${_item?.label}:${_item?.value}\n";
-//          print("Added => Email ${_item?.label} | ${_item?.value}");
-//          _index++;
-//        }
-//      }
+      if (_info?.postalAddresses != null && _info.postalAddresses.isNotEmpty) {
+        int _index = 1;
+        for (var _item in _info.postalAddresses) {
+          str +=
+              "ADR;PREF=${_index.toString()};TYPE=${_item?.label}:;;${_item?.street}\, ;${_item?.city};${_item?.region};${_item?.postcode};${_item?.country}\n";
+          print("Added => Address ${_item?.label}");
+          _index++;
+        }
+      }
 
       str += "REV:20080424T195243Z\n" + "END:VCARD";
 

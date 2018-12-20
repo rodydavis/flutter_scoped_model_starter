@@ -62,6 +62,7 @@ class LeadDetailsScreen extends StatelessWidget {
                                 city: model.details?.address?.city,
                                 region: model.details?.address?.state,
                                 postcode: model.details?.address?.zip,
+                                country: "USA",
                               ),
                             ],
                           );
