@@ -3,26 +3,31 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../../data/classes/contacts/contact_details.dart';
 import '../../data/classes/contacts/contact_row.dart';
+import '../../data/classes/general/address.dart';
+import '../../data/classes/general/phone.dart';
+import '../../data/classes/unify/contact_group.dart';
 import '../../data/models/contacts/details.dart';
+import '../../data/models/contacts/groups.dart';
 import '../../data/models/contacts/list.dart';
 import '../app/app_input_field.dart';
-import '../phone_contacts/import.dart';
-import '../general/phone_tile.dart';
-import '../../data/classes/general/phone.dart';
-import '../../data/classes/general/address.dart';
 import '../general/address_tile.dart';
+import '../general/phone_tile.dart';
+import '../phone_contacts/import.dart';
+import 'groups/manage.dart';
 
 class EditContactScreen extends StatefulWidget {
   final ContactDetailsModel model;
   final ContactDetails details;
   final ContactRow contactRow;
   final bool isNew;
+  final ContactGroupModel groupModel;
 
   EditContactScreen({
     this.model,
     this.details,
     this.isNew = true,
     this.contactRow,
+    @required this.groupModel,
   });
 
   @override
@@ -36,6 +41,7 @@ class EditContactScreenState extends State<EditContactScreen> {
   TextEditingController _firstName, _lastName, _email;
   Phone cellPhone, homePhone, officePhone;
   Address currentAddress;
+  List<ContactGroup> groups;
 
   @override
   void initState() {
@@ -82,6 +88,7 @@ class EditContactScreenState extends State<EditContactScreen> {
       cellPhone = info?.cellPhone;
       homePhone = info?.homePhone;
       officePhone = info?.officePhone;
+      groups = info?.contactGroups;
     });
   }
 
@@ -113,7 +120,15 @@ class EditContactScreenState extends State<EditContactScreen> {
                 icon: Icon(Icons.group),
 //                onPressed: () =>
 //                    _manageContactGroups(context, model: widget.model),
-                onPressed: null,
+                onPressed: () async {
+                  var _groups = await manageGroups(context,
+                      initial: groups ?? [], model: widget.groupModel);
+                  if (_groups != null) {
+                    setState(() {
+                      groups = _groups;
+                    });
+                  }
+                },
               ),
             ],
           ),
@@ -122,20 +137,26 @@ class EditContactScreenState extends State<EditContactScreen> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  AppInputField(
-                    name: ContactFields.first_name,
-                    autoFocus: true,
-                    required: true,
-                    controller: _firstName,
-                  ),
-                  AppInputField(
-                    name: ContactFields.last_name,
-                    required: true,
-                    controller: _lastName,
-                  ),
-                  AppInputField(
-                    name: ContactFields.email,
-                    controller: _email,
+                  ExpansionTile(
+                    initiallyExpanded: true,
+                    title: Text("Info"),
+                    children: <Widget>[
+                      AppInputField(
+                        name: ContactFields.first_name,
+                        autoFocus: true,
+                        required: true,
+                        controller: _firstName,
+                      ),
+                      AppInputField(
+                        name: ContactFields.last_name,
+                        required: true,
+                        controller: _lastName,
+                      ),
+                      AppInputField(
+                        name: ContactFields.email,
+                        controller: _email,
+                      ),
+                    ],
                   ),
                   ExpansionTile(
                     title: Text("Phone Numbers"),
@@ -259,7 +280,9 @@ void createContact(BuildContext context, {@required ContactModel model}) {
       context,
       new MaterialPageRoute(
         builder: (context) => new EditContactScreen(
+              isNew: true,
               model: ContactDetailsModel(auth: model?.auth),
+              groupModel: ContactGroupModel(auth: model?.auth),
             ),
         fullscreenDialog: true,
       ));
@@ -273,10 +296,12 @@ void editContact(BuildContext context,
       context,
       new MaterialPageRoute(
         builder: (context) => new EditContactScreen(
-            model: ContactDetailsModel(auth: model?.auth, id: row?.id),
-            isNew: false,
-            details: details,
-            contactRow: row),
+              model: ContactDetailsModel(auth: model?.auth, id: row?.id),
+              isNew: false,
+              details: details,
+              contactRow: row,
+              groupModel: ContactGroupModel(auth: model?.auth),
+            ),
         fullscreenDialog: true,
       ));
 }

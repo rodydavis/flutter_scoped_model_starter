@@ -1,197 +1,217 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sidekick/flutter_sidekick.dart';
 import '../../../data/classes/unify/contact_group.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../../../data/models/contacts/groups.dart';
+import '../../../data/models/contacts/list.dart';
 
 class ContactGroupManageContact extends StatelessWidget {
-  final List<ContactGroup> source, initial;
-  ContactGroupManageContact({this.source, this.initial});
-
+  final List<ContactGroup> initial;
+  final ContactGroupModel model;
+  ContactGroupManageContact({this.initial, this.model});
   @override
   Widget build(BuildContext context) {
-    for (var _item in initial) {
-      if (source.contains(_item)) {
-        source.remove(_item);
-      }
-    }
-
     // The SidekickTeamBuilder takes in charge the animations and
     // the state management.
-    return SidekickTeamBuilder<ContactGroup>(
-      // We can set an optional animation duration (defaults to 300ms).
-      animationDuration: Duration(milliseconds: 300),
+    return ScopedModel<ContactGroupModel>(
+      model: model,
+      child: new ScopedModelDescendant<ContactGroupModel>(
+          builder: (context, child, model) {
+        var _source = model?.groups;
+        if (_source != null) {
+          for (var _item in initial) {
+            if (_source.contains(_item)) {
+              _source.remove(_item);
+            }
+          }
+        }
 
-      // We can set a the initial list of the container denoted the 'source'.
-      initialSourceList: source,
+        return SidekickTeamBuilder<ContactGroup>(
+          // We can set an optional animation duration (defaults to 300ms).
+          animationDuration: Duration(milliseconds: 300),
 
-      // We can also set a the initial list of the container denoted the 'target'.
-      initialTargetList: initial,
+          // We can set a the initial list of the container denoted the 'source'.
+          initialSourceList: _source,
 
-      // The builder let you build everything you want.
-      // The sourceBuilderDelegates and targetBuilderDelegates let you build
-      // your container final widgets.
-      builder: (context, sourceBuilderDelegates, targetBuilderDelegates) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("Contact Groups"),
-            actions: <Widget>[
-              IconButton(
-                tooltip: "Save Groups",
-                icon: Icon(Icons.save),
-                onPressed: () {
-                  var _results = targetBuilderDelegates
-                      ?.map((e) => e == null ? null : e.message)
-                      ?.toList();
-                  Navigator.pop(context, _results);
-                },
-              ),
-            ],
-          ),
-          body: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView(
-                children: <Widget>[
-                  ConstrainedBox(
-                    constraints: BoxConstraints(minHeight: 150.0),
-                    child: Wrap(
-                      spacing: 4.0,
-                      runSpacing: 4.0,
-                      // For each target child, there is a targetBuilderDelegate.
-                      children: targetBuilderDelegates.map((builderDelegate) {
-                        // We build the child using the build method of the delegate.
-                        // This is how the Sidekicks are added automatically.
-                        return builderDelegate.build(
-                          context,
-                          GestureDetector(
-                            // We can use the builderDelegate.state property
-                            // to trigger the move.
-                            // The element to move is determined by the message.
-                            // So it should be unique.
-                            onTap: () => builderDelegate.state
-                                .move(builderDelegate.message),
-                            child: Bubble(
-                              radius: 30.0,
-                              fontSize: 12.0,
-                              backgroundColor: Colors.blue,
-                              foregroundColor: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Text(
-                                  builderDelegate.message.name,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                          // You can set all the properties you would set on
-                          // a Sidekick.
-                          animationBuilder: (animation) => CurvedAnimation(
-                                parent: animation,
-                                curve: FlippedCurve(Curves.easeOut),
-                              ),
-                          flightShuttleBuilder: (
-                            context,
-                            animation,
-                            type,
-                            from,
-                            to,
-                          ) =>
-                              buildShuttle(
-                                animation,
-                                builderDelegate.message.name,
-                              ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 100.0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        CircleButton(
-                          text: '>',
-                          // We have to get the nearest SidekickTeamBuilderState to
-                          // trigger a move.
-                          // Here we will move all the children for the target container,
-                          // to the source container.
-                          onPressed: () =>
-                              SidekickTeamBuilder.of<ContactGroup>(context)
-                                  .moveAll(SidekickFlightDirection.toSource),
-                        ),
-                        SizedBox(width: 60.0, height: 60.0),
-                        CircleButton(
-                          text: '<',
-                          // We have to get the nearest SidekickTeamBuilderState to
-                          // trigger a move.
-                          // Here we will move all the children for the source container,
-                          // to the target container.
-                          onPressed: () =>
-                              SidekickTeamBuilder.of<ContactGroup>(context)
-                                  .moveAll(SidekickFlightDirection.toTarget),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Center(
-                    child: Wrap(
-                      spacing: 4.0,
-                      runSpacing: 4.0,
-                      // For each source child, there is a sourceBuilderDelegate.
-                      children: sourceBuilderDelegates.map((builderDelegate) {
-                        // We build the child using the build method of the delegate.
-                        // This is how the Sidekicks are added automatically.
-                        return builderDelegate.build(
-                          context,
-                          GestureDetector(
-                            // We can use the builderDelegate.state property
-                            // to trigger the move.
-                            // The element to move is determined by the message.
-                            // So it should be unique.
-                            onTap: () => builderDelegate.state
-                                .move(builderDelegate.message),
-                            child: Bubble(
-                              radius: 50.0,
-                              fontSize: 20.0,
-                              backgroundColor: Colors.green,
-                              foregroundColor: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Text(
-                                  builderDelegate.message.name,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                          // You can set all the properties you would set on
-                          // a Sidekick.
-                          animationBuilder: (animation) => CurvedAnimation(
-                                parent: animation,
-                                curve: Curves.easeOut,
-                              ),
-                          flightShuttleBuilder: (
-                            context,
-                            animation,
-                            type,
-                            from,
-                            to,
-                          ) =>
-                              buildShuttle(
-                                animation,
-                                builderDelegate.message.name,
-                              ),
-                        );
-                      }).toList(),
-                    ),
+          // We can also set a the initial list of the container denoted the 'target'.
+          initialTargetList: initial,
+
+          // The builder let you build everything you want.
+          // The sourceBuilderDelegates and targetBuilderDelegates let you build
+          // your container final widgets.
+          builder: (context, sourceBuilderDelegates, targetBuilderDelegates) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text("Contact Groups"),
+                actions: <Widget>[
+                  IconButton(
+                    tooltip: "Save Groups",
+                    icon: Icon(Icons.save),
+                    onPressed: () {
+                      var _results = targetBuilderDelegates
+                          ?.map((e) => e == null ? null : e.message)
+                          ?.toList();
+                      Navigator.pop(context, _results);
+                    },
                   ),
                 ],
               ),
-            ),
-          ),
+              body: Center(
+                child: _source == null
+                    ? CircularProgressIndicator()
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView(
+                          children: <Widget>[
+                            ConstrainedBox(
+                              constraints: BoxConstraints(minHeight: 150.0),
+                              child: Wrap(
+                                spacing: 4.0,
+                                runSpacing: 4.0,
+                                // For each target child, there is a targetBuilderDelegate.
+                                children: targetBuilderDelegates
+                                    .map((builderDelegate) {
+                                  // We build the child using the build method of the delegate.
+                                  // This is how the Sidekicks are added automatically.
+                                  return builderDelegate.build(
+                                    context,
+                                    GestureDetector(
+                                      // We can use the builderDelegate.state property
+                                      // to trigger the move.
+                                      // The element to move is determined by the message.
+                                      // So it should be unique.
+                                      onTap: () => builderDelegate.state
+                                          .move(builderDelegate.message),
+                                      child: Bubble(
+                                        radius: 30.0,
+                                        fontSize: 12.0,
+                                        backgroundColor: Colors.blue,
+                                        foregroundColor: Colors.white,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(
+                                            builderDelegate.message.name,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    // You can set all the properties you would set on
+                                    // a Sidekick.
+                                    animationBuilder: (animation) =>
+                                        CurvedAnimation(
+                                          parent: animation,
+                                          curve: FlippedCurve(Curves.easeOut),
+                                        ),
+                                    flightShuttleBuilder: (
+                                      context,
+                                      animation,
+                                      type,
+                                      from,
+                                      to,
+                                    ) =>
+                                        buildShuttle(
+                                          animation,
+                                          builderDelegate.message.name,
+                                        ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 100.0,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  CircleButton(
+                                    text: '>',
+                                    // We have to get the nearest SidekickTeamBuilderState to
+                                    // trigger a move.
+                                    // Here we will move all the children for the target container,
+                                    // to the source container.
+                                    onPressed: () => SidekickTeamBuilder.of<
+                                            ContactGroup>(context)
+                                        .moveAll(
+                                            SidekickFlightDirection.toSource),
+                                  ),
+                                  SizedBox(width: 60.0, height: 60.0),
+                                  CircleButton(
+                                    text: '<',
+                                    // We have to get the nearest SidekickTeamBuilderState to
+                                    // trigger a move.
+                                    // Here we will move all the children for the source container,
+                                    // to the target container.
+                                    onPressed: () => SidekickTeamBuilder.of<
+                                            ContactGroup>(context)
+                                        .moveAll(
+                                            SidekickFlightDirection.toTarget),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Center(
+                              child: Wrap(
+                                spacing: 4.0,
+                                runSpacing: 4.0,
+                                // For each source child, there is a sourceBuilderDelegate.
+                                children: sourceBuilderDelegates
+                                    .map((builderDelegate) {
+                                  // We build the child using the build method of the delegate.
+                                  // This is how the Sidekicks are added automatically.
+                                  return builderDelegate.build(
+                                    context,
+                                    GestureDetector(
+                                      // We can use the builderDelegate.state property
+                                      // to trigger the move.
+                                      // The element to move is determined by the message.
+                                      // So it should be unique.
+                                      onTap: () => builderDelegate.state
+                                          .move(builderDelegate.message),
+                                      child: Bubble(
+                                        radius: 50.0,
+                                        fontSize: 20.0,
+                                        backgroundColor: Colors.green,
+                                        foregroundColor: Colors.white,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(
+                                            builderDelegate.message.name,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    // You can set all the properties you would set on
+                                    // a Sidekick.
+                                    animationBuilder: (animation) =>
+                                        CurvedAnimation(
+                                          parent: animation,
+                                          curve: Curves.easeOut,
+                                        ),
+                                    flightShuttleBuilder: (
+                                      context,
+                                      animation,
+                                      type,
+                                      from,
+                                      to,
+                                    ) =>
+                                        buildShuttle(
+                                          animation,
+                                          builderDelegate.message.name,
+                                        ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+              ),
+            );
+          },
         );
-      },
+      }),
     );
   }
 
@@ -313,4 +333,17 @@ class CircleButton extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<List<ContactGroup>> manageGroups(BuildContext context,
+    {List<ContactGroup> initial, @required ContactGroupModel model}) async {
+//  ContactGroupModel(auth: contactModel?.auth, id: group?.id)
+  var _groups = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) =>
+          ContactGroupManageContact(initial: initial, model: model),
+    ),
+  );
+  return _groups;
 }

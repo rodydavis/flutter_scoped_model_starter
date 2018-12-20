@@ -6,6 +6,9 @@ import '../../data/classes/general/phone.dart';
 import '../../utils/null_or_empty.dart';
 import '../../utils/phoneCall.dart';
 import '../../utils/sendSMS.dart';
+import '../../utils/permissions.dart';
+import 'package:permission/permission.dart';
+import '../../utils/popUp.dart';
 
 class PhoneTile extends StatelessWidget {
   final String label;
@@ -110,6 +113,8 @@ class _PhoneInputTileState extends State<PhoneInputTile> {
     final Widget searchContacts = IconButton(
         icon: Icon(Icons.search),
         onPressed: () async {
+//          var _ready = await requestPermission(PermissionName.Contacts);
+//          if (_ready) {
           final ContactPicker _contactPicker = new ContactPicker();
           Contact contact = await _contactPicker.selectContact();
           if (contact != null) {
@@ -123,6 +128,14 @@ class _PhoneInputTileState extends State<PhoneInputTile> {
               _ext.text = _newPhone?.ext;
             });
           }
+//          } else {
+//            showConfirmationPopup(
+//              context,
+//              title: "Info",
+//              detail: "Please Allow Contact Access In Settings",
+//              onConfirm: () => openDeviceSettings(),
+//            );
+//          }
         });
     if (!_isEditing)
       return ListTile(

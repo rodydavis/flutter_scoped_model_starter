@@ -123,20 +123,26 @@ class EditLeadScreenState extends State<EditLeadScreen> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  AppInputField(
-                    name: LeadFields.first_name,
-                    autoFocus: true,
-                    required: true,
-                    controller: _firstName,
-                  ),
-                  AppInputField(
-                    name: LeadFields.last_name,
-                    required: true,
-                    controller: _lastName,
-                  ),
-                  AppInputField(
-                    name: LeadFields.email,
-                    controller: _email,
+                  ExpansionTile(
+                    initiallyExpanded: true,
+                    title: Text("Info"),
+                    children: <Widget>[
+                      AppInputField(
+                        name: LeadFields.first_name,
+                        autoFocus: true,
+                        required: true,
+                        controller: _firstName,
+                      ),
+                      AppInputField(
+                        name: LeadFields.last_name,
+                        required: true,
+                        controller: _lastName,
+                      ),
+                      AppInputField(
+                        name: LeadFields.email,
+                        controller: _email,
+                      ),
+                    ],
                   ),
                   ExpansionTile(
                     title: Text("Phone Numbers"),
