@@ -137,4 +137,9 @@ class LeadDetailsModel extends Model {
 
     notifyListeners();
   }
+
+  void cancel() {
+    _fetching = false;
+    notifyListeners();
+  }
 }

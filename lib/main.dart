@@ -62,7 +62,7 @@ class AppTheme extends StatelessWidget {
         '/contacts': (BuildContext context) =>
             ContactsScreen(model: contactModel),
         '/leads': (BuildContext context) => LeadsScreen(model: leadModel),
-        '/import': (BuildContext context) => ImportContactsScreen(),
+        '/import_multiple': (BuildContext context) => ImportContactsScreen(),
         '/import_single': (BuildContext context) =>
             ImportContactsScreen(selectSingle: true),
         '/contact_tasks': (BuildContext context) =>

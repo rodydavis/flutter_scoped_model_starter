@@ -65,6 +65,7 @@ class ContactsFromGroupScreen extends StatelessWidget {
                 builder: (context, child, model) => AppRefreshButton(
                       isRefreshing: model.fetching,
                       onRefresh: model.refresh,
+                      onCancel: model.cancel,
                     )),
             new ScopedModelDescendant<ContactGroupModel>(
                 builder: (context, child, model) =>

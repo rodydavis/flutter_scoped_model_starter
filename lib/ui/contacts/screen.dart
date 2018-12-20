@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_scoped_model_starter/ui/app/buttons/app_refresh_button.dart';
+import 'package:flutter_scoped_model_starter/ui/app/buttons/app_sort_button.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../data/models/contacts/list.dart';
 import '../app/app_bottom_bar.dart';
 import '../app/app_drawer.dart';
-import 'package:flutter_scoped_model_starter/ui/app/buttons/app_refresh_button.dart';
 import '../app/app_search_bar.dart';
-import 'package:flutter_scoped_model_starter/ui/app/buttons/app_sort_button.dart';
 import '../general/list_widget.dart';
 import '../general/simple_fab.dart';
+import '../phone_contacts/import.dart';
 import 'edit.dart';
+import '../../data/classes/contacts/contact_details.dart';
 import 'item.dart';
 
 class ContactsScreen extends StatelessWidget {
@@ -65,6 +67,7 @@ class ContactsScreen extends StatelessWidget {
                   builder: (context, child, model) => AppRefreshButton(
                         isRefreshing: model.fetching,
                         onRefresh: model.refresh,
+                        onCancel: model.cancel,
                       )),
               IconButton(
                 tooltip: "Contact Tasks",
@@ -80,6 +83,25 @@ class ContactsScreen extends StatelessWidget {
                   Navigator.pushNamed(context, "/contact_groups");
                 },
               ),
+              new ScopedModelDescendant<ContactModel>(
+                  builder: (context, child, model) => IconButton(
+                        tooltip: "Import Phone Contacts",
+                        icon: Icon(Icons.import_contacts),
+                        onPressed: () =>
+                            selectMultipleContacts(context).then((contacts) {
+                              List<ContactDetails> _items = [];
+                              if (contacts != null) {
+                                for (var _item in contacts) {
+                                  var _details =
+                                      ContactDetails.fromPhoneContact(_item);
+                                  _items.add(_details);
+                                }
+                              }
+                              if (_items.isNotEmpty) {
+                                model.importItems(items: _items);
+                              }
+                            }),
+                      )),
             ],
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,

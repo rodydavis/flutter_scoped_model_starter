@@ -65,6 +65,7 @@ class LeadsScreen extends StatelessWidget {
                   builder: (context, child, model) => AppRefreshButton(
                         isRefreshing: model.fetching,
                         onRefresh: model.refresh,
+                        onCancel: model.cancel,
                       )),
             ],
           ),

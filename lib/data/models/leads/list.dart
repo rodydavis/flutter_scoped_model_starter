@@ -165,4 +165,9 @@ class LeadModel extends Model {
       _loadList(nextPage: true);
     }
   }
+
+  void cancel() {
+    _fetching = false;
+    notifyListeners();
+  }
 }

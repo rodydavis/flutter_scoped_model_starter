@@ -1,13 +1,14 @@
-import 'package:scoped_model/scoped_model.dart';
-import '../../classes/unify/contact_group.dart';
-import '../../classes/contacts/contact_row.dart';
 import 'package:flutter/foundation.dart';
-import '../auth_model.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import '../../../constants.dart';
 import '../../classes/app/paging.dart';
 import '../../classes/app/sort.dart';
+import '../../classes/contacts/contact_details.dart';
+import '../../classes/contacts/contact_row.dart';
 import '../../repositories/contacts/contacts.dart';
-import '../../../constants.dart';
+import '../auth_model.dart';
 
 class ContactModel extends Model {
   final AuthModel auth;
@@ -166,5 +167,28 @@ class ContactModel extends Model {
       _paging.page += 1;
       _loadList(nextPage: true);
     }
+  }
+
+  void importItems({@required List<ContactDetails> items}) async {
+    _fetching = true;
+    notifyListeners();
+
+    if (!_fetching) {
+      print("Adding Items => ${items?.toString()}");
+      var _result = await ContactRepository().importData(auth, contacts: items);
+      notifyListeners();
+      print("Status: $_result");
+      if (_result) {
+//      refresh(context);
+      }
+      _fetching = true;
+    }
+
+    notifyListeners();
+  }
+
+  void cancel() {
+    _fetching = false;
+    notifyListeners();
   }
 }

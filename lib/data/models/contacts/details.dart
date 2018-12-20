@@ -140,21 +140,8 @@ class ContactDetailsModel extends Model {
     notifyListeners();
   }
 
-  void importItems({@required List<ContactDetails> items}) async {
-    _fetching = true;
-    notifyListeners();
-
-    if (!_fetching) {
-      print("Adding Items => ${items?.toString()}");
-      var _result = await ContactRepository().importData(auth, contacts: items);
-      notifyListeners();
-      print("Status: $_result");
-      if (_result) {
-//      refresh(context);
-      }
-      _fetching = true;
-    }
-
+  void cancel() {
+    _fetching = false;
     notifyListeners();
   }
 }

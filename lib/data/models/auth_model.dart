@@ -243,4 +243,9 @@ class AuthModel extends Model {
     }
     return _user;
   }
+
+//  void cancel() {
+//    _fetching = false;
+//    notifyListeners();
+//  }
 }
