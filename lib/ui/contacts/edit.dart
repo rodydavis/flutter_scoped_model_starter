@@ -7,6 +7,10 @@ import '../../data/models/contacts/details.dart';
 import '../../data/models/contacts/list.dart';
 import '../app/app_input_field.dart';
 import '../phone_contacts/import.dart';
+import '../general/phone_tile.dart';
+import '../../data/classes/general/phone.dart';
+import '../../data/classes/general/address.dart';
+import '../general/address_tile.dart';
 
 class EditContactScreen extends StatefulWidget {
   final ContactDetailsModel model;
@@ -30,6 +34,8 @@ class EditContactScreen extends StatefulWidget {
 class EditContactScreenState extends State<EditContactScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _firstName, _lastName, _email;
+  Phone cellPhone, homePhone, officePhone;
+  Address currentAddress;
 
   @override
   void initState() {
@@ -57,6 +63,11 @@ class EditContactScreenState extends State<EditContactScreen> {
     _firstName = TextEditingController();
     _lastName = TextEditingController();
     _email = TextEditingController();
+
+    currentAddress = null;
+    cellPhone = null;
+    homePhone = null;
+    officePhone = null;
   }
 
   void _updateView(ContactDetails info) {
@@ -66,6 +77,11 @@ class EditContactScreenState extends State<EditContactScreen> {
       _firstName.text = info?.firstName ?? "";
       _lastName.text = info?.lastName ?? "";
       _email.text = info?.email ?? "";
+
+      currentAddress = info?.address;
+      cellPhone = info?.cellPhone;
+      homePhone = info?.homePhone;
+      officePhone = info?.officePhone;
     });
   }
 
@@ -83,7 +99,7 @@ class EditContactScreenState extends State<EditContactScreen> {
               IconButton(
                 tooltip: "Import Phone Contact",
                 icon: Icon(Icons.import_contacts),
-                onPressed: () => selectContact(context).then((contact) {
+                onPressed: () => selectSingleContact(context).then((contact) {
                       print("Item: " + contact.toString());
                       if (contact != null) {
                         var _info = ContactDetails.fromPhoneContact(contact);
@@ -120,6 +136,53 @@ class EditContactScreenState extends State<EditContactScreen> {
                   AppInputField(
                     name: ContactFields.email,
                     controller: _email,
+                  ),
+                  ExpansionTile(
+                    title: Text("Phone Numbers"),
+                    children: <Widget>[
+                      PhoneInputTile(
+                        label: "Cell Phone",
+                        numberChanged: (Phone value) {
+                          setState(() {
+                            cellPhone = value;
+                          });
+                        },
+                        number: cellPhone,
+                      ),
+                      PhoneInputTile(
+                        label: "Home Phone",
+                        numberChanged: (Phone value) {
+                          setState(() {
+                            homePhone = value;
+                          });
+                        },
+                        number: homePhone,
+                      ),
+                      PhoneInputTile(
+                        label: "Office Phone",
+                        showExt: true,
+                        numberChanged: (Phone value) {
+                          setState(() {
+                            officePhone = value;
+                          });
+                        },
+                        number: officePhone,
+                      ),
+                    ],
+                  ),
+                  ExpansionTile(
+                    title: Text("Address Info"),
+                    children: <Widget>[
+                      AddressInputTile(
+                        label: "Current Address",
+                        addressChanged: (Address value) {
+                          setState(() {
+                            currentAddress = value;
+                          });
+                        },
+                        address: currentAddress,
+                      ),
+                    ],
                   ),
                   Container(height: 10.0),
                   new ScopedModelDescendant<ContactDetailsModel>(

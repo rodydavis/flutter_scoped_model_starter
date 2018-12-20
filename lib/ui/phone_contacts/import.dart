@@ -36,7 +36,10 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
   }
 
   void _importSelectedContacts(BuildContext context) {
-    Navigator.pop(context, _selectedItems);
+    Navigator.pop(
+      context,
+      widget.selectSingle ? _selectedItems?.first : _selectedItems,
+    );
   }
 
   List<Contact> _selectedItems = [];
@@ -194,7 +197,7 @@ class ImportContactsScreenState extends State<ImportContactsScreen> {
   }
 }
 
-Future<Contact> selectContact(BuildContext context) async {
+Future<Contact> selectSingleContact(BuildContext context) async {
   print("Selecting Single Contact...");
   dynamic value = await Navigator.push(
       context,

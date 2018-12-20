@@ -100,15 +100,24 @@ class LeadDetails {
       print("Email: $email");
     }
 
-    // // - Addresses --
-    // var _addresses = Lead?.postalAddresses ?? [];
-    // for (var _address in _addresses) {
-    //   address = Address(
-    //     street: _address?.street ?? "",
-    //     city: _address?.city ?? "",
-    //     state: _address?.region ?? "",
-    //     zip: _address?.postcode ?? "",
-    //   );
-    // }
+    // - Addresses --
+    var _addresses = contact?.postalAddresses ?? [];
+    for (var _address in _addresses) {
+      if (_address.label.toLowerCase().trim().contains("home"))
+        currentAddress = Address(
+          street: _address?.street ?? "",
+          city: _address?.city ?? "",
+          state: _address?.region ?? "",
+          zip: _address?.postcode ?? "",
+        );
+
+      if (_address.label.toLowerCase().trim().contains("work"))
+        propertyAddress = Address(
+          street: _address?.street ?? "",
+          city: _address?.city ?? "",
+          state: _address?.region ?? "",
+          zip: _address?.postcode ?? "",
+        );
+    }
   }
 }

@@ -89,15 +89,17 @@ class ContactDetails {
       email = _item.value;
     }
 
-    // // - Addresses --
-    // var _addresses = contact?.postalAddresses ?? [];
-    // for (var _address in _addresses) {
-    //   address = Address(
-    //     street: _address?.street ?? "",
-    //     city: _address?.city ?? "",
-    //     state: _address?.region ?? "",
-    //     zip: _address?.postcode ?? "",
-    //   );
-    // }
+    // - Addresses --
+    var _addresses = contact?.postalAddresses ?? [];
+    for (var _address in _addresses) {
+      print("=> Address: " + _address?.label);
+//      if (_address.label.contains("home") || _address.label.contains("work"))
+      address = Address(
+        street: _address?.street ?? "",
+        city: _address?.city ?? "",
+        state: _address?.region ?? "",
+        zip: _address?.postcode ?? "",
+      );
+    }
   }
 }

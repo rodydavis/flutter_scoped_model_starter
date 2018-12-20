@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:contact_picker/contact_picker.dart';
 
 import '../../constants.dart';
 import '../../data/classes/general/phone.dart';
@@ -97,10 +98,33 @@ class _PhoneInputTileState extends State<PhoneInputTile> {
     return _phone;
   }
 
+  void _clear() {
+    _areaCode.clear();
+    _prefix.clear();
+    _number.clear();
+    _ext.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Widget searchContacts = IconButton(
+        icon: Icon(Icons.search),
+        onPressed: () async {
+          final ContactPicker _contactPicker = new ContactPicker();
+          Contact contact = await _contactPicker.selectContact();
+          var _value = contact?.phoneNumber?.number;
+          var _newPhone = Phone.fromString(_value);
+          _clear();
+          setState(() {
+            _areaCode.text = _newPhone?.areaCode;
+            _prefix.text = _newPhone?.prefix;
+            _number.text = _newPhone?.number;
+            _ext.text = _newPhone?.ext;
+          });
+        });
     if (!_isEditing)
       return ListTile(
+        leading: searchContacts,
         title: Text(
           widget?.label ?? "Phone Number",
           style: Theme.of(context).textTheme?.body1,
@@ -117,6 +141,7 @@ class _PhoneInputTileState extends State<PhoneInputTile> {
         },
       );
     return ListTile(
+      leading: searchContacts,
       title: Form(
         autovalidate: true,
         key: _formKey,
