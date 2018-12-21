@@ -8,34 +8,44 @@ part of 'lead_details.dart';
 
 LeadDetails _$LeadDetailsFromJson(Map<String, dynamic> json) {
   return LeadDetails(
-      firstName: json['first_name'] as String,
-      lastName: json['last_name'] as String,
-      email: json['email'] as String,
-      currentAddress: json['current_address'] == null
+      firstName: json['First_Name'] as String,
+      lastName: json['Last_Name'] as String,
+      email: json['Email_Address'] as String,
+      currentAddress: json['Current_Address'] == null
           ? null
-          : Address.fromJson(json['current_address'] as Map<String, dynamic>),
-      propertyAddress: json['property_address'] == null
+          : Address.fromJson(json['Current_Address'] as Map<String, dynamic>),
+      propertyAddress: json['Property_Address'] == null
           ? null
-          : Address.fromJson(json['property_address'] as Map<String, dynamic>),
-      homePhone: json['home_phone'] == null
+          : Address.fromJson(json['Property_Address'] as Map<String, dynamic>),
+      homePhone: json['Home_Phone'] == null
           ? null
-          : Phone.fromJson(json['home_phone'] as Map<String, dynamic>),
-      cellPhone: json['cell_phone'] == null
+          : Phone.fromJson(json['Home_Phone'] as Map<String, dynamic>),
+      cellPhone: json['Cell_Phone'] == null
           ? null
-          : Phone.fromJson(json['cell_phone'] as Map<String, dynamic>),
-      officePhone: json['office_phone'] == null
+          : Phone.fromJson(json['Cell_Phone'] as Map<String, dynamic>),
+      officePhone: json['Office_Phone'] == null
           ? null
-          : Phone.fromJson(json['office_phone'] as Map<String, dynamic>));
+          : Phone.fromJson(json['Office_Phone'] as Map<String, dynamic>),
+      leadGroups: (json['Lead_Groups'] as List)
+          ?.map((e) => e == null
+              ? null
+              : ContactGroup.fromJson(e as Map<String, dynamic>))
+          ?.toList(),
+      dateModified: json['Date_Modified'] as String,
+      dateCreated: json['Date_Created'] as String);
 }
 
 Map<String, dynamic> _$LeadDetailsToJson(LeadDetails instance) =>
     <String, dynamic>{
-      'first_name': instance.firstName,
-      'last_name': instance.lastName,
-      'email': instance.email,
-      'current_address': instance.currentAddress,
-      'property_address': instance.propertyAddress,
-      'cell_phone': instance.cellPhone,
-      'office_phone': instance.officePhone,
-      'home_phone': instance.homePhone
+      'First_Name': instance.firstName,
+      'Last_Name': instance.lastName,
+      'Email_Address': instance.email,
+      'Current_Address': instance.currentAddress,
+      'Property_Address': instance.propertyAddress,
+      'Cell_Phone': instance.cellPhone,
+      'Office_Phone': instance.officePhone,
+      'Home_Phone': instance.homePhone,
+      'Date_Created': instance.dateCreated,
+      'Date_Modified': instance.dateModified,
+      'Lead_Groups': instance.leadGroups
     };

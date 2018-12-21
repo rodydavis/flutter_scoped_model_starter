@@ -13,10 +13,12 @@ import 'edit.dart';
 import 'item.dart';
 import '../phone_contacts/import.dart';
 import '../../data/classes/leads/lead_details.dart';
+import '../../data/models/leads/groups.dart';
 
 class LeadsScreen extends StatelessWidget {
   final LeadModel model;
-  LeadsScreen({this.model});
+  final LeadGroupModel groupModel;
+  LeadsScreen({this.model, @required this.groupModel});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,10 @@ class LeadsScreen extends StatelessWidget {
                           final _lead = model.leads[index];
                           if (index == model.leads.length - 1 &&
                               !model.isSearching) model.fetchNext();
-                          return LeadItem(model: model, lead: _lead);
+                          return LeadItem(
+                              model: model,
+                              lead: _lead,
+                              groupModel: groupModel);
                         },
                       ),
                     ),
@@ -69,6 +74,20 @@ class LeadsScreen extends StatelessWidget {
                         onRefresh: model.refresh,
                         onCancel: model.cancel,
                       )),
+              IconButton(
+                tooltip: "Lead Tasks",
+                icon: Icon(Icons.event),
+                onPressed: () {
+                  Navigator.pushNamed(context, "/lead_tasks");
+                },
+              ),
+              IconButton(
+                tooltip: "Lead Groups",
+                icon: Icon(Icons.group),
+                onPressed: () {
+                  Navigator.pushNamed(context, "/lead_groups");
+                },
+              ),
               new ScopedModelDescendant<LeadModel>(
                   builder: (context, child, model) => IconButton(
                         tooltip: "Import Phone Contacts",
@@ -93,7 +112,8 @@ class LeadsScreen extends StatelessWidget {
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           floatingActionButton: SimpleFAB(
             child: Icon(Icons.add),
-            onPressed: () => createLead(context, model: model),
+            onPressed: () =>
+                createLead(context, model: model, groupModel: groupModel),
           )),
     );
   }

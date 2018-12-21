@@ -127,6 +127,7 @@ class LeadDetailsScreen extends StatelessWidget {
                   builder: (context, child, model) {
                 if (model.details != null) {
                   final _details = model.details;
+
                   var _groupTiles = <Widget>[];
 
                   if (_details?.contactGroups != null &&

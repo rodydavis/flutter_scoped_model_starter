@@ -50,6 +50,10 @@ class ContactModel extends Model {
   void searchPressed() {
     _isSearching = !_isSearching;
     _filtered = _contacts;
+    if (!_isSearching) {
+      _searchValue = "";
+      refresh();
+    }
     notifyListeners();
   }
 
@@ -143,7 +147,8 @@ class ContactModel extends Model {
 
     if (!_fetching) {
       _fetching = true;
-      var _items = await ContactRepository().loadList(auth, paging: _paging);
+      var _items = await ContactRepository()
+          .loadList(auth, paging: _paging, query: query);
 
       List<dynamic> _result = _items?.result;
 

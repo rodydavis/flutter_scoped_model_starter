@@ -20,16 +20,18 @@ class ContactRepository {
   });
 
   Future<ResponseMessage> loadList(AuthModel auth,
-      {@required Paging paging, Search search}) async {
+      {@required Paging paging, String query}) async {
     dynamic _response;
 
     // search = SearchModel(search: "Prospect", filters: [5]);
 
     // -- Search By Filters --
-    if (search != null && search.search.toString().isNotEmpty) {
-      final response = await webClient.post(
-          kApiUrl + '/search/contacts/${paging.rows}/${paging.page}',
-          json.encode(search),
+    if (query != null && query.toString().isNotEmpty) {
+      final _query = Uri.encodeQueryComponent(query);
+      final response = await webClient.get(
+          kApiUrl +
+              '/contacts/${paging.rows}/${paging.page}?First_Name=$_query&Last_Name=$_query&Email_Address=$_query&Loan_Number=$_query&Search_All=true',
+//          json.encode(search),
           auth: auth);
 
       _response = response;

@@ -5,8 +5,6 @@ import '../../data/models/task_model.dart';
 import '../../ui/app/app_drawer.dart';
 import '../../ui/general/date_view.dart';
 
-enum TasksType { contact, lead, core_lead, all }
-
 class TasksScreen extends StatelessWidget {
   final TaskModel model;
   final TasksType type;
@@ -37,14 +35,14 @@ class _DateView extends StatefulWidget {
 
 class __DateViewState extends State<_DateView> {
   void _onDateChange(BuildContext context, {TaskModel model, DateTime value}) {
-    model.changeDate(context, newDate: value);
+    model.changeDate(value);
   }
 
   Widget _buildListView(BuildContext context, {TaskModel model}) {
     if (model.date == null) model.today();
 
     if (!model.isLoaded || model?.tasks == null) {
-      model.loadTasks(context);
+      model.loadTasks();
       return Center(
         child: Container(
           child: CircularProgressIndicator(),
@@ -90,8 +88,7 @@ class __DateViewState extends State<_DateView> {
             padding: EdgeInsets.all(8.0),
             child: DateViewWidget(
               date: _model?.date,
-              dateChanged: (DateTime value) =>
-                  _onDateChange(context, model: _model, value: value),
+              dateChanged: _model.changeDate,
             ),
           ),
           _buildListView(context, model: _model),

@@ -43,11 +43,11 @@ class ContactItem extends StatelessWidget {
       office: contact?.officePhone,
       email: contact?.email,
       box1: Utility(
-        value: formatDateCustom(contact?.dateCreated),
+        value: formatDate(contact?.dateCreated),
         hint: "Date Created",
       ),
       box2: Utility(
-        value: formatDateCustom(contact?.dateModified),
+        value: formatDate(contact?.dateModified),
         hint: "Date Modified",
       ),
       onDelete: onDelete ??

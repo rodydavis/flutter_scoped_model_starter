@@ -1,36 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_scoped_model_starter/ui/app/buttons/app_refresh_button.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-import '../../../data/classes/unify/contact_group.dart';
-import '../../../data/models/auth_model.dart';
-import '../../../data/models/contacts/groups.dart';
-import '../../../data/models/contacts/list.dart';
+import '../../../data/models/leads/groups.dart';
+import '../../../data/models/leads/list.dart';
+import '../../app/app_bottom_bar.dart';
+import '../../general/list_widget.dart';
+import '../../general/simple_fab.dart';
 import 'edit.dart';
 import 'item.dart';
 import 'view.dart';
-import '../../general/list_widget.dart';
-import 'package:scoped_model/scoped_model.dart';
-import '../../app/app_bottom_bar.dart';
-import 'package:flutter_scoped_model_starter/ui/app/buttons/app_refresh_button.dart';
-import '../../general/simple_fab.dart';
 
-class ContactGroupsScreen extends StatelessWidget {
-  final ContactGroupModel groupModel;
-  final ContactModel contactModel;
+class LeadGroupsScreen extends StatelessWidget {
+  final LeadGroupModel groupModel;
+  final LeadModel leadModel;
 
-  ContactGroupsScreen({
+  LeadGroupsScreen({
     this.groupModel,
-    @required this.contactModel,
+    @required this.leadModel,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<ContactGroupModel>(
+    return ScopedModel<LeadGroupModel>(
         model: groupModel,
         child: Scaffold(
           appBar: AppBar(
-            title: Text("Contact Groups"),
+            title: Text("Lead Groups"),
           ),
-          body: new ScopedModelDescendant<ContactGroupModel>(
+          body: new ScopedModelDescendant<LeadGroupModel>(
               builder: (context, child, model) => ListWidget(
                   items: model?.groups,
                   onEmpty: Center(
@@ -49,15 +47,15 @@ class ContactGroupsScreen extends StatelessWidget {
                               _group,
                               true,
                               index: index,
-                              onTap: () => viewContactGroup(context,
-                                          model: contactModel, group: _group)
+                              onTap: () => viewLeadGroup(context,
+                                          model: leadModel, group: _group)
                                       .then((edited) {
                                     if (edited != null) {
                                       model.refreshGroups();
                                     }
                                   }),
                               onLongPressed: () => editGroup(context,
-                                          model: contactModel, group: _group)
+                                          model: leadModel, group: _group)
                                       .then((edited) {
                                     if (edited != null) {
                                       model.refreshGroups();
@@ -69,7 +67,7 @@ class ContactGroupsScreen extends StatelessWidget {
                       )))),
           bottomNavigationBar: AppBottomBar(
             buttons: [
-              new ScopedModelDescendant<ContactGroupModel>(
+              new ScopedModelDescendant<LeadGroupModel>(
                   builder: (context, child, model) => AppRefreshButton(
                         isRefreshing: model.fetching,
                         onRefresh: model.refreshGroups,
@@ -77,11 +75,11 @@ class ContactGroupsScreen extends StatelessWidget {
             ],
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-          floatingActionButton: new ScopedModelDescendant<ContactGroupModel>(
+          floatingActionButton: new ScopedModelDescendant<LeadGroupModel>(
               builder: (context, child, model) => SimpleFAB(
                     child: Icon(Icons.group_add),
-                    onPressed: () => createGroup(context, model: contactModel)
-                            .then((created) {
+                    onPressed: () =>
+                        createGroup(context, model: leadModel).then((created) {
                           if (created != null) model.refreshGroups();
                         }),
                   )),

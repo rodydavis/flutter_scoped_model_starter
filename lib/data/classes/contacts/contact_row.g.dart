@@ -20,12 +20,8 @@ ContactRow _$ContactRowFromJson(Map<String, dynamic> json) {
       homePhone: json['Home_Phone'] == null
           ? null
           : Phone.fromJson(json['Home_Phone'] as Map<String, dynamic>),
-      dateCreated: json['Date_Created'] == null
-          ? null
-          : DateTime.parse(json['Date_Created'] as String),
-      dateModified: json['Date_Modified'] == null
-          ? null
-          : DateTime.parse(json['Date_Modified'] as String),
+      dateCreated: json['Date_Created'] as String,
+      dateModified: json['Date_Modified'] as String,
       email: json['Email_Address'] as String);
 }
 
@@ -37,7 +33,7 @@ Map<String, dynamic> _$ContactRowToJson(ContactRow instance) =>
       'Cell_Phone': instance.cellPhone,
       'Office_Phone': instance.officePhone,
       'Home_Phone': instance.homePhone,
-      'Date_Created': instance.dateCreated?.toIso8601String(),
-      'Date_Modified': instance.dateModified?.toIso8601String(),
+      'Date_Created': instance.dateCreated,
+      'Date_Modified': instance.dateModified,
       'Email_Address': instance.email
     };

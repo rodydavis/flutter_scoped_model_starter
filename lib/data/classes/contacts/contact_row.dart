@@ -52,10 +52,10 @@ class ContactRow {
   Phone homePhone;
 
   @JsonKey(name: 'Date_Created')
-  DateTime dateCreated;
+  String dateCreated;
 
   @JsonKey(name: 'Date_Modified')
-  DateTime dateModified;
+  String dateModified;
 
   @JsonKey(name: 'Email_Address')
   String email;

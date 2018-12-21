@@ -7,9 +7,16 @@ import '../classes/tasks/task_module.dart';
 import '../repositories/task_repository.dart';
 import 'auth_model.dart';
 
+enum TasksType { contact, lead, core_lead, all }
+
 class TaskModel extends Model {
   static TaskModel of(BuildContext context) =>
       ScopedModel.of<TaskModel>(context);
+
+  final AuthModel auth;
+  final TasksType type;
+
+  TaskModel({@required this.auth, this.type = TasksType.all});
 
   TaskModule _module = TaskModule(
     tasks: [],
@@ -52,16 +59,14 @@ class TaskModel extends Model {
 
   bool _fetching = false;
 
-  Future<bool> loadTasks(BuildContext context) async {
+  Future<bool> loadTasks() async {
     print("Date: $date");
-    final _auth = ScopedModel.of<AuthModel>(context, rebuildOnChange: true);
-    _auth.confirmUserChange();
     // -- Load Items from API or Local -
     if (!_fetching) {
       _fetching = true;
       notifyListeners();
 
-      var _tasks = await TaskRepository().loadList(_auth, date);
+      var _tasks = await TaskRepository().loadList(auth, date);
 
       List<dynamic> _result = _tasks?.result;
       if (_result?.isNotEmpty ?? false) {
@@ -84,11 +89,11 @@ class TaskModel extends Model {
     return true;
   }
 
-  Future changeDate(BuildContext context, {DateTime newDate}) async {
+  Future changeDate(DateTime newDate) async {
     _module?.isLoaded = false;
     notifyListeners();
 
     _module?.date = newDate;
-    await loadTasks(context);
+    await loadTasks();
   }
 }

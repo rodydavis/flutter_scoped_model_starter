@@ -16,13 +16,16 @@ import '../app/buttons/app_delete_button.dart';
 import '../app/buttons/app_share_button.dart';
 import '../general/address_tile.dart';
 import '../general/phone_tile.dart';
+import '../../data/models/leads/groups.dart';
+import 'groups/manage.dart';
 import 'edit.dart';
 
 class LeadDetailsScreen extends StatelessWidget {
   final LeadModel leadModel;
+  final LeadGroupModel groupModel;
   final LeadRow leadRow;
 
-  LeadDetailsScreen({this.leadModel, this.leadRow});
+  LeadDetailsScreen({this.leadModel, this.leadRow, @required this.groupModel});
 
   @override
   Widget build(BuildContext context) {
@@ -119,21 +122,40 @@ class LeadDetailsScreen extends StatelessWidget {
               ),
               PhoneTile(
                   label: "Cell Phone",
-                  number: Phone.fromString(leadRow?.cellPhone),
+                  number: leadRow?.cellPhone,
                   icon: Icons.phone),
               PhoneTile(
                   label: "Home Phone",
-                  number: Phone.fromString(leadRow?.homePhone),
+                  number: leadRow?.homePhone,
                   icon: Icons.home),
               PhoneTile(
                   label: "Office Phone",
-                  number: Phone.fromString(leadRow?.officePhone),
+                  number: leadRow?.officePhone,
                   icon: Icons.work),
               new ScopedModelDescendant<LeadDetailsModel>(
 //                  rebuildOnChange: true,
                   builder: (context, child, model) {
                 if (model.details != null) {
                   final _details = model.details;
+
+                  var _groupTiles = <Widget>[];
+
+                  if (_details?.leadGroups != null &&
+                      _details.leadGroups.isNotEmpty) {
+                    for (var _item in _details.leadGroups) {
+                      _groupTiles.add(ListTile(
+                        title: Text(_item?.name ?? "No Name Found"),
+                        trailing: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () async {
+                              var _groups = _details.leadGroups;
+                              _groups.remove(_item);
+                              await model.edit(_details);
+                            }),
+                      ));
+                    }
+                  }
+
                   return Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -147,6 +169,13 @@ class LeadDetailsScreen extends StatelessWidget {
                         label: "Property Address",
                         icon: Icons.map,
                       ),
+                      _groupTiles.isNotEmpty
+                          ? ExpansionTile(
+                              leading: Icon(Icons.group),
+                              title: Text("Lead Groups"),
+                              children: _groupTiles,
+                            )
+                          : Container(),
                     ],
                   );
                 }
@@ -164,11 +193,21 @@ class LeadDetailsScreen extends StatelessWidget {
                         await model.delete();
                         Navigator.pop(context);
                       })),
-//              IconButton(
-//                tooltip: "Lead Groups",
-//                icon: Icon(Icons.people),
-//                onPressed: () => null,
-//              ),
+              new ScopedModelDescendant<LeadDetailsModel>(
+                  builder: (context, child, model) => IconButton(
+                        tooltip: "Lead Groups",
+                        icon: Icon(Icons.group),
+                        onPressed: () async {
+                          var _groups = await manageGroups(context,
+                              initial: model.details?.leadGroups ?? [],
+                              model: groupModel);
+                          if (_groups != null) {
+                            var _details = model?.details;
+                            _details.leadGroups = _groups;
+                            await model.edit(_details);
+                          }
+                        },
+                      )),
               IconButton(
                 tooltip: "Add Follow Up",
                 icon: Icon(Icons.event_available),
@@ -192,10 +231,13 @@ class LeadDetailsScreen extends StatelessWidget {
               builder: (context, child, model) => FloatingActionButton(
                     heroTag: "Lead Edit",
                     backgroundColor: Theme.of(context).primaryColor,
-                    onPressed: () => editLead(context,
-                        model: leadModel,
-                        details: model.details,
-                        leadRow: leadRow),
+                    onPressed: () => editLead(
+                          context,
+                          model: leadModel,
+                          details: model.details,
+                          leadRow: leadRow,
+                          groupModel: groupModel,
+                        ),
                     child: Icon(Icons.edit, color: Colors.white),
                     tooltip: 'Edit Item',
                   )),
@@ -204,13 +246,16 @@ class LeadDetailsScreen extends StatelessWidget {
 }
 
 void viewLead(BuildContext context,
-    {@required LeadModel model, LeadRow leadRow}) {
+    {@required LeadModel model,
+    LeadRow leadRow,
+    @required LeadGroupModel groupModel}) {
   Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new LeadDetailsScreen(
               leadModel: model,
               leadRow: leadRow,
+              groupModel: groupModel,
             ),
         fullscreenDialog: false,
       ));

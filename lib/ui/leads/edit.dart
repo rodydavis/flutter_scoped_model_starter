@@ -11,11 +11,15 @@ import '../general/phone_tile.dart';
 import '../../data/classes/general/phone.dart';
 import '../../data/classes/general/address.dart';
 import '../general/address_tile.dart';
+import 'groups/manage.dart';
+import '../../data/classes/unify/contact_group.dart';
+import '../../data/models/leads/groups.dart';
 
 class EditLeadScreen extends StatefulWidget {
   final LeadDetailsModel model;
   final LeadDetails details;
   final LeadRow leadRow;
+  final LeadGroupModel groupModel;
   final bool isNew;
 
   EditLeadScreen({
@@ -23,6 +27,7 @@ class EditLeadScreen extends StatefulWidget {
     this.details,
     this.isNew = true,
     this.leadRow,
+    @required this.groupModel,
   });
 
   @override
@@ -36,6 +41,7 @@ class EditLeadScreenState extends State<EditLeadScreen> {
   TextEditingController _firstName, _lastName, _email;
   Phone cellPhone, homePhone, officePhone;
   Address currentAddress, propertyAddress;
+  List<ContactGroup> groups;
 
   @override
   void initState() {
@@ -84,6 +90,7 @@ class EditLeadScreenState extends State<EditLeadScreen> {
       cellPhone = info?.cellPhone;
       homePhone = info?.homePhone;
       officePhone = info?.officePhone;
+      groups = info?.leadGroups;
     });
   }
 
@@ -112,9 +119,15 @@ class EditLeadScreenState extends State<EditLeadScreen> {
               IconButton(
                 tooltip: "Lead Groups",
                 icon: Icon(Icons.group),
-//                onPressed: () =>
-//                    _manageContactGroups(context, model: widget.model),
-                onPressed: null,
+                onPressed: () async {
+                  var _groups = await manageGroups(context,
+                      initial: groups ?? [], model: widget.groupModel);
+                  if (_groups != null) {
+                    setState(() {
+                      groups = _groups;
+                    });
+                  }
+                },
               ),
             ],
           ),
@@ -268,12 +281,14 @@ class EditLeadScreenState extends State<EditLeadScreen> {
   }
 }
 
-void createLead(BuildContext context, {@required LeadModel model}) {
+void createLead(BuildContext context,
+    {@required LeadModel model, @required LeadGroupModel groupModel}) {
   Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new EditLeadScreen(
               model: LeadDetailsModel(auth: model?.auth),
+              groupModel: groupModel,
             ),
         fullscreenDialog: true,
       ));
@@ -282,15 +297,18 @@ void createLead(BuildContext context, {@required LeadModel model}) {
 void editLead(BuildContext context,
     {@required LeadModel model,
     LeadDetails details,
-    @required LeadRow leadRow}) {
+    @required LeadRow leadRow,
+    @required LeadGroupModel groupModel}) {
   Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new EditLeadScreen(
-            model: LeadDetailsModel(auth: model?.auth, id: leadRow?.id),
-            isNew: false,
-            details: details,
-            leadRow: leadRow),
+              model: LeadDetailsModel(auth: model?.auth, id: leadRow?.id),
+              isNew: false,
+              details: details,
+              leadRow: leadRow,
+              groupModel: groupModel,
+            ),
         fullscreenDialog: true,
       ));
 }

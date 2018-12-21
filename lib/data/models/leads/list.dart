@@ -41,6 +41,10 @@ class LeadModel extends Model {
   void searchPressed() {
     _isSearching = !_isSearching;
     _filtered = _leads;
+    if (!_isSearching) {
+      _searchValue = "";
+      refresh();
+    }
     notifyListeners();
   }
 
@@ -144,7 +148,8 @@ class LeadModel extends Model {
 
     if (!_fetching) {
       _fetching = true;
-      var _items = await LeadRepository().loadList(auth, paging: _paging);
+      var _items =
+          await LeadRepository().loadList(auth, paging: _paging, query: query);
 
       List<dynamic> _result = _items?.result;
 

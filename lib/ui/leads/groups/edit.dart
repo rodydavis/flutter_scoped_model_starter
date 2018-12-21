@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import '../../../data/classes/unify/contact_group.dart';
-import '../../../data/models/contacts/list.dart';
-import '../../../data/models/contacts/groups.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import '../../../data/classes/unify/contact_group.dart';
+import '../../../data/models/leads/groups.dart';
+import '../../../data/models/leads/list.dart';
 
 class EditContactGroup extends StatefulWidget {
   final bool isNew;
   final ContactGroup group;
 //  final VoidCallback groupDeleted;
-  final ContactGroupModel groupModel;
+  final LeadGroupModel groupModel;
   EditContactGroup({
     this.isNew,
     this.groupModel,
@@ -44,7 +45,7 @@ class EditContactGroupState extends State<EditContactGroup> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<ContactGroupModel>(
+    return ScopedModel<LeadGroupModel>(
         model: widget.groupModel,
         child: Scaffold(
           appBar: AppBar(
@@ -53,7 +54,7 @@ class EditContactGroupState extends State<EditContactGroup> {
             actions: widget.isNew
                 ? null
                 : <Widget>[
-                    new ScopedModelDescendant<ContactGroupModel>(
+                    new ScopedModelDescendant<LeadGroupModel>(
                         builder: (context, child, model) => model.fetching
                             ? Container(
                                 height: 48.0,
@@ -92,7 +93,7 @@ class EditContactGroupState extends State<EditContactGroup> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        new ScopedModelDescendant<ContactGroupModel>(
+                        new ScopedModelDescendant<LeadGroupModel>(
                             builder: (context, child, model) => model.fetching
                                 ? Center(child: CircularProgressIndicator())
                                 : RaisedButton(
@@ -129,13 +130,13 @@ class EditContactGroupState extends State<EditContactGroup> {
 }
 
 Future<bool> createGroup(BuildContext context,
-    {@required ContactModel model}) async {
+    {@required LeadModel model}) async {
   bool _created = await Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new EditContactGroup(
               isNew: true,
-              groupModel: ContactGroupModel(auth: model?.auth),
+              groupModel: LeadGroupModel(auth: model?.auth),
             ),
         fullscreenDialog: true,
       ));
@@ -143,12 +144,12 @@ Future<bool> createGroup(BuildContext context,
 }
 
 Future<bool> editGroup(BuildContext context,
-    {@required ContactGroup group, @required ContactModel model}) async {
+    {@required ContactGroup group, @required LeadModel model}) async {
   bool _edited = await Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new EditContactGroup(
-            groupModel: ContactGroupModel(auth: model?.auth, id: group?.id),
+            groupModel: LeadGroupModel(auth: model?.auth, id: group?.id),
             isNew: false,
             group: group),
         fullscreenDialog: true,

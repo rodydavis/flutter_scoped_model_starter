@@ -4,8 +4,8 @@ import 'package:flutter_scoped_model_starter/ui/app/buttons/app_sort_button.dart
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../../data/classes/unify/contact_group.dart';
-import '../../../data/models/contacts/groups.dart';
-import '../../../data/models/contacts/list.dart';
+import '../../../data/models/leads/groups.dart';
+import '../../../data/models/leads/list.dart';
 import '../../app/app_bottom_bar.dart';
 import '../../app/buttons/app_delete_button.dart';
 import '../../general/list_widget.dart';
@@ -14,26 +14,26 @@ import 'edit.dart';
 
 class ContactsFromGroupScreen extends StatelessWidget {
   final ContactGroup group;
-  final ContactModel contactModel;
+  final LeadModel leadModel;
 
   ContactsFromGroupScreen({
-    @required this.contactModel,
+    @required this.leadModel,
     @required this.group,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<ContactGroupModel>(
-      model: ContactGroupModel(auth: contactModel?.auth, id: group?.id),
+    return ScopedModel<LeadGroupModel>(
+      model: LeadGroupModel(auth: leadModel?.auth, id: group?.id),
       child: Scaffold(
         appBar: AppBar(
           title: Text(group.name ?? "No Group Name"),
           actions: <Widget>[
-            new ScopedModelDescendant<ContactGroupModel>(
+            new ScopedModelDescendant<LeadGroupModel>(
                 builder: (context, child, model) => IconButton(
                       icon: Icon(Icons.edit),
                       onPressed: () =>
-                          editGroup(context, model: contactModel, group: group)
+                          editGroup(context, model: leadModel, group: group)
                               .then((edited) {
                             if (edited != null) {
                               Navigator.pop(context, edited);
@@ -42,21 +42,21 @@ class ContactsFromGroupScreen extends StatelessWidget {
                     )),
           ],
         ),
-        body: new ScopedModelDescendant<ContactGroupModel>(
+        body: new ScopedModelDescendant<LeadGroupModel>(
             builder: (context, child, model) => RefreshIndicator(
                   onRefresh: model.refresh,
                   child: ListWidget(
-                    onEmpty: Center(child: Text("No Contacts Found")),
-                    items: model.contacts,
+                    onEmpty: Center(child: Text("No Leads Found")),
+                    items: model.leads,
                     child: ListView.builder(
-                      itemCount: model?.contacts?.length ?? 0,
+                      itemCount: model?.leads?.length ?? 0,
                       itemBuilder: (BuildContext context, int index) {
-                        final _info = model.contacts[index];
-                        if (index == model.contacts.length - 1 &&
+                        final _info = model.leads[index];
+                        if (index == model.leads.length - 1 &&
                             !model.isSearching) model.fetchNext();
-                        return ContactItem(
-                          model: contactModel,
-                          contact: _info,
+                        return LeadItem(
+                          model: leadModel,
+                          lead: _info,
                           groupModel: model,
                         );
                       },
@@ -65,20 +65,20 @@ class ContactsFromGroupScreen extends StatelessWidget {
                 )),
         bottomNavigationBar: AppBottomBar(
           buttons: [
-            new ScopedModelDescendant<ContactGroupModel>(
+            new ScopedModelDescendant<LeadGroupModel>(
                 builder: (context, child, model) => AppSortButton(
                       sort: model.sort,
                       sortChanged: model.sortChanged,
                     )),
-            new ScopedModelDescendant<ContactGroupModel>(
+            new ScopedModelDescendant<LeadGroupModel>(
                 builder: (context, child, model) => AppRefreshButton(
                       isRefreshing: model.fetching,
                       onRefresh: model.refresh,
                       onCancel: model.cancel,
                     )),
-            new ScopedModelDescendant<ContactGroupModel>(
+            new ScopedModelDescendant<LeadGroupModel>(
                 builder: (context, child, model) =>
-                    model.contacts == null || model.contacts.isEmpty
+                    model.leads == null || model.leads.isEmpty
                         ? AppDeleteButton(onDelete: () async {
                             await model.deleteContactGroup(id: group.id);
                             Navigator.pop(context, false);
@@ -91,13 +91,13 @@ class ContactsFromGroupScreen extends StatelessWidget {
   }
 }
 
-Future<bool> viewContactGroup(BuildContext context,
-    {@required ContactModel model, @required ContactGroup group}) async {
+Future<bool> viewLeadGroup(BuildContext context,
+    {@required LeadModel model, @required ContactGroup group}) async {
   var _edited = await Navigator.push(
     context,
     MaterialPageRoute(
       builder: (context) =>
-          ContactsFromGroupScreen(contactModel: model, group: group),
+          ContactsFromGroupScreen(leadModel: model, group: group),
     ),
   );
   return _edited; //True = Edited, False = Deleted

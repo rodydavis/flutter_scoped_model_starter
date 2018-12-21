@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../general/address.dart';
 import '../general/phone.dart';
+import '../unify/contact_group.dart';
 
 part 'lead_details.g.dart';
 
@@ -17,36 +18,43 @@ class LeadDetails {
     this.homePhone,
     this.cellPhone,
     this.officePhone,
-//    this.companyCategory,
-//    this.LeadGroups,
-//    this.faxPhone,
-//    this.secondCellPhone,
+    this.leadGroups,
+    this.dateModified,
+    this.dateCreated,
   });
 
-  @JsonKey(name: 'first_name')
+  @JsonKey(name: 'First_Name')
   String firstName;
-  @JsonKey(name: 'last_name')
+
+  @JsonKey(name: 'Last_Name')
   String lastName;
-  @JsonKey(name: 'email')
+
+  @JsonKey(name: 'Email_Address')
   String email;
-  @JsonKey(name: 'current_address')
+
+  @JsonKey(name: 'Current_Address')
   Address currentAddress;
-  @JsonKey(name: 'property_address')
+
+  @JsonKey(name: 'Property_Address')
   Address propertyAddress;
-  @JsonKey(name: 'cell_phone')
+
+  @JsonKey(name: 'Cell_Phone')
   Phone cellPhone;
-  @JsonKey(name: 'office_phone')
+
+  @JsonKey(name: 'Office_Phone')
   Phone officePhone;
-  @JsonKey(name: 'home_phone')
+
+  @JsonKey(name: 'Home_Phone')
   Phone homePhone;
-//  @JsonKey(name: 'Fax_Phone')
-//  Phone faxPhone;
-//  @JsonKey(name: 'Secondary_Cell_Phone')
-//  Phone secondCellPhone;
-//  @JsonKey(name: 'Company_Category')
-//  CompanyCategory companyCategory;
-//  @JsonKey(name: 'Lead_Groups')
-//  List<LeadGroup> LeadGroups;
+
+  @JsonKey(name: 'Date_Created')
+  String dateCreated;
+
+  @JsonKey(name: 'Date_Modified')
+  String dateModified;
+
+  @JsonKey(name: 'Lead_Groups')
+  List<ContactGroup> leadGroups;
 
   factory LeadDetails.fromJson(Map<String, dynamic> json) =>
       _$LeadDetailsFromJson(json);
