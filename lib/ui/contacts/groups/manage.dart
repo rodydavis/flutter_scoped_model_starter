@@ -46,7 +46,7 @@ class ContactGroupManageContact extends StatelessWidget {
                 actions: <Widget>[
                   IconButton(
                     tooltip: "Save Groups",
-                    icon: Icon(Icons.save),
+                    icon: Icon(Icons.check),
                     onPressed: () {
                       var _results = targetBuilderDelegates
                           ?.map((e) => e == null ? null : e.message)

@@ -8,6 +8,9 @@ import '../../data/models/contacts/groups.dart';
 import '../../data/models/contacts/list.dart';
 import '../../utils/null_or_empty.dart';
 import '../../utils/vcf_card.dart';
+import '../actions/follow_up.dart';
+import '../actions/log_response.dart';
+import '../actions/note.dart';
 import '../app/app_bottom_bar.dart';
 import '../app/buttons/app_delete_button.dart';
 import '../app/buttons/app_share_button.dart';
@@ -197,17 +200,17 @@ class LeadDetailsScreen extends StatelessWidget {
               IconButton(
                 tooltip: "Add Follow Up",
                 icon: Icon(Icons.event_available),
-                onPressed: null,
+                onPressed: () => createFollowUp(context),
               ),
               IconButton(
                 tooltip: "Add Note",
                 icon: Icon(Icons.note_add),
-                onPressed: null,
+                onPressed: () => createNote(context),
               ),
               IconButton(
                 tooltip: "Add Log Response",
                 icon: Icon(Icons.timer),
-                onPressed: null,
+                onPressed: () => createLogResponse(context),
               ),
             ],
           ),

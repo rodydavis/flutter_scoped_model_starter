@@ -6,12 +6,15 @@ import '../../data/classes/general/phone.dart';
 import '../../data/classes/leads/lead_row.dart';
 import '../../data/models/leads/details.dart';
 import '../../data/models/leads/list.dart';
+import '../../utils/null_or_empty.dart';
 import '../../utils/vcf_card.dart';
+import '../actions/follow_up.dart';
+import '../actions/log_response.dart';
+import '../actions/note.dart';
 import '../app/app_bottom_bar.dart';
 import '../app/buttons/app_delete_button.dart';
 import '../app/buttons/app_share_button.dart';
 import '../general/address_tile.dart';
-import '../../utils/null_or_empty.dart';
 import '../general/phone_tile.dart';
 import 'edit.dart';
 
@@ -161,25 +164,25 @@ class LeadDetailsScreen extends StatelessWidget {
                         await model.delete();
                         Navigator.pop(context);
                       })),
-              IconButton(
-                tooltip: "Lead Groups",
-                icon: Icon(Icons.people),
-                onPressed: () => null,
-              ),
+//              IconButton(
+//                tooltip: "Lead Groups",
+//                icon: Icon(Icons.people),
+//                onPressed: () => null,
+//              ),
               IconButton(
                 tooltip: "Add Follow Up",
                 icon: Icon(Icons.event_available),
-                onPressed: null,
+                onPressed: () => createFollowUp(context),
               ),
               IconButton(
                 tooltip: "Add Note",
                 icon: Icon(Icons.note_add),
-                onPressed: null,
+                onPressed: () => createNote(context),
               ),
               IconButton(
                 tooltip: "Add Log Response",
                 icon: Icon(Icons.timer),
-                onPressed: null,
+                onPressed: () => createLogResponse(context),
               ),
             ],
           ),

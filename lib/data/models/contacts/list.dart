@@ -54,21 +54,27 @@ class ContactModel extends Model {
 
   void searchChanged(String value) {
     _searchValue = value;
+    notifyListeners();
 
     print("Searching... $value");
 
+    _loadList(query: _searchValue).then((_) {
+      _filterResults();
+    });
+  }
+
+  void _filterResults() {
     // -- Local Search --
     List<ContactRow> _results = [];
 
     if (_contacts != null && _contacts.isNotEmpty) {
       for (var _item in _contacts) {
-        if (_item.matchesSearch(value)) {
+        if (_item.matchesSearch(_searchValue)) {
           _results.add(_item);
         }
       }
       _filtered = _results;
     }
-
     notifyListeners();
   }
 
