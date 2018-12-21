@@ -4,7 +4,7 @@ class AppInputField extends StatelessWidget {
   final Widget leading, trailing, subtitle;
   final TextEditingController controller;
   final String name;
-  final bool autoFocus, required;
+  final bool autoFocus, required, multiLine;
 
   AppInputField({
     this.controller,
@@ -14,6 +14,7 @@ class AppInputField extends StatelessWidget {
     this.leading,
     this.subtitle,
     this.trailing,
+    this.multiLine = false,
   });
 
   @override
@@ -24,8 +25,9 @@ class AppInputField extends StatelessWidget {
         autofocus: autoFocus,
         controller: controller,
         decoration: InputDecoration(labelText: name),
-        keyboardType: getKeyboard(name),
+        keyboardType: multiLine ? TextInputType.multiline : getKeyboard(name),
         validator: (val) => validator(val, type: name, required: required),
+        maxLines: multiLine ? null : 1,
       ),
       subtitle: subtitle,
       trailing: trailing,

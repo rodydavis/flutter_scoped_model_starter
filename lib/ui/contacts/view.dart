@@ -157,6 +157,12 @@ class LeadDetailsScreen extends StatelessWidget {
                     label: "Current Address",
                     icon: Icons.map,
                   ),
+                  ListTile(
+                    // On Tap View Contacts by Partner? (Search)
+                    leading: Icon(Icons.star),
+                    title: Text(
+                        _details?.companyCategory?.name ?? "No Name Found"),
+                  ),
                   _groupTiles.isNotEmpty
                       ? ExpansionTile(
                           leading: Icon(Icons.group),
@@ -227,12 +233,21 @@ class LeadDetailsScreen extends StatelessWidget {
               IconButton(
                 tooltip: "Add Note",
                 icon: Icon(Icons.note_add),
-                onPressed: () => createNote(context),
+                onPressed: () => createNote(context).then((note) {
+                      if (note != null) {
+                        print(note?.note);
+                      }
+                    }),
               ),
               IconButton(
                 tooltip: "Add Log Response",
                 icon: Icon(Icons.timer),
-                onPressed: () => createLogResponse(context),
+                onPressed: () => createLogResponse(context).then((logResponse) {
+                      if (logResponse != null) {
+                        print(logResponse?.response);
+                        print(logResponse?.comment);
+                      }
+                    }),
               ),
             ],
           ),
