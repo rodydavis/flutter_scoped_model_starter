@@ -152,10 +152,16 @@ class LeadDetailsScreen extends StatelessWidget {
                       ),
                       _groupTiles.isNotEmpty
                           ? ExpansionTile(
+                              leading: Icon(Icons.group),
                               title: Text("Contact Groups"),
                               children: _groupTiles,
                             )
                           : Container(),
+                      ListTile(
+                        leading: Icon(Icons.star),
+                        title: Text(
+                            _details?.companyCategory?.name ?? "No Category"),
+                      ),
                     ],
                   );
                 }
