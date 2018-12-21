@@ -102,78 +102,93 @@ class LeadDetailsScreen extends StatelessWidget {
                       )),
             ],
           ),
-          body: ListView(
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.info),
-                title: Text(
-                    ((contactRow?.firstName ?? "") + " " + contactRow?.lastName)
-                        .trim()),
-              ),
-              PhoneTile(
-                  label: "Cell Phone",
-                  number: contactRow?.cellPhone,
-                  icon: Icons.phone),
-              PhoneTile(
-                  label: "Home Phone",
-                  number: contactRow?.homePhone,
-                  icon: Icons.home),
-              PhoneTile(
-                  label: "Office Phone",
-                  number: contactRow?.officePhone,
-                  icon: Icons.work),
-              new ScopedModelDescendant<ContactDetailsModel>(
+          body: new ScopedModelDescendant<ContactDetailsModel>(
 //                  rebuildOnChange: true,
-                  builder: (context, child, model) {
-                if (model.details != null) {
-                  final _details = model.details;
+              builder: (context, child, model) {
+            if (model.details != null) {
+              final _details = model.details;
 
-                  var _groupTiles = <Widget>[];
+              var _groupTiles = <Widget>[];
 
-                  if (_details?.contactGroups != null &&
-                      _details.contactGroups.isNotEmpty) {
-                    for (var _item in _details.contactGroups) {
-                      _groupTiles.add(ListTile(
-                        title: Text(_item?.name ?? "No Name Found"),
-                        trailing: IconButton(
-                            icon: Icon(Icons.close),
-                            onPressed: () async {
-                              var _groups = _details.contactGroups;
-                              _groups.remove(_item);
-                              await model.edit(_details);
-                            }),
-                      ));
-                    }
-                  }
-
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      AddressTile(
-                        address: _details?.address,
-                        label: "Current Address",
-                        icon: Icons.map,
-                      ),
-                      _groupTiles.isNotEmpty
-                          ? ExpansionTile(
-                              leading: Icon(Icons.group),
-                              title: Text("Contact Groups"),
-                              children: _groupTiles,
-                            )
-                          : Container(),
-                      ListTile(
-                        leading: Icon(Icons.star),
-                        title: Text(
-                            _details?.companyCategory?.name ?? "No Category"),
-                      ),
-                    ],
-                  );
+              if (_details?.contactGroups != null &&
+                  _details.contactGroups.isNotEmpty) {
+                for (var _item in _details.contactGroups) {
+                  _groupTiles.add(ListTile(
+                    title: Text(_item?.name ?? "No Name Found"),
+                    trailing: IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () async {
+                          var _groups = _details.contactGroups;
+                          _groups.remove(_item);
+                          await model.edit(_details);
+                        }),
+                  ));
                 }
-                model.loadData();
-                return Center(child: CircularProgressIndicator());
-              }),
-            ],
-          ),
+              }
+
+              return ListView(
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.info),
+                    title: Text(
+                        ((_details?.firstName ?? "") + " " + _details?.lastName)
+                            .trim()),
+                  ),
+                  PhoneTile(
+                      label: "Cell Phone",
+                      number: _details?.cellPhone,
+                      icon: Icons.phone),
+                  PhoneTile(
+                      label: "Home Phone",
+                      number: _details?.homePhone,
+                      icon: Icons.home),
+                  PhoneTile(
+                      label: "Office Phone",
+                      number: _details?.officePhone,
+                      icon: Icons.work),
+                  AddressTile(
+                    address: _details?.address,
+                    label: "Current Address",
+                    icon: Icons.map,
+                  ),
+                  _groupTiles.isNotEmpty
+                      ? ExpansionTile(
+                          leading: Icon(Icons.group),
+                          title: Text("Contact Groups"),
+                          children: _groupTiles,
+                        )
+                      : Container(),
+                ],
+              );
+            }
+
+            model.loadData();
+
+            return ListView(
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.info),
+                  title: Text(((contactRow?.firstName ?? "") +
+                          " " +
+                          contactRow?.lastName)
+                      .trim()),
+                ),
+                PhoneTile(
+                    label: "Cell Phone",
+                    number: contactRow?.cellPhone,
+                    icon: Icons.phone),
+                PhoneTile(
+                    label: "Home Phone",
+                    number: contactRow?.homePhone,
+                    icon: Icons.home),
+                PhoneTile(
+                    label: "Office Phone",
+                    number: contactRow?.officePhone,
+                    icon: Icons.work),
+                Center(child: CircularProgressIndicator()),
+              ],
+            );
+          }),
           bottomNavigationBar: AppBottomBar(
             // showSort: false,
             buttons: [

@@ -112,78 +112,97 @@ class LeadDetailsScreen extends StatelessWidget {
                       )),
             ],
           ),
-          body: ListView(
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.info),
-                title: Text(
-                    ((leadRow?.firstName ?? "") + " " + leadRow?.lastName)
-                        .trim()),
-              ),
-              PhoneTile(
-                  label: "Cell Phone",
-                  number: leadRow?.cellPhone,
-                  icon: Icons.phone),
-              PhoneTile(
-                  label: "Home Phone",
-                  number: leadRow?.homePhone,
-                  icon: Icons.home),
-              PhoneTile(
-                  label: "Office Phone",
-                  number: leadRow?.officePhone,
-                  icon: Icons.work),
-              new ScopedModelDescendant<LeadDetailsModel>(
+          body: new ScopedModelDescendant<LeadDetailsModel>(
 //                  rebuildOnChange: true,
-                  builder: (context, child, model) {
-                if (model.details != null) {
-                  final _details = model.details;
+              builder: (context, child, model) {
+            if (model.details != null) {
+              final _details = model.details;
 
-                  var _groupTiles = <Widget>[];
+              var _groupTiles = <Widget>[];
 
-                  if (_details?.leadGroups != null &&
-                      _details.leadGroups.isNotEmpty) {
-                    for (var _item in _details.leadGroups) {
-                      _groupTiles.add(ListTile(
-                        title: Text(_item?.name ?? "No Name Found"),
-                        trailing: IconButton(
-                            icon: Icon(Icons.close),
-                            onPressed: () async {
-                              var _groups = _details.leadGroups;
-                              _groups.remove(_item);
-                              await model.edit(_details);
-                            }),
-                      ));
-                    }
-                  }
-
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      AddressTile(
-                        address: _details?.currentAddress,
-                        label: "Current Address",
-                        icon: Icons.map,
-                      ),
-                      AddressTile(
-                        address: _details?.propertyAddress,
-                        label: "Property Address",
-                        icon: Icons.map,
-                      ),
-                      _groupTiles.isNotEmpty
-                          ? ExpansionTile(
-                              leading: Icon(Icons.group),
-                              title: Text("Lead Groups"),
-                              children: _groupTiles,
-                            )
-                          : Container(),
-                    ],
-                  );
+              if (_details?.leadGroups != null &&
+                  _details.leadGroups.isNotEmpty) {
+                for (var _item in _details.leadGroups) {
+                  _groupTiles.add(ListTile(
+                    title: Text(_item?.name ?? "No Name Found"),
+                    trailing: IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () async {
+                          var _groups = _details.leadGroups;
+                          _groups.remove(_item);
+                          await model.edit(_details);
+                        }),
+                  ));
                 }
-                model.loadData();
-                return Center(child: CircularProgressIndicator());
-              }),
-            ],
-          ),
+              }
+
+              return ListView(
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.info),
+                    title: Text(
+                        ((_details?.firstName ?? "") + " " + _details?.lastName)
+                            .trim()),
+                  ),
+                  PhoneTile(
+                      label: "Cell Phone",
+                      number: _details?.cellPhone,
+                      icon: Icons.phone),
+                  PhoneTile(
+                      label: "Home Phone",
+                      number: _details?.homePhone,
+                      icon: Icons.home),
+                  PhoneTile(
+                      label: "Office Phone",
+                      number: _details?.officePhone,
+                      icon: Icons.work),
+                  AddressTile(
+                    address: _details?.currentAddress,
+                    label: "Current Address",
+                    icon: Icons.map,
+                  ),
+                  AddressTile(
+                    address: _details?.propertyAddress,
+                    label: "Property Address",
+                    icon: Icons.map,
+                  ),
+                  _groupTiles.isNotEmpty
+                      ? ExpansionTile(
+                          leading: Icon(Icons.group),
+                          title: Text("Lead Groups"),
+                          children: _groupTiles,
+                        )
+                      : Container(),
+                ],
+              );
+            }
+
+            model.loadData();
+
+            return ListView(
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.info),
+                  title: Text(
+                      ((leadRow?.firstName ?? "") + " " + leadRow?.lastName)
+                          .trim()),
+                ),
+                PhoneTile(
+                    label: "Cell Phone",
+                    number: leadRow?.cellPhone,
+                    icon: Icons.phone),
+                PhoneTile(
+                    label: "Home Phone",
+                    number: leadRow?.homePhone,
+                    icon: Icons.home),
+                PhoneTile(
+                    label: "Office Phone",
+                    number: leadRow?.officePhone,
+                    icon: Icons.work),
+                Center(child: CircularProgressIndicator()),
+              ],
+            );
+          }),
           bottomNavigationBar: AppBottomBar(
             // showSort: false,
             buttons: [
@@ -237,7 +256,9 @@ class LeadDetailsScreen extends StatelessWidget {
                           details: model.details,
                           leadRow: leadRow,
                           groupModel: groupModel,
-                        ),
+                        ).then((edited) {
+                          if (edited != null) {}
+                        }),
                     child: Icon(Icons.edit, color: Colors.white),
                     tooltip: 'Edit Item',
                   )),

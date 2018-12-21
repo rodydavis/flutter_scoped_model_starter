@@ -265,6 +265,11 @@ class EditContactScreenState extends State<EditContactScreen> {
         firstName: _firstName.text ?? "",
         lastName: _lastName.text ?? "",
         email: _email.text ?? "",
+        contactGroups: groups,
+        address: currentAddress,
+        cellPhone: cellPhone,
+        officePhone: officePhone,
+        homePhone: homePhone,
       );
 
       return _info;

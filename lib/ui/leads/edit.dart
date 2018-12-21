@@ -273,6 +273,12 @@ class EditLeadScreenState extends State<EditLeadScreen> {
         firstName: _firstName.text ?? "",
         lastName: _lastName.text ?? "",
         email: _email.text ?? "",
+        leadGroups: groups,
+        currentAddress: currentAddress,
+        propertyAddress: propertyAddress,
+        cellPhone: cellPhone,
+        officePhone: officePhone,
+        homePhone: homePhone,
       );
 
       return _info;
@@ -281,9 +287,9 @@ class EditLeadScreenState extends State<EditLeadScreen> {
   }
 }
 
-void createLead(BuildContext context,
-    {@required LeadModel model, @required LeadGroupModel groupModel}) {
-  Navigator.push(
+Future<bool> createLead(BuildContext context,
+    {@required LeadModel model, @required LeadGroupModel groupModel}) async {
+  bool _created = await Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new EditLeadScreen(
@@ -292,14 +298,15 @@ void createLead(BuildContext context,
             ),
         fullscreenDialog: true,
       ));
+  return _created;
 }
 
-void editLead(BuildContext context,
+Future<bool> editLead(BuildContext context,
     {@required LeadModel model,
     LeadDetails details,
     @required LeadRow leadRow,
-    @required LeadGroupModel groupModel}) {
-  Navigator.push(
+    @required LeadGroupModel groupModel}) async {
+  bool _edited = await Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new EditLeadScreen(
@@ -311,4 +318,5 @@ void editLead(BuildContext context,
             ),
         fullscreenDialog: true,
       ));
+  return _edited;
 }
