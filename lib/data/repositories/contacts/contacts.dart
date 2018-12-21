@@ -60,6 +60,21 @@ class ContactRepository {
     return result;
   }
 
+  Future<ResponseMessage> getCategories(
+    AuthModel auth,
+  ) async {
+    dynamic _response;
+
+    // -- Get List --
+    final response = await webClient
+        .get(kApiUrl + '/contacts/info/company_categories', auth: auth);
+    _response = response;
+
+    var result = ResponseMessage.fromJson(_response);
+
+    return result;
+  }
+
   Future<bool> deleteContact(AuthModel auth, {@required String id}) async {
     var url = kApiUrl + '/contacts/details/' + id.toString();
     var response;

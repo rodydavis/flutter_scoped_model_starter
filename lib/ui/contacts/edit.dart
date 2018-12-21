@@ -14,6 +14,8 @@ import '../general/address_tile.dart';
 import '../general/phone_tile.dart';
 import '../phone_contacts/import.dart';
 import 'groups/manage.dart';
+import '../../data/classes/unify/company_category.dart';
+import '../app/app_selection_field.dart';
 
 class EditContactScreen extends StatefulWidget {
   final ContactDetailsModel model;
@@ -42,6 +44,7 @@ class EditContactScreenState extends State<EditContactScreen> {
   Phone cellPhone, homePhone, officePhone;
   Address currentAddress;
   List<ContactGroup> groups;
+  CompanyCategory category;
 
   @override
   void initState() {
@@ -89,6 +92,7 @@ class EditContactScreenState extends State<EditContactScreen> {
       homePhone = info?.homePhone;
       officePhone = info?.officePhone;
       groups = info?.contactGroups;
+      category = info?.companyCategory;
     });
   }
 
@@ -203,6 +207,24 @@ class EditContactScreenState extends State<EditContactScreen> {
                       ),
                     ],
                   ),
+                  new ScopedModelDescendant<ContactDetailsModel>(
+                      builder: (context, child, model) => AppInputSelection(
+//              showMaterial: true,
+                            label: "Select a Category",
+                            selection: category?.name,
+                            items: model.categories == null
+                                ? []
+                                : model.categories.map((e) => e.name)?.toList(),
+                            onSelected: (String value) {
+                              for (var _item in model.categories) {
+                                if (_item.name == value) {
+                                  setState(() {
+                                    category = _item;
+                                  });
+                                }
+                              }
+                            },
+                          )),
                   Container(height: 10.0),
                   new ScopedModelDescendant<ContactDetailsModel>(
                       builder: (context, child, model) => Row(
@@ -270,6 +292,7 @@ class EditContactScreenState extends State<EditContactScreen> {
         cellPhone: cellPhone,
         officePhone: officePhone,
         homePhone: homePhone,
+        companyCategory: category,
       );
 
       return _info;

@@ -6,6 +6,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/foundation.dart';
 import '../../classes/contacts/contact_details.dart';
 import 'list.dart';
+import '../../classes/unify/company_category.dart';
 
 class ContactDetailsModel extends Model {
   final String id;
@@ -142,6 +143,41 @@ class ContactDetailsModel extends Model {
 
   void cancel() {
     _fetching = false;
+    notifyListeners();
+  }
+
+  // -- Categories --
+  List<CompanyCategory> _categories;
+
+  List<CompanyCategory> get categories {
+    if (_categories == null || !_isLoaded) {
+      _getCategories();
+    }
+    return _categories;
+  }
+
+  Future _getCategories() async {
+    _isLoaded = false;
+
+    notifyListeners();
+    if (!_fetching) {
+      _fetching = true;
+      var _result = await ContactRepository().getCategories(auth);
+
+      List<dynamic> _results = _result?.result;
+      try {
+        var _items = _results
+            ?.map((e) => e == null
+                ? null
+                : CompanyCategory.fromJson(e as Map<String, dynamic>))
+            ?.toList();
+        _categories = _items ?? [];
+      } catch (e) {
+        if (devMode) _error = e;
+      }
+      _fetching = false;
+    }
+    _isLoaded = true;
     notifyListeners();
   }
 }
