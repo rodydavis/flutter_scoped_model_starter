@@ -52,8 +52,8 @@ class ContactsScreen extends StatelessWidget {
                         itemCount: model?.contacts?.length,
                         itemBuilder: (BuildContext context, int index) {
                           final _info = model.contacts[index];
-                          if (index == model.contacts.length - 1)
-                            model.fetchNext();
+                          if (index == model.contacts.length - 1 &&
+                              !model.isSearching) model.fetchNext();
                           return ContactItem(
                               model: model,
                               contact: _info,

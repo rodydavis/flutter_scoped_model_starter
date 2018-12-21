@@ -33,7 +33,12 @@ class ContactsFromGroupScreen extends StatelessWidget {
                 builder: (context, child, model) => IconButton(
                       icon: Icon(Icons.edit),
                       onPressed: () =>
-                          editGroup(context, model: contactModel, group: group),
+                          editGroup(context, model: contactModel, group: group)
+                              .then((edited) {
+                            if (edited != null) {
+                              Navigator.pop(context, edited);
+                            }
+                          }),
                     )),
           ],
         ),
@@ -47,12 +52,13 @@ class ContactsFromGroupScreen extends StatelessWidget {
                       itemCount: model?.contacts?.length ?? 0,
                       itemBuilder: (BuildContext context, int index) {
                         final _info = model.contacts[index];
-                        if (index == model.contacts.length - 1)
-                          model.fetchNext();
+                        if (index == model.contacts.length - 1 &&
+                            !model.isSearching) model.fetchNext();
                         return ContactItem(
-                            model: contactModel,
-                            contact: _info,
-                            groupModel: model);
+                          model: contactModel,
+                          contact: _info,
+                          groupModel: model,
+                        );
                       },
                     ),
                   ),
@@ -75,7 +81,7 @@ class ContactsFromGroupScreen extends StatelessWidget {
                     model.contacts == null || model.contacts.isEmpty
                         ? AppDeleteButton(onDelete: () async {
                             await model.deleteContactGroup(id: group.id);
-                            Navigator.pop(context);
+                            Navigator.pop(context, false);
                           })
                         : Container(height: 48.0))
           ],
@@ -85,13 +91,14 @@ class ContactsFromGroupScreen extends StatelessWidget {
   }
 }
 
-void viewGroup(BuildContext context,
-    {@required ContactModel model, @required ContactGroup group}) {
-  Navigator.push(
+Future<bool> viewGroup(BuildContext context,
+    {@required ContactModel model, @required ContactGroup group}) async {
+  var _edited = await Navigator.push(
     context,
     MaterialPageRoute(
       builder: (context) =>
           ContactsFromGroupScreen(contactModel: model, group: group),
     ),
   );
+  return _edited; //True = Edited, False = Deleted
 }

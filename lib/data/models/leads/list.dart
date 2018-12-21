@@ -40,6 +40,7 @@ class LeadModel extends Model {
 
   void searchPressed() {
     _isSearching = !_isSearching;
+    _filtered = _leads;
     notifyListeners();
   }
 
@@ -49,6 +50,7 @@ class LeadModel extends Model {
 
     print("Searching... $value");
 
+    // -- Remote Search --
     _loadList(query: _searchValue).then((_) {
       _filterResults();
     });
@@ -132,6 +134,11 @@ class LeadModel extends Model {
   bool _fetching = false;
 
   Future _loadList({bool nextPage = false, String query = ""}) async {
+    if (query != null && query.isNotEmpty) {
+      _paging.page = 1;
+      _paging.rows = 200;
+    }
+
     _isLoaded = false;
     notifyListeners();
 

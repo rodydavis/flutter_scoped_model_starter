@@ -85,8 +85,8 @@ class ContactGroupModel extends Model {
     await getGroups(force: true);
   }
 
-  Future editContactGroup({
-    @required ContactGroup model,
+  Future editContactGroup(
+    ContactGroup value, {
     bool isNew = true,
   }) async {
     _isLoaded = false;
@@ -95,13 +95,12 @@ class ContactGroupModel extends Model {
 
     if (isNew) {
       _success = await ContactGroupRepository()
-          .addContactGroup(auth, name: model?.name);
+          .addContactGroup(auth, name: value?.name);
     } else {
       _success = await ContactGroupRepository()
-          .editContactGroup(auth, name: model?.name, id: model?.id);
+          .editContactGroup(auth, name: value?.name, id: value?.id);
     }
-
-    _groups.clear();
+    if (_groups != null && _groups.isNotEmpty) _groups.clear();
     notifyListeners();
 
     getGroups(force: true);
@@ -116,7 +115,7 @@ class ContactGroupModel extends Model {
     _fetching = true;
     notifyListeners();
 
-    _groups.clear();
+    if (_groups != null && _groups.isNotEmpty) _groups.clear();
     notifyListeners();
 
     _success = await ContactGroupRepository().deleteContactGroup(auth, id: id);

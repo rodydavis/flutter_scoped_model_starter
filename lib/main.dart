@@ -17,6 +17,7 @@ import 'ui/leads/screen.dart';
 import 'ui/phone_contacts/import.dart';
 import 'data/models/contacts/groups.dart';
 import 'ui/contacts/groups/screen.dart';
+import 'ui/tasks/screen.dart';
 
 // STARTER: import - do not remove comment
 
@@ -55,7 +56,8 @@ class AppTheme extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) =>
             LoginPage(username: authModel?.currentUser?.username),
-        '/home': (BuildContext context) => HomePage(model: taskModel),
+        '/home': (BuildContext context) => HomePage(),
+
         '/account': (BuildContext context) => AccountPage(),
         '/settings': (BuildContext context) => SettingsPage(),
         // STARTER: routes - do not remove comment
@@ -65,12 +67,13 @@ class AppTheme extends StatelessWidget {
         '/import_multiple': (BuildContext context) => ImportContactsScreen(),
         '/import_single': (BuildContext context) =>
             ImportContactsScreen(selectSingle: true),
+        '/all_tasks': (BuildContext context) => TasksScreen(model: taskModel),
         '/contact_tasks': (BuildContext context) =>
-            HomePage(model: taskModel, type: TasksType.contact),
+            TasksScreen(model: taskModel, type: TasksType.contact),
         '/lead_tasks': (BuildContext context) =>
-            HomePage(model: taskModel, type: TasksType.lead),
+            TasksScreen(model: taskModel, type: TasksType.lead),
         '/core_lead_tasks': (BuildContext context) =>
-            HomePage(model: taskModel, type: TasksType.core_lead),
+            TasksScreen(model: taskModel, type: TasksType.core_lead),
         '/contact_groups': (BuildContext context) => ContactGroupsScreen(
             groupModel: contactGroupModel, contactModel: contactModel),
       },

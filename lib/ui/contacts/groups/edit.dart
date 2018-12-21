@@ -42,16 +42,6 @@ class EditContactGroupState extends State<EditContactGroup> {
     super.initState();
   }
 
-  void _saveInfo(BuildContext context) {
-    if (_formKey.currentState.validate()) {
-      // -- Save Info --
-      final _name = _nameController?.text ?? "";
-      final ContactGroup _group =
-          ContactGroup(id: widget?.group?.id ?? "", name: _name);
-      Navigator.pop(context, _group);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return ScopedModel<ContactGroupModel>(
@@ -77,7 +67,7 @@ class EditContactGroupState extends State<EditContactGroup> {
                                         await model.deleteContactGroup(
                                             id: widget?.group?.id);
                                         if (model.success)
-                                          Navigator.pop(context, true);
+                                          Navigator.pop(context, false);
                                       },
                               )),
                   ],
@@ -102,14 +92,30 @@ class EditContactGroupState extends State<EditContactGroup> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        RaisedButton(
-                          color: Colors.blue,
-                          child: Text(
-                            widget.isNew ? "Add Group" : "Save Group",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () => _saveInfo(context),
-                        ),
+                        new ScopedModelDescendant<ContactGroupModel>(
+                            builder: (context, child, model) => model.fetching
+                                ? Center(child: CircularProgressIndicator())
+                                : RaisedButton(
+                                    color: Colors.blue,
+                                    child: Text(
+                                      widget.isNew ? "Add Group" : "Save Group",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    onPressed: () async {
+                                      if (_formKey.currentState.validate()) {
+                                        // -- Save Info --
+                                        final _name =
+                                            _nameController?.text ?? "";
+                                        final ContactGroup _group =
+                                            ContactGroup(
+                                                id: widget?.group?.id ?? "",
+                                                name: _name);
+                                        await model.editContactGroup(_group,
+                                            isNew: widget.isNew);
+                                        Navigator.pop(context, true);
+                                      }
+                                    },
+                                  )),
                       ],
                     ),
                     Container(height: 50.0),
@@ -122,8 +128,9 @@ class EditContactGroupState extends State<EditContactGroup> {
   }
 }
 
-void createGroup(BuildContext context, {@required ContactModel model}) {
-  Navigator.push(
+Future<bool> createGroup(BuildContext context,
+    {@required ContactModel model}) async {
+  bool _created = await Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new EditContactGroup(
@@ -132,11 +139,12 @@ void createGroup(BuildContext context, {@required ContactModel model}) {
             ),
         fullscreenDialog: true,
       ));
+  return _created; // True = Created
 }
 
-void editGroup(BuildContext context,
-    {@required ContactGroup group, @required ContactModel model}) {
-  Navigator.push(
+Future<bool> editGroup(BuildContext context,
+    {@required ContactGroup group, @required ContactModel model}) async {
+  bool _edited = await Navigator.push(
       context,
       new MaterialPageRoute(
         builder: (context) => new EditContactGroup(
@@ -145,4 +153,5 @@ void editGroup(BuildContext context,
             group: group),
         fullscreenDialog: true,
       ));
+  return _edited; //True = Edited, False = Deleted
 }

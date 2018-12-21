@@ -17,11 +17,16 @@ class ContactItem extends StatelessWidget {
   final ContactRow contact;
   final ContactModel model;
   final ContactGroupModel groupModel;
+  final VoidCallback onDelete, onEdit, onShare;
 
-  ContactItem(
-      {@required this.contact,
-      @required this.model,
-      @required this.groupModel});
+  ContactItem({
+    @required this.contact,
+    @required this.model,
+    @required this.groupModel,
+    this.onDelete,
+    this.onEdit,
+    this.onShare,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +50,13 @@ class ContactItem extends StatelessWidget {
         value: formatDateCustom(contact?.dateModified),
         hint: "Date Modified",
       ),
-      onDelete: () => showConfirmationPopup(context,
-          detail: "Are you sure you want to delete?"),
-      onEdit: () => editContact(context,
-          model: model, row: contact, groupModel: groupModel),
-      onShare: () => shareContact(context, contact: contact),
+      onDelete: onDelete ??
+          () => showConfirmationPopup(context,
+              detail: "Are you sure you want to delete?"),
+      onEdit: onEdit ??
+          () => editContact(context,
+              model: model, row: contact, groupModel: groupModel),
+      onShare: onShare ?? () => shareContact(context, contact: contact),
     );
   }
 }

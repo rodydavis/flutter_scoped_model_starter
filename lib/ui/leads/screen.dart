@@ -49,8 +49,8 @@ class LeadsScreen extends StatelessWidget {
                         itemCount: model?.leads?.length,
                         itemBuilder: (BuildContext context, int index) {
                           final _lead = model.leads[index];
-                          if (index == model.leads.length - 1)
-                            model.fetchNext();
+                          if (index == model.leads.length - 1 &&
+                              !model.isSearching) model.fetchNext();
                           return LeadItem(model: model, lead: _lead);
                         },
                       ),
