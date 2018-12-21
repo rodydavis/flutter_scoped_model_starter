@@ -16,6 +16,7 @@ import '../app/buttons/app_delete_button.dart';
 import '../app/buttons/app_share_button.dart';
 import '../general/address_tile.dart';
 import '../general/phone_tile.dart';
+import 'groups/view.dart';
 import 'edit.dart';
 import 'groups/manage.dart';
 
@@ -115,6 +116,11 @@ class LeadDetailsScreen extends StatelessWidget {
                 for (var _item in _details.contactGroups) {
                   _groupTiles.add(ListTile(
                     title: Text(_item?.name ?? "No Name Found"),
+                    onTap: () => viewContactGroup(context,
+                                model: contactModel, group: _item)
+                            .then((edited) {
+                          if (edited != null) {}
+                        }),
                     trailing: IconButton(
                         icon: Icon(Icons.close),
                         onPressed: () async {
