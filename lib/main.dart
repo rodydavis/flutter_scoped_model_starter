@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_scoped_model_starter/data/models/tasks/task_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'constants.dart';
 import 'data/models/app_model.dart';
 import 'data/models/auth_model.dart';
-import 'data/models/contacts/details.dart';
-import 'data/models/leads/details.dart';
 import 'ui/account/screen.dart';
 import 'ui/app/splash_screen.dart';
 import 'ui/auth/login.dart';
-import 'ui/general/data_table.dart';
 import 'ui/help/support.dart';
 import 'ui/home/screen.dart';
 import 'ui/settings/screen.dart';
