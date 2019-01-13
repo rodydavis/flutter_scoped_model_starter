@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppSearchBar extends StatelessWidget {
-  final String search, name;
+  final String search, name, hint;
+  final TextEditingController controller;
 
   final bool isSearching;
 
@@ -10,13 +11,15 @@ class AppSearchBar extends StatelessWidget {
   AppSearchBar({
     this.search,
     this.name,
+    this.controller,
+    this.hint,
     this.onSearchChanged,
     this.isSearching = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    var title = name ?? "search".toString();
+    var title = name ?? "Search".toString();
     var _theme = Theme.of(context);
     return isSearching
         ? Container(
@@ -34,20 +37,26 @@ class AppSearchBar extends StatelessWidget {
                     child: Icon(Icons.search),
                   ),
                   border: InputBorder.none,
-                  hintText: 'Search'),
+                  hintText: hint ?? 'Search'),
               autofocus: true,
+              controller: controller,
               autocorrect: false,
               onChanged: (value) => onSearchChanged(value),
             ),
           )
-        : Text(title.toUpperCase());
+        : Text(title);
   }
 }
 
 class AppSearchButton extends StatelessWidget {
   final bool isSearching;
   final VoidCallback onSearchPressed;
-  AppSearchButton({this.onSearchPressed, this.isSearching});
+  AppSearchButton({
+    this.onSearchPressed,
+    this.isSearching = false,
+  });
+
+  // Todo: On Long Press... Advanced Search
   @override
   Widget build(BuildContext context) {
     return IconButton(

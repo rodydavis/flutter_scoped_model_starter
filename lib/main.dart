@@ -1,60 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_scoped_model_starter/data/models/tasks/task_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'data/models/auth.dart';
-import 'data/models/counter.dart';
-import 'data/models/crud_model.dart';
-import 'data/models/theme.dart';
-import 'screens/auth/login.dart';
-import 'screens/counter/counter_page.dart';
-import 'screens/crud/crud_screen.dart';
-import 'screens/home.dart';
-import 'screens/settings.dart';
-import 'screens/splash_screen.dart';
+import 'constants.dart';
+import 'data/models/app_model.dart';
+import 'data/models/auth_model.dart';
+import 'data/models/contacts/details.dart';
+import 'data/models/leads/details.dart';
+import 'ui/account/screen.dart';
+import 'ui/app/splash_screen.dart';
+import 'ui/auth/login.dart';
+import 'ui/general/data_table.dart';
+import 'ui/help/support.dart';
+import 'ui/home/screen.dart';
+import 'ui/settings/screen.dart';
 
 // STARTER: import - do not remove comment
 
 void main() => runApp(MyApp());
 
-// -- Models --
 final AuthModel authModel = AuthModel();
-final ThemeModel themeModel = ThemeModel();
-final CounterModel counterModel = CounterModel();
-final CRUDModel crudModel = CRUDModel();
+final AppState appModel = AppState();
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new ScopedModel<ThemeModel>(
-      model: themeModel,
-      child: new ScopedModel<AuthModel>(
-        model: authModel,
-        child: AppTheme(),
-      ),
-    );
+    return new ScopedModel<AppState>(
+        model: appModel,
+        child: ScopedModel<AuthModel>(
+          model: authModel,
+          child: _MainApp(),
+        ));
   }
 }
 
-class AppTheme extends StatelessWidget {
+class _MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _model = ScopedModel.of<ThemeModel>(context, rebuildOnChange: true);
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: _model.theme,
-      home: SplashScreen(
-        duration: Duration(seconds: 3),
-        themeModel: themeModel,
-        authModel: authModel,
-      ),
-      routes: <String, WidgetBuilder>{
-        '/login': (BuildContext context) => LoginPage(),
-        '/home': (BuildContext context) => HomePage(),
-        '/settings': (BuildContext context) => SettingsPage(),
-        // STARTER: routes - do not remove comment
-        '/counter': (BuildContext context) => CounterPage(model: counterModel),
-        '/crud': (BuildContext context) => CRUDScreen(model: crudModel),
-      },
-    );
+    return ScopedModelDescendant<AppState>(builder: (context, child, app) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: !devMode,
+//      showPerformanceOverlay: true,
+        title: 'Unify Mobile',
+        theme: app.theme,
+        home: SplashScreen(auth: authModel),
+        routes: <String, WidgetBuilder>{
+          '/login': (BuildContext context) =>
+              LoginPage(username: authModel?.currentUser?.username),
+          '/home': (BuildContext context) => HomePage(),
+          SupportPage.routeName: (BuildContext context) => SupportPage(),
+          '/account': (BuildContext context) => AccountPage(),
+
+          '/settings': (BuildContext context) => SettingsPage(),
+          // STARTER: routes - do not remove comment
+        },
+      );
+    });
   }
 }

@@ -1,16 +1,23 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:path_provider/path_provider.dart';
+
 class FileStorage {
   final String tag;
   final Future<Directory> Function() getDirectory;
 
   const FileStorage(
-    this.tag,
+    this.tag, {
     this.getDirectory,
-  );
+  });
 
   Future<File> _getLocalFile() async {
+    if (getDirectory == null) {
+      final dir = await getApplicationDocumentsDirectory();
+
+      return File('${dir.path}/$tag.json');
+    }
     final dir = await getDirectory();
 
     return File('${dir.path}/$tag.json');
